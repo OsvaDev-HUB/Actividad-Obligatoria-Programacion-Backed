@@ -1683,7 +1683,40 @@ a.bloque--libre:hover {
     font-size: 1.875rem;
 }
 
-/* Pasos: números unidos por una línea, sin tarjetas */
+/* Cómo agendar: franja verde oscuro con tres pasos en orden */
+.pasos-seccion {
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+.pasos-seccion h2 {
+    color: var(--blanco);
+}
+
+.pasos-seccion :focus-visible {
+    outline-color: var(--blanco);
+}
+
+.pasos__cabeza {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.5rem 4rem;
+    align-items: end;
+    margin-bottom: 3.5rem;
+}
+
+.pasos__accion {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+}
+
+.pasos__accion p {
+    max-width: 46ch;
+    color: #c4ddd6;
+    font-size: 1.125rem;
+}
+
 .pasos {
     position: relative;
     display: grid;
@@ -1699,45 +1732,131 @@ a.bloque--libre:hover {
 .pasos::before {
     content: "";
     position: absolute;
-    top: 1.75rem;
+    top: 2.25rem;
     right: 0;
-    left: 1.75rem;
-    height: 2px;
-    background: var(--menta-fuerte);
+    left: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .pasos li {
     position: relative;
-    display: grid;
-    align-content: start;
-    gap: 0.625rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     counter-increment: paso;
 }
 
-/* El número de cada paso sale de un contador de CSS */
+/* Número grande del paso; el fondo verde corta la línea detrás */
 .pasos li::before {
     content: counter(paso);
-    display: grid;
-    place-items: center;
-    width: 3.5rem;
-    height: 3.5rem;
-    margin-bottom: 0.75rem;
-    border: 6px solid var(--blanco);
-    border-radius: 50%;
-    background: var(--verde);
-    color: var(--blanco);
+    align-self: flex-start;
+    padding-right: 1rem;
+    background: var(--verde-oscuro);
+    color: #8fd6c2;
     font-family: var(--titulos);
-    font-size: 1.375rem;
+    font-size: 4.5rem;
+    line-height: 1;
 }
 
 .pasos h3 {
+    color: var(--blanco);
     font-size: 1.375rem;
 }
 
 .pasos p {
     max-width: 34ch;
-    color: var(--tinta-suave);
+    color: #c4ddd6;
     font-size: 1.0625rem;
+}
+
+/* Pieza del sistema que produce cada paso: siempre abajo, alineada y de igual alto */
+.pieza {
+    display: grid;
+    align-content: center;
+    min-height: 10rem;
+    margin-top: auto;
+    padding: 1.125rem 1.25rem;
+    border-radius: 16px;
+    background: var(--blanco);
+    box-shadow: var(--sombra-flotante);
+    color: var(--tinta);
+}
+
+.pasos li > p {
+    margin-bottom: 0.75rem;
+}
+
+.pieza--llamada {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.pieza__icono {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--verde);
+    color: var(--blanco);
+}
+
+.pieza--llamada strong {
+    display: block;
+}
+
+.pieza--llamada span span,
+.pieza--llamada div span {
+    color: var(--tinta-suave);
+    font-variant-numeric: tabular-nums;
+}
+
+.pieza__datos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem 1rem;
+    margin: 0.875rem 0 0;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--borde);
+    font-size: 0.875rem;
+}
+
+.pieza__datos dt {
+    color: var(--tinta-suave);
+}
+
+.pieza__datos dd {
+    margin: 0;
+    font-weight: 600;
+}
+
+.pieza__etiqueta {
+    color: var(--verde);
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.pieza__fila {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.375rem;
+}
+
+.pieza__hora {
+    color: var(--verde-oscuro);
+    font-family: var(--titulos);
+    font-size: 2rem;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.pasos__nota {
+    margin-top: 2rem;
+    color: #a9d4c8;
+    font-size: 0.875rem;
 }
 
 /* Bloque foto + agenda de ejemplo */
@@ -1991,29 +2110,33 @@ a.bloque--libre:hover {
         grid-column: auto;
     }
 
-    /* Pasos en columna: la línea pasa a ser vertical */
+    /* Pasos en columna: cada paso abre con una línea propia */
+    .pasos__cabeza {
+        grid-template-columns: 1fr;
+        margin-bottom: 2.5rem;
+    }
+
     .pasos {
         grid-template-columns: 1fr;
-        gap: 2rem;
+        gap: 2.5rem;
     }
 
     .pasos::before {
-        top: 0;
-        bottom: 0;
-        left: 1.6875rem;
-        width: 2px;
-        height: auto;
+        display: none;
     }
 
     .pasos li {
-        padding-left: 4.75rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .pasos li::before {
-        position: absolute;
-        top: -0.375rem;
-        left: 0;
-        margin: 0;
+        font-size: 3.25rem;
+    }
+
+    .pieza {
+        min-height: 0;
+        margin-top: 0.5rem;
     }
 
     .proxima {

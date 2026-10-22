@@ -150,26 +150,65 @@
     </div>
 </section>
 
-<section class="seccion" id="pasos" aria-labelledby="titulo-pasos">
+{# Cómo agendar: franja verde oscuro, cada paso muestra la pieza del sistema que produce #}
+<section class="seccion pasos-seccion" id="pasos" aria-labelledby="titulo-pasos">
     <div class="envoltura">
-        <div class="seccion__cabeza">
+        <div class="pasos__cabeza">
             <h2 id="titulo-pasos">Pedir hora toma una llamada</h2>
+            <div class="pasos__accion">
+                <p>Con una llamada tu mascota queda en nuestra agenda, con su hora y el motivo de la consulta.</p>
+                <a class="boton boton--blanco boton--grande" href="{{ contacto.telefono_enlace }}">
+                    {% include "clinica/icono.html" with nombre="telefono" %}Llamar al {{ contacto.telefono }}
+                </a>
+            </div>
         </div>
-        {# Los tres pasos van unidos por una línea, en orden #}
+
+        {# Los tres pasos van en orden; las piezas siguen a un paciente de ejemplo #}
         <ol class="pasos">
             <li>
                 <h3>Llámanos</h3>
-                <p>Al {{ contacto.telefono }}. Cuéntanos quién es tu mascota y qué le pasa.</p>
+                <p>Cuéntanos quién es tu mascota y qué le pasa.</p>
+                <div class="pieza pieza--llamada" aria-hidden="true">
+                    <span class="pieza__icono">{% include "clinica/icono.html" with nombre="telefono" %}</span>
+                    <div>
+                        <strong>Recepción Huellas Sanas</strong>
+                        <span>{{ contacto.telefono }}</span>
+                    </div>
+                </div>
             </li>
             <li>
                 <h3>Anotamos todo en la agenda</h3>
                 <p>Su nombre, especie y raza, tu nombre y el motivo de la consulta.</p>
+                <div class="pieza" aria-hidden="true">
+                    <div class="paciente">
+                        <span class="avatar especie-perro">R</span>
+                        <div>
+                            <strong class="paciente__nombre">Rocky</strong>
+                            <span class="paciente__detalle"><span class="pastilla-especie especie-perro">Perro</span>Quiltro</span>
+                        </div>
+                    </div>
+                    <dl class="pieza__datos">
+                        <div><dt>Dueña</dt><dd>Camila Rojas</dd></div>
+                        <div><dt>Motivo</dt><dd>Vacuna antirrábica</dd></div>
+                    </dl>
+                </div>
             </li>
             <li>
                 <h3>Llegas y te estamos esperando</h3>
-                <p>Cada hora es para una sola mascota, así que no hay cruces. Si no puedes venir, avísanos y liberamos la hora.</p>
+                <p>Cada hora es para una sola mascota. Si no puedes venir, avísanos y liberamos la hora.</p>
+                <div class="pieza" aria-hidden="true">
+                    <span class="pieza__etiqueta">Próxima cita</span>
+                    <div class="pieza__fila">
+                        <span class="pieza__hora">10:30</span>
+                        <div class="paciente">
+                            <span class="avatar especie-perro">R</span>
+                            <strong class="paciente__nombre">Rocky</strong>
+                        </div>
+                    </div>
+                </div>
             </li>
         </ol>
+        <p class="pasos__nota">Rocky es un paciente de ejemplo.</p>
     </div>
 </section>
 
