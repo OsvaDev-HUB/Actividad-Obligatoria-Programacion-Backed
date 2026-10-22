@@ -56,3 +56,14 @@ class CitaForm(forms.ModelForm):
         if not (time(9, 0) <= hora <= time(18, 30)):
             raise forms.ValidationError("Elige una hora entre las 09:00 y las 18:30.")
         return hora
+
+    def clean(self):
+        datos = super().clean()
+        fecha = datos.get("fecha")
+        hora = datos.get("hora")
+        # Revisa que no exista otra cita activa (no cancelada) en la misma fecha y hora
+        if fecha and hora:
+            ocupada = Cita.objects.filter(fecha=fecha, hora=hora).exclude(estado=Cita.CANCELADA).exists()
+            if ocupada:
+                raise forms.ValidationError("Ya hay una cita agendada en esa fecha y hora. Elige otro horario.")
+        return datos
