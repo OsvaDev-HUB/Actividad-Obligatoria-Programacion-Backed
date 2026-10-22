@@ -1,0 +1,1126 @@
+/* Huellas Sanas: estilos de la landing pública
+   Usa los colores y tipografías definidos en estilos.css (:root). */
+
+.pagina-inicio {
+    --verde-claro: #3a8a6c;
+    --menta-suave: #eef6f3;
+    --mano: "Caveat", cursive;
+    background: var(--blanco);
+}
+
+.envoltura {
+    width: min(100% - 2rem, var(--ancho));
+    margin: 0 auto;
+}
+
+.inicio > .avisos {
+    width: min(100% - 2rem, var(--ancho));
+    margin: 1.5rem auto 0;
+}
+
+/* ---------- Botones de la landing ---------- */
+
+.boton-l {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 2.75rem;
+    padding: 0.625rem 1.25rem;
+    border: 1.5px solid transparent;
+    border-radius: var(--radio);
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out, transform 160ms ease-out;
+}
+
+.boton-l:active {
+    transform: translateY(1px);
+}
+
+.boton-l--oscuro {
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+.boton-l--oscuro:hover {
+    background: var(--verde);
+    color: var(--blanco);
+}
+
+.boton-l--contorno {
+    border-color: var(--verde-oscuro);
+    background: var(--blanco);
+    color: var(--verde-oscuro);
+}
+
+.boton-l--contorno:hover {
+    background: var(--menta);
+    color: var(--verde-oscuro);
+}
+
+.boton-l--grande {
+    min-height: 3.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 14px;
+    font-size: 1.0625rem;
+}
+
+/* Botón con dos líneas: acción arriba y teléfono abajo */
+.boton-l__titulo,
+.boton-l__detalle {
+    display: block;
+    text-align: left;
+}
+
+.boton-l__titulo {
+    font-size: 0.9375rem;
+}
+
+.boton-l__detalle {
+    font-size: 1.0625rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.enlace-flecha {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--verde-oscuro);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.enlace-flecha .icono {
+    width: 1.125em;
+    height: 1.125em;
+}
+
+/* ---------- Íconos dentro de círculos y cuadros ---------- */
+
+.circulo-icono {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    background: var(--menta);
+    color: var(--verde);
+}
+
+.circulo-icono--grande {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+.circulo-icono--grande .icono {
+    width: 1.625rem;
+    height: 1.625rem;
+}
+
+.circulo-icono--blanco {
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--blanco);
+    box-shadow: 0 6px 18px rgba(16, 48, 43, 0.1);
+}
+
+.cuadro-icono {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 12px;
+    background: var(--verde);
+    color: var(--blanco);
+}
+
+.cuadro-icono--grande {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 14px;
+    background: var(--menta-fuerte);
+    color: var(--verde-oscuro);
+}
+
+.cuadro-icono--grande .icono {
+    width: 1.625rem;
+    height: 1.625rem;
+}
+
+/* Nota escrita a mano (letra Caveat) */
+.nota-mano {
+    display: inline-flex;
+    align-items: flex-end;
+    gap: 0.375rem;
+    color: var(--verde-oscuro);
+    font-family: var(--mano);
+    font-size: 1.75rem;
+    font-weight: 600;
+    line-height: 1.05;
+    transform: rotate(-6deg);
+}
+
+.nota-mano .icono {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-bottom: 0.25rem;
+}
+
+/* ---------- Cabecera ---------- */
+
+.cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--borde);
+    background: rgba(255, 255, 255, 0.97);
+}
+
+.cabecera__fila {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    min-height: 5rem;
+}
+
+.cabecera__menu {
+    display: flex;
+    align-self: stretch;
+    gap: 2rem;
+}
+
+.cabecera__menu a {
+    display: flex;
+    align-items: center;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    color: var(--tinta);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.cabecera__menu a:hover {
+    color: var(--verde);
+}
+
+/* La sección actual se marca con una línea verde abajo */
+.cabecera__menu a[aria-current="page"] {
+    border-bottom-color: var(--verde);
+    color: var(--verde-oscuro);
+}
+
+.cabecera__acciones {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-left: auto;
+}
+
+.cabecera__telefono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--tinta);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.cabecera__telefono:hover {
+    color: var(--verde);
+}
+
+/* ---------- 1. Portada ---------- */
+
+.portada {
+    position: relative;
+    overflow: hidden;
+    background: var(--menta-suave);
+}
+
+.portada__fila {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 38rem;
+}
+
+.portada__texto {
+    display: grid;
+    align-content: center;
+    gap: 1.375rem;
+    width: min(100%, 36rem);
+    padding: 4rem 0 6rem;
+}
+
+/* Etiqueta pequeña sobre el título, como en la maqueta */
+.etiqueta {
+    color: var(--verde-claro);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.portada h1 {
+    color: var(--verde-oscuro);
+    font-size: clamp(2.75rem, 4.6vw, 4.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+}
+
+.resalte {
+    color: var(--verde-claro);
+}
+
+.portada__bajada {
+    max-width: 46ch;
+    color: var(--tinta-suave);
+    font-size: 1.125rem;
+}
+
+.portada__botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.confianza {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.confianza li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--tinta);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.confianza .circulo-icono {
+    background: var(--blanco);
+}
+
+/* La foto ocupa la mitad derecha y se funde con el fondo por la izquierda */
+.portada__visual {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 52%;
+}
+
+.portada__foto {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 45% center;
+}
+
+.portada__visual::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 30%;
+    background: linear-gradient(90deg, var(--menta-suave), rgba(238, 246, 243, 0));
+}
+
+.portada__nota {
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+    max-width: 15rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.82);
+}
+
+/* Tarjeta con la próxima hora libre */
+.proxima-hora {
+    position: absolute;
+    right: max(1rem, calc((100vw - var(--ancho)) / 2));
+    bottom: 3.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.125rem 1.5rem 1.125rem 1.125rem;
+    border-radius: 18px;
+    background: var(--blanco);
+    box-shadow: var(--sombra-flotante);
+    color: var(--tinta);
+    text-decoration: none;
+}
+
+.proxima-hora__etiqueta,
+.proxima-hora__fecha {
+    display: block;
+    color: var(--tinta-suave);
+    font-size: 0.875rem;
+}
+
+.proxima-hora__valor {
+    display: block;
+    color: var(--verde-oscuro);
+    font-family: var(--titulos);
+    font-size: 1.625rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+/* ---------- Secciones ---------- */
+
+.seccion-l {
+    padding: 4rem 0;
+}
+
+.seccion-l h2,
+.agendar-l h2,
+.contacto-l h2 {
+    color: var(--verde-oscuro);
+    font-size: clamp(2rem, 3.2vw, 2.75rem);
+    line-height: 1.1;
+}
+
+.cabeza-l {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-bottom: 2.25rem;
+}
+
+.cabeza-l p {
+    max-width: 60ch;
+    margin-top: 0.5rem;
+    color: var(--tinta-suave);
+    font-size: 1.0625rem;
+}
+
+/* ---------- 2. Horas disponibles ---------- */
+
+#horas {
+    position: relative;
+    z-index: 2;
+    margin-top: -2.5rem;
+    padding-top: 0;
+    padding-bottom: 1rem;
+}
+
+.horas-panel {
+    padding: 2rem;
+    border-radius: 28px;
+    background: var(--menta-suave);
+    box-shadow: 0 1px 2px rgba(16, 48, 43, 0.06);
+}
+
+.horas-panel__cabeza {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.75rem;
+}
+
+.horas-panel h2 {
+    font-size: clamp(1.75rem, 2.4vw, 2.125rem);
+}
+
+.horas-panel__cabeza p {
+    margin-top: 0.25rem;
+    color: var(--tinta-suave);
+}
+
+.horas-panel__cabeza .enlace-flecha {
+    margin-left: auto;
+}
+
+.horas-panel__dias {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+}
+
+.dia-card {
+    padding: 1.5rem;
+    border-radius: 20px;
+    background: var(--blanco);
+    box-shadow: var(--sombra);
+}
+
+.dia-card__cabeza {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    margin-bottom: 1.25rem;
+}
+
+.dia-card__cabeza .cuadro-icono {
+    background: var(--menta);
+    color: var(--verde);
+}
+
+.dia-card__cabeza h3 {
+    color: var(--verde-oscuro);
+    font-family: var(--titulos);
+    font-size: 1.5rem;
+    font-weight: 400;
+    line-height: 1.1;
+}
+
+.dia-card__cabeza p {
+    color: var(--tinta-suave);
+    font-size: 0.875rem;
+}
+
+.dia-card__conteo {
+    margin-left: auto;
+    text-align: right;
+}
+
+.dia-card__conteo strong {
+    color: var(--verde);
+    font-size: 1.0625rem;
+}
+
+/* Bloques de media hora en filas de 6 */
+.bloques {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.bloque {
+    display: grid;
+    place-items: center;
+    height: 2.75rem;
+    border-radius: 10px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-decoration: none;
+}
+
+.bloque--libre {
+    background: var(--verde-oscuro);
+    box-shadow: 0 4px 10px rgba(11, 59, 52, 0.25);
+    color: var(--blanco);
+    transition: background-color 160ms ease-out, transform 160ms ease-out;
+}
+
+a.bloque--libre:hover {
+    background: var(--verde);
+    color: var(--blanco);
+    transform: translateY(-2px);
+}
+
+.bloque--ocupada {
+    background: repeating-linear-gradient(135deg, var(--menta) 0 6px, var(--blanco) 6px 12px);
+    color: #6f837e;
+}
+
+.bloque--pasada {
+    border: 1.5px solid var(--borde);
+    color: var(--tinta-suave);
+}
+
+/* ---------- 3. Servicios ---------- */
+
+.servicios {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.servicio {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+    padding: 1.75rem 1.5rem;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+    background: var(--blanco);
+    box-shadow: var(--sombra);
+}
+
+.servicio .circulo-icono {
+    margin-bottom: 0.5rem;
+}
+
+.servicio h3 {
+    color: var(--verde-oscuro);
+    font-family: var(--titulos);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.servicio p {
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+/* ---------- 4. Especies ---------- */
+
+.seccion-l--especies {
+    padding-top: 1rem;
+}
+
+.especies-fila {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.especie-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1.05;
+    border-radius: 18px;
+    background: var(--menta);
+}
+
+.especie-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Pastilla con huella y nombre, del color de la especie */
+.especie-pastilla {
+    position: absolute;
+    bottom: 0.875rem;
+    left: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.3125rem 0.875rem 0.3125rem 0.625rem;
+    border-radius: 999px;
+    background: var(--especie-fondo);
+    box-shadow: 0 4px 12px rgba(16, 48, 43, 0.18);
+    color: var(--especie);
+    font-family: var(--titulos);
+    font-size: 1.0625rem;
+}
+
+.especie-pastilla__huella svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* ---------- 5. Cómo agendar ---------- */
+
+.agendar-l {
+    overflow: hidden;
+    background: var(--menta-suave);
+}
+
+.agendar-l__fila {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 3rem;
+    align-items: center;
+}
+
+.agendar-l__texto {
+    padding: 4.5rem 0;
+}
+
+.agendar-l__texto > p {
+    margin-top: 0.5rem;
+    color: var(--tinta-suave);
+    font-size: 1.0625rem;
+}
+
+.pasos-l {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+    margin: 2.5rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pasos-l li {
+    position: relative;
+    display: grid;
+    justify-items: start;
+    gap: 0.375rem;
+    padding-left: 2.25rem;
+}
+
+/* Flecha entre un paso y el siguiente */
+.pasos-l li + li::before {
+    content: "";
+    position: absolute;
+    top: 1.375rem;
+    left: -1.875rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-top: 2px solid var(--borde-fuerte);
+    border-right: 2px solid var(--borde-fuerte);
+    transform: rotate(45deg);
+}
+
+.pasos-l__numero {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    background: var(--verde);
+    color: var(--blanco);
+    font-size: 0.875rem;
+    font-weight: 700;
+}
+
+.pasos-l .circulo-icono {
+    margin-bottom: 0.625rem;
+}
+
+.pasos-l h3 {
+    color: var(--verde-oscuro);
+    font-size: 1.0625rem;
+}
+
+.pasos-l p {
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+.agendar-l__visual {
+    position: relative;
+    align-self: stretch;
+    min-height: 22rem;
+}
+
+.agendar-l__visual img {
+    position: absolute;
+    inset: 2rem 0 2rem 0;
+    width: 100%;
+    height: calc(100% - 4rem);
+    border-radius: 24px;
+    object-fit: cover;
+}
+
+.agendar-l__nota {
+    position: absolute;
+    top: 0.5rem;
+    right: 0;
+    max-width: 10rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* ---------- 6. Por qué elegirnos ---------- */
+
+.elegir {
+    padding: 4.5rem 0;
+    /* Huellas grandes y tenues de fondo */
+    background-color: var(--verde-oscuro);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 24 24'%3E%3Cg fill='%23ffffff' fill-opacity='0.04' transform='rotate(-18 12 12)'%3E%3Cellipse cx='5.6' cy='10.2' rx='2' ry='2.5'/%3E%3Cellipse cx='9.7' cy='5.9' rx='2' ry='2.6'/%3E%3Cellipse cx='14.3' cy='5.9' rx='2' ry='2.6'/%3E%3Cellipse cx='18.4' cy='10.2' rx='2' ry='2.5'/%3E%3Cpath d='M12 11.3c-2.7 0-5.6 3.7-5.6 6.2 0 1.6 1.2 2.5 2.7 2.5 1.2 0 1.9-.6 2.9-.6s1.7.6 2.9.6c1.5 0 2.7-.9 2.7-2.5 0-2.5-2.9-6.2-5.6-6.2z'/%3E%3C/g%3E%3C/svg%3E");
+    background-position: -40px 30px;
+    background-size: 220px;
+    color: var(--blanco);
+}
+
+.elegir__cabeza {
+    margin-bottom: 2.25rem;
+    text-align: center;
+}
+
+.elegir h2 {
+    color: var(--blanco);
+    font-size: clamp(2rem, 3.2vw, 2.75rem);
+}
+
+.elegir__cabeza p {
+    margin-top: 0.5rem;
+    color: #c4ddd6;
+    font-size: 1.0625rem;
+}
+
+.elegir__lista {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.razon {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-radius: 20px;
+    background: var(--blanco);
+    color: var(--tinta);
+}
+
+.razon h3 {
+    color: var(--verde-oscuro);
+    font-size: 1.0625rem;
+}
+
+.razon p {
+    margin-top: 0.25rem;
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+/* ---------- 7. Contacto ---------- */
+
+.contacto-l {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+    background: var(--blanco);
+}
+
+.contacto-l__foto {
+    position: relative;
+    min-height: 20rem;
+}
+
+.contacto-l__foto img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contacto-l__contenido {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.75rem 2rem;
+    align-content: center;
+    align-items: center;
+    padding: 3.5rem max(1rem, calc((100vw - var(--ancho)) / 2)) 3.5rem 3.5rem;
+}
+
+.contacto-l__cabeza {
+    grid-column: 1 / -1;
+}
+
+/* El botón conserva su ancho natural aunque la grilla quede en una columna */
+.contacto-l__contenido > .boton-l {
+    justify-self: start;
+}
+
+.contacto-l__cabeza p {
+    margin-top: 0.375rem;
+    color: var(--tinta-suave);
+    font-size: 1.0625rem;
+}
+
+.contacto-l__datos {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    gap: 1.25rem 2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.contacto-l__datos li {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.contacto-l__datos strong {
+    display: block;
+    color: var(--tinta);
+}
+
+.contacto-l__datos a {
+    text-decoration: none;
+}
+
+.contacto-l__datos small {
+    display: block;
+    color: var(--tinta-suave);
+    font-size: 0.875rem;
+}
+
+/* ---------- Pie ---------- */
+
+.pie-l {
+    background: var(--verde-oscuro);
+    color: #c4ddd6;
+}
+
+.pie-l a {
+    color: var(--blanco);
+}
+
+.pie-l :focus-visible,
+.elegir :focus-visible {
+    outline-color: var(--blanco);
+}
+
+.pie-l__fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 2.5rem;
+    padding: 2.25rem 0 1.75rem;
+}
+
+.pie-l__texto {
+    max-width: 32ch;
+    font-size: 0.9375rem;
+}
+
+.pie-l__menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.75rem;
+    margin-left: auto;
+}
+
+.pie-l__menu a {
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.pie-l__menu a:hover {
+    color: #8fd6c2;
+}
+
+.pie-l__abajo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 2rem;
+    padding: 1.25rem 0 1.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.875rem;
+}
+
+/* ---------- Pantallas medianas ---------- */
+
+@media (max-width: 1100px) {
+    .cabecera__menu {
+        display: none;
+    }
+
+    .servicios {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .especies-fila {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .elegir__lista {
+        grid-template-columns: 1fr;
+        max-width: 40rem;
+        margin: 0 auto;
+    }
+
+    .contacto-l__contenido {
+        grid-template-columns: 1fr;
+        padding-left: 2.5rem;
+    }
+
+    .contacto-l__datos {
+        grid-template-columns: 1fr;
+    }
+
+    /* Pasos en columna desde tableta: sin flechas entre ellos */
+    .pasos-l {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+    }
+
+    .pasos-l li + li::before {
+        display: none;
+    }
+}
+
+@media (max-width: 860px) {
+    /* Portada en una columna: texto arriba y foto abajo con la tarjeta encima */
+    .portada__fila {
+        min-height: 0;
+    }
+
+    .portada__texto {
+        padding: 2.5rem 0 2rem;
+    }
+
+    .portada__visual {
+        position: relative;
+        width: 100%;
+        height: 22rem;
+    }
+
+    .portada__visual::before {
+        display: none;
+    }
+
+    .portada__nota {
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.375rem;
+    }
+
+    .proxima-hora {
+        right: 1rem;
+        bottom: 3.5rem;
+        left: 1rem;
+    }
+
+    #horas {
+        margin-top: -1.5rem;
+    }
+
+    .horas-panel {
+        padding: 1.25rem;
+    }
+
+    .horas-panel__cabeza {
+        flex-wrap: wrap;
+    }
+
+    .horas-panel__cabeza .enlace-flecha {
+        margin-left: 0;
+    }
+
+    .horas-panel__dias {
+        grid-template-columns: 1fr;
+    }
+
+    .servicios {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .agendar-l__fila {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .agendar-l__texto {
+        padding: 3.5rem 0 1rem;
+    }
+
+    /* Pasos en columna: sin flechas entre ellos */
+    .pasos-l {
+        grid-template-columns: 1fr;
+        gap: 1.75rem;
+    }
+
+    .pasos-l li + li::before {
+        display: none;
+    }
+
+    .agendar-l__visual {
+        min-height: 18rem;
+        margin-bottom: 3rem;
+    }
+
+    .contacto-l {
+        grid-template-columns: 1fr;
+    }
+
+    .contacto-l__foto {
+        min-height: 16rem;
+    }
+
+    .contacto-l__contenido {
+        padding: 2.5rem 1rem 3rem;
+    }
+
+    .contacto-l__datos {
+        grid-template-columns: 1fr;
+    }
+
+    .pie-l__menu {
+        margin-left: 0;
+    }
+}
+
+/* ---------- Celulares ---------- */
+
+@media (max-width: 560px) {
+    .cabecera__fila {
+        gap: 1rem;
+        min-height: 4.25rem;
+    }
+
+    .cabecera__telefono {
+        display: none;
+    }
+
+    .portada__botones .boton-l {
+        width: 100%;
+    }
+
+    .dia-card {
+        padding: 1.125rem;
+    }
+
+    .dia-card__cabeza {
+        flex-wrap: wrap;
+    }
+
+    .dia-card__conteo {
+        width: 100%;
+        margin-left: 0;
+        text-align: left;
+    }
+
+    .bloques {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .servicios {
+        gap: 0.75rem;
+    }
+
+    .servicio {
+        padding: 1.25rem 1rem;
+    }
+
+    /* Con dos columnas, el quinto servicio ocupa todo el ancho */
+    .servicio:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .especies-fila {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .contacto-l__contenido .boton-l {
+        width: 100%;
+    }
+}
