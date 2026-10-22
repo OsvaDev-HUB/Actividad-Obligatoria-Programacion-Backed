@@ -1,0 +1,105 @@
+{% extends "clinica/base.html" %}
+
+{% block titulo %}Citas del {{ fecha|date:"d-m-Y" }}{% endblock %}
+
+{% block contenido %}
+<section class="cabecera-dia">
+    <div class="cabecera-dia__fecha">
+        <h1>{{ fecha|date:"l j \d\e F"|capfirst }}</h1>
+        <p class="cabecera-dia__sub">
+            {% if es_hoy %}Hoy, {% endif %}{{ fecha|date:"Y" }}.
+            {% if citas %}{{ citas|length }} cita{{ citas|length|pluralize }} agendada{{ citas|length|pluralize }}.{% else %}Sin citas agendadas.{% endif %}
+        </p>
+    </div>
+
+    <div class="cabecera-dia__acciones">
+        <nav class="selector-dia" aria-label="Cambiar de día">
+            <a class="boton boton--icono" href="?fecha={{ dia_anterior|date:'Y-m-d' }}" title="Día anterior">
+                {% include "clinica/icono.html" with nombre="izquierda" %}<span class="solo-lector">Día anterior</span>
+            </a>
+            <a class="boton" href="{% url 'citas_dia' %}" {% if es_hoy %}aria-current="date"{% endif %}>Hoy</a>
+            <a class="boton boton--icono" href="?fecha={{ dia_siguiente|date:'Y-m-d' }}" title="Día siguiente">
+                {% include "clinica/icono.html" with nombre="derecha" %}<span class="solo-lector">Día siguiente</span>
+            </a>
+            <form method="get" class="selector-dia__fecha">
+                <label for="ir-fecha" class="solo-lector">Ir a una fecha</label>
+                <input type="date" id="ir-fecha" name="fecha" value="{{ fecha|date:'Y-m-d' }}">
+                <button type="submit" class="boton">Ver</button>
+            </form>
+        </nav>
+        <a class="boton boton--principal" href="{% url 'agendar_cita' %}?fecha={{ fecha|date:'Y-m-d' }}">
+            {% include "clinica/icono.html" with nombre="mas" %}Agendar cita
+        </a>
+    </div>
+</section>
+
+{% if citas %}
+<ul class="conteo" aria-label="Resumen del día">
+    <li class="estado estado--pendiente">{% include "clinica/icono.html" with nombre="pendiente" %}{{ total_pendientes }} pendiente{{ total_pendientes|pluralize }}</li>
+    <li class="estado estado--atendida">{% include "clinica/icono.html" with nombre="check" %}{{ total_atendidas }} atendida{{ total_atendidas|pluralize }}</li>
+    <li class="estado estado--cancelada">{% include "clinica/icono.html" with nombre="cruz" %}{{ total_canceladas }} cancelada{{ total_canceladas|pluralize }}</li>
+</ul>
+
+<div class="panel panel--tabla">
+    <table class="agenda">
+        <caption class="solo-lector">Citas del {{ fecha|date:"j \d\e F \d\e Y" }}</caption>
+        <thead>
+            <tr>
+                <th scope="col">Hora</th>
+                <th scope="col">Paciente</th>
+                <th scope="col">Dueño</th>
+                <th scope="col">Motivo de consulta</th>
+                <th scope="col">Estado</th>
+                <th scope="col"><span class="solo-lector">Acciones</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+            <tr class="fila fila--{{ cita.estado }}{% if cita == siguiente %} fila--siguiente{% endif %}">
+                <td class="agenda__hora">
+                    <span class="hora">{{ cita.hora|time:"H:i" }}</span>
+                    {% if cita == siguiente %}<span class="marca-siguiente">{% include "clinica/icono.html" with nombre="siguiente" %}Siguiente</span>{% endif %}
+                </td>
+                <td class="agenda__paciente">
+                    <div class="paciente">
+                        <span class="placa placa--{{ cita.mascota.especie }}" aria-hidden="true"><span class="placa__letra">{{ cita.mascota.nombre|first|upper }}</span></span>
+                        <div>
+                            <strong class="paciente__nombre">{{ cita.mascota.nombre }}</strong>
+                            <span class="paciente__detalle">{{ cita.mascota.get_especie_display }}, {{ cita.mascota.raza }}</span>
+                        </div>
+                    </div>
+                </td>
+                <td class="agenda__dueno" data-etiqueta="Dueño">{{ cita.mascota.nombre_dueno }}</td>
+                <td class="agenda__motivo">{{ cita.motivo }}</td>
+                <td class="agenda__estado">
+                    <span class="estado estado--{{ cita.estado }}">
+                        {% if cita.estado == "atendida" %}{% include "clinica/icono.html" with nombre="check" %}
+                        {% elif cita.estado == "cancelada" %}{% include "clinica/icono.html" with nombre="cruz" %}
+                        {% else %}{% include "clinica/icono.html" with nombre="pendiente" %}{% endif %}
+                        {{ cita.get_estado_display }}
+                    </span>
+                </td>
+                <td class="agenda__acciones">
+                    {% if cita.estado == "pendiente" %}
+                    <form method="post" action="{% url 'cambiar_estado' cita.id %}">
+                        {% csrf_token %}
+                        <button type="submit" name="estado" value="atendida" class="boton boton--chico">Marcar atendida</button>
+                        <button type="submit" name="estado" value="cancelada" class="boton boton--chico boton--peligro"
+                                onclick="return confirm('¿Cancelar la cita de {{ cita.mascota.nombre|escapejs }} a las {{ cita.hora|time:"H:i" }}?')">Cancelar</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="panel vacio">
+    {% include "clinica/icono.html" with nombre="calendario" %}
+    <h2>No hay citas para este día</h2>
+    <p>Las horas que agendes para el {{ fecha|date:"j \d\e F" }} van a aparecer aquí, ordenadas por hora.</p>
+    <a class="boton boton--principal" href="{% url 'agendar_cita' %}?fecha={{ fecha|date:'Y-m-d' }}">Agendar una cita</a>
+</div>
+{% endif %}
+{% endblock %}

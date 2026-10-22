@@ -1,0 +1,62 @@
+{% extends "clinica/base.html" %}
+
+{% block titulo %}Ingresar{% endblock %}
+{% block clase_body %}pagina-inicio{% endblock %}
+{% block encabezado %}{% endblock %}
+{% block clase_main %}inicio{% endblock %}
+
+{% block contenido %}
+<section class="inicio__presentacion">
+    <p class="marca marca--grande">
+        <span class="placa placa--marca" aria-hidden="true"><span class="placa__letra">H</span></span>
+        Huellas Sanas
+    </p>
+
+    <h1 class="inicio__titulo">La agenda y los pacientes de la clínica, en un solo lugar.</h1>
+    <p class="inicio__texto">
+        Desde recepción revisas las citas del día, registras pacientes nuevos y agendas horas sin cruces.
+        El director administra todo desde el panel de administración.
+    </p>
+
+    {# Llavero con una placa por especie: es la misma clave de colores que se usa en la agenda #}
+    <figure class="llavero">
+        <ul class="llavero__placas">
+            <li><span class="placa placa--perro placa--llavero" aria-hidden="true"><span class="placa__letra">P</span></span>Perro</li>
+            <li><span class="placa placa--gato placa--llavero" aria-hidden="true"><span class="placa__letra">G</span></span>Gato</li>
+            <li><span class="placa placa--ave placa--llavero" aria-hidden="true"><span class="placa__letra">A</span></span>Ave</li>
+            <li><span class="placa placa--conejo placa--llavero" aria-hidden="true"><span class="placa__letra">C</span></span>Conejo</li>
+            <li><span class="placa placa--roedor placa--llavero" aria-hidden="true"><span class="placa__letra">R</span></span>Roedor</li>
+            <li><span class="placa placa--reptil placa--llavero" aria-hidden="true"><span class="placa__letra">R</span></span>Reptil</li>
+        </ul>
+        <figcaption>Cada especie tiene su color de placa en la agenda.</figcaption>
+    </figure>
+</section>
+
+<section class="inicio__ingreso" aria-labelledby="titulo-ingreso">
+    <form method="post" class="panel panel--ingreso" novalidate>
+        {% csrf_token %}
+        <h2 id="titulo-ingreso">Ingresar</h2>
+        <p class="ayuda">Usa tu usuario del personal de la clínica.</p>
+
+        {% if form.errors %}
+        <p class="error-general" role="alert">
+            {% include "clinica/icono.html" with nombre="alerta" %}
+            Usuario o contraseña incorrectos. Revisa los datos e intenta otra vez.
+        </p>
+        {% endif %}
+
+        <div class="campo">
+            <label for="{{ form.username.id_for_label }}">Usuario</label>
+            <input type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" autocomplete="username" autocapitalize="none" required autofocus>
+        </div>
+        <div class="campo">
+            <label for="{{ form.password.id_for_label }}">Contraseña</label>
+            <input type="password" name="password" id="{{ form.password.id_for_label }}" autocomplete="current-password" required>
+        </div>
+        <input type="hidden" name="next" value="{{ next }}">
+        <button type="submit" class="boton boton--principal boton--ancho">Ingresar</button>
+
+        <p class="panel__pie">¿Eres el director? <a href="{% url 'admin:index' %}">Entra al panel de administración</a></p>
+    </form>
+</section>
+{% endblock %}

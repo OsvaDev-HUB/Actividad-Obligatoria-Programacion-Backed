@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block titulo %}Recepción{% endblock %} | Huellas Sanas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'clinica/css/estilos.css' %}">
+</head>
+<body class="{% block clase_body %}{% endblock %}">
+    <a class="saltar" href="#contenido">Ir al contenido</a>
+
+    {% block encabezado %}
+    <header class="barra">
+        <div class="barra__interior">
+            <a class="marca" href="{% url 'citas_dia' %}">
+                <span class="placa placa--marca" aria-hidden="true"><span class="placa__letra">H</span></span>
+                Huellas Sanas
+            </a>
+            {% with ruta=request.resolver_match.url_name %}
+            <nav class="menu" aria-label="Principal">
+                <a href="{% url 'citas_dia' %}" {% if ruta == "citas_dia" %}aria-current="page"{% endif %}>Citas del día</a>
+                <a href="{% url 'nuevo_paciente' %}" {% if ruta == "nuevo_paciente" %}aria-current="page"{% endif %}>Nuevo paciente</a>
+                <a href="{% url 'agendar_cita' %}" {% if ruta == "agendar_cita" %}aria-current="page"{% endif %}>Agendar cita</a>
+            </nav>
+            {% endwith %}
+            <div class="sesion">
+                {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administración</a>{% endif %}
+                <span class="sesion__usuario">{{ user.get_username }}</span>
+                <form method="post" action="{% url 'salir' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="boton-enlace">Salir</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    {% endblock %}
+
+    <main id="contenido" class="{% block clase_main %}contenedor{% endblock %}">
+        {% if messages %}
+        <div class="avisos">
+            {% for mensaje in messages %}
+            <p class="aviso" role="status">{% include "clinica/icono.html" with nombre="check" %}{{ mensaje }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% block contenido %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>

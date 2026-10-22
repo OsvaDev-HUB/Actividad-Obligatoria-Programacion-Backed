@@ -1,0 +1,51 @@
+{% extends "clinica/base.html" %}
+
+{% block titulo %}Agendar cita{% endblock %}
+
+{% block contenido %}
+<div class="encabezado-pagina">
+    <h1>Agendar cita</h1>
+    <p>Las horas son cada 30 minutos, de 09:00 a 18:30. El sistema no deja agendar dos citas a la misma hora.</p>
+</div>
+
+<form method="post" class="panel formulario formulario--angosto" novalidate>
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+    <div class="error-general" role="alert">
+        {% include "clinica/icono.html" with nombre="alerta" %}
+        {% for error in form.non_field_errors %}<span>{{ error }}</span>{% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="campo{% if form.mascota.errors %} campo--error{% endif %}">
+        <label for="{{ form.mascota.id_for_label }}">{{ form.mascota.label }}</label>
+        {{ form.mascota }}
+        <p class="ayuda">¿Paciente nuevo? <a href="{% url 'nuevo_paciente' %}">Regístralo primero</a>.</p>
+        {{ form.mascota.errors }}
+    </div>
+
+    <div class="campos-fila">
+        <div class="campo{% if form.fecha.errors %} campo--error{% endif %}">
+            <label for="{{ form.fecha.id_for_label }}">Fecha</label>
+            {{ form.fecha }}
+            {{ form.fecha.errors }}
+        </div>
+        <div class="campo{% if form.hora.errors %} campo--error{% endif %}">
+            <label for="{{ form.hora.id_for_label }}">Hora</label>
+            {{ form.hora }}
+            {{ form.hora.errors }}
+        </div>
+    </div>
+
+    <div class="campo{% if form.motivo.errors %} campo--error{% endif %}">
+        <label for="{{ form.motivo.id_for_label }}">Motivo de consulta</label>
+        {{ form.motivo }}
+        {{ form.motivo.errors }}
+    </div>
+
+    <div class="formulario__acciones">
+        <button type="submit" class="boton boton--principal">Agendar cita</button>
+        <a class="boton" href="{% url 'citas_dia' %}">Volver a la agenda</a>
+    </div>
+</form>
+{% endblock %}
