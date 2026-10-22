@@ -1996,23 +1996,18 @@ a.bloque--libre:hover {
     outline-color: var(--blanco);
 }
 
-/* Pie: sigue en el mismo verde, separado solo por una línea */
+/* Pie: fondo claro propio para separarlo del contacto */
 .pie {
-    background: var(--verde-oscuro);
-    color: #c4ddd6;
+    background: var(--fondo);
+    color: var(--tinta-suave);
 }
 
 .pie .envoltura {
-    padding: 3rem 0 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 3.5rem 0 2rem;
 }
 
 .pie a {
-    color: var(--blanco);
-}
-
-.pie :focus-visible {
-    outline-color: var(--blanco);
+    color: var(--verde-oscuro);
 }
 
 .pie__fila {
@@ -2040,7 +2035,7 @@ a.bloque--libre:hover {
 }
 
 .pie__enlaces a:hover {
-    color: #8fd6c2;
+    color: var(--verde);
     text-decoration: underline;
 }
 
@@ -2050,6 +2045,8 @@ a.bloque--libre:hover {
     justify-content: space-between;
     gap: 1rem;
     margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--borde);
     font-size: 0.875rem;
 }
 
