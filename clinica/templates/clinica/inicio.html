@@ -89,28 +89,46 @@
     </div>
 </section>
 
-<section class="seccion" id="horas" aria-labelledby="titulo-horas">
-    <div class="envoltura horas">
-        <div class="seccion__cabeza">
+{# Horario del día: los 20 bloques de 30 minutos, libres u ocupados #}
+<section class="seccion horario" id="horas" aria-labelledby="titulo-horas">
+    <div class="envoltura">
+        <div class="horario__cabeza">
             <h2 id="titulo-horas">Elige una hora libre</h2>
-            <p>Estas horas salen de nuestra agenda al cargar la página. Toca la que te acomode y te comunicamos con recepción para reservarla.</p>
-            <p class="horas__nota">{% include "clinica/icono.html" with nombre="reloj" %}Cada hora dura 30 minutos y es para una sola mascota.</p>
-        </div>
-        <div class="horas__dias">
-            {% for dia in horas_libres %}
-            <div class="tarjeta horas__dia">
-                <h3>{% if dia.es_hoy %}Hoy{% elif dia.es_manana %}Mañana{% else %}{{ dia.fecha|date:"l"|capfirst }}{% endif %} <span>{{ dia.fecha|date:"j \d\e F" }}</span></h3>
-                <ul class="fichas">
-                    {% for hora in dia.horas %}
-                    <li><a class="ficha-hora" href="{{ contacto.telefono_enlace }}" aria-label="Llamar para reservar las {{ hora|time:'H:i' }}">{{ hora|time:"H:i" }}</a></li>
-                    {% endfor %}
+            <div class="horario__intro">
+                <p>Así está nuestra agenda al cargar la página. Cada bloque es media hora para una sola mascota: toca uno verde y te comunicamos con recepción para reservarlo.</p>
+                <ul class="leyenda" aria-label="Qué significa cada color">
+                    <li><span class="muestra bloque--libre" aria-hidden="true"></span>Libre</li>
+                    <li><span class="muestra bloque--ocupada" aria-hidden="true"></span>Ocupada</li>
+                    <li><span class="muestra bloque--pasada" aria-hidden="true"></span>Ya pasó</li>
                 </ul>
-                {% if dia.restantes %}<p class="horas__mas">Y {{ dia.restantes }} hora{{ dia.restantes|pluralize }} más ese día.</p>{% endif %}
             </div>
-            {% empty %}
-            <p class="tarjeta horas__vacio">No quedan horas libres en los próximos días. Llámanos y te avisamos si se libera una.</p>
-            {% endfor %}
         </div>
+
+        {% for dia in horas_libres %}
+        <div class="tarjeta horario__dia">
+            <div class="horario__fecha">
+                <h3>{% if dia.es_hoy %}Hoy{% elif dia.es_manana %}Mañana{% else %}{{ dia.fecha|date:"l"|capfirst }}{% endif %}</h3>
+                <p>{{ dia.fecha|date:"l j \d\e F"|capfirst }}</p>
+                <p class="horario__conteo"><strong>{{ dia.total }}</strong> de {{ dia.bloques|length }} horas libres</p>
+            </div>
+            <ol class="bloques">
+                {% for bloque in dia.bloques %}
+                <li>
+                    {% if bloque.estado == "libre" %}
+                    <a class="bloque bloque--libre" href="{{ contacto.telefono_enlace }}" aria-label="Llamar para reservar las {{ bloque.hora|time:'H:i' }}">{{ bloque.hora|time:"H:i" }}</a>
+                    {% else %}
+                    <span class="bloque bloque--{{ bloque.estado }}">
+                        <span aria-hidden="true">{{ bloque.hora|time:"H:i" }}</span>
+                        <span class="solo-lector">{{ bloque.hora|time:"H:i" }}, {% if bloque.estado == "ocupada" %}ocupada{% else %}ya pasó{% endif %}</span>
+                    </span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ol>
+        </div>
+        {% empty %}
+        <p class="tarjeta horario__vacio">No quedan horas libres en los próximos días. Llámanos y te avisamos si se libera una.</p>
+        {% endfor %}
     </div>
 </section>
 

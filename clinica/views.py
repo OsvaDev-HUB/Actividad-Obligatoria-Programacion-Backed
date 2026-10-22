@@ -42,15 +42,27 @@ def horas_libres(cantidad_dias=2, maximo_por_dia=8):
     fecha = hoy
     while len(dias) < cantidad_dias and fecha <= hoy + timedelta(days=14):
         ocupadas = set(Cita.objects.filter(fecha=fecha).exclude(estado=Cita.CANCELADA).values_list("hora", flat=True))
-        libres = [hora for hora in bloques_de_atencion() if hora not in ocupadas and (fecha > hoy or hora > ahora)]
+
+        # Estado de cada bloque de 30 minutos del día: libre, ocupada o pasada
+        bloques = []
+        for hora in bloques_de_atencion():
+            if fecha == hoy and hora <= ahora:
+                estado = "pasada"
+            elif hora in ocupadas:
+                estado = "ocupada"
+            else:
+                estado = "libre"
+            bloques.append({"hora": hora, "estado": estado})
+
+        libres = [bloque["hora"] for bloque in bloques if bloque["estado"] == "libre"]
         if libres:
             dias.append({
                 "fecha": fecha,
                 "es_hoy": fecha == hoy,
                 "es_manana": fecha == hoy + timedelta(days=1),
                 "horas": libres[:maximo_por_dia],
-                "restantes": len(libres) - maximo_por_dia if len(libres) > maximo_por_dia else 0,
                 "total": len(libres),
+                "bloques": bloques,
             })
         fecha += timedelta(days=1)
     return dias
