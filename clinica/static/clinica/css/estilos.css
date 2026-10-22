@@ -919,8 +919,10 @@ textarea:focus-visible {
     position: absolute;
     top: -1rem;
     left: 50%;
-    width: 0.5rem;
-    height: 1.45rem;
+    z-index: 1;
+    width: 0.75rem;
+    /* Termina en el centro del agujero de la placa */
+    height: 1.55rem;
     transform: translateX(-50%);
     border: 2px solid #b8c4d2;
     border-radius: 1rem;
