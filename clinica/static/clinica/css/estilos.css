@@ -903,6 +903,7 @@ textarea:focus-visible {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem 1.25rem;
+    width: fit-content;
     margin: 0;
     padding: 1rem 0 0;
     list-style: none;
@@ -1169,6 +1170,7 @@ textarea:focus-visible {
     .llavero__placas {
         flex-wrap: nowrap;
         justify-content: space-between;
+        width: auto;
         gap: 0.25rem;
     }
 
