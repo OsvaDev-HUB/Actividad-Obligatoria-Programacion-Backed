@@ -1324,6 +1324,8 @@ textarea:focus-visible {
 }
 
 .especies-mini ul {
+    /* que las fotos no se aplasten */
+    flex-shrink: 0;
     display: flex;
     margin: 0;
     padding: 0;
