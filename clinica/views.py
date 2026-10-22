@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import time, timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -19,6 +19,37 @@ def leer_fecha(texto):
     except ValueError:
         fecha = None
     return fecha or timezone.localdate()
+
+
+def bloques_de_atencion():
+    # Horas de 09:00 a 18:30 cada 30 minutos
+    return [time(hora, minuto) for hora in range(9, 19) for minuto in (0, 30)]
+
+
+def horas_libres(cantidad_dias=2, maximo_por_dia=8):
+    # Busca los próximos días que todavía tienen horas sin cita activa
+    hoy = timezone.localdate()
+    ahora = timezone.localtime().time()
+    dias = []
+    fecha = hoy
+    while len(dias) < cantidad_dias and fecha <= hoy + timedelta(days=14):
+        ocupadas = set(Cita.objects.filter(fecha=fecha).exclude(estado=Cita.CANCELADA).values_list("hora", flat=True))
+        libres = [hora for hora in bloques_de_atencion() if hora not in ocupadas and (fecha > hoy or hora > ahora)]
+        if libres:
+            dias.append({
+                "fecha": fecha,
+                "es_hoy": fecha == hoy,
+                "es_manana": fecha == hoy + timedelta(days=1),
+                "horas": libres[:maximo_por_dia],
+                "restantes": len(libres) - maximo_por_dia if len(libres) > maximo_por_dia else 0,
+            })
+        fecha += timedelta(days=1)
+    return dias
+
+
+def inicio(request):
+    # Landing pública: solo muestra horarios libres, nunca datos de pacientes
+    return render(request, "clinica/inicio.html", {"horas_libres": horas_libres()})
 
 
 @login_required

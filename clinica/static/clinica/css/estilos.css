@@ -837,152 +837,462 @@ textarea:focus-visible {
     opacity: 0.7;
 }
 
-/* ---------- Página de inicio con ingreso ---------- */
+/* ---------- Alambre con placas colgando (landing) ---------- */
+
+.alambre {
+    --alambre: var(--borde-fuerte);
+    position: relative;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 1.25rem 0 0;
+    list-style: none;
+}
+
+/* El alambre del que cuelga cada placa */
+.alambre::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    border-radius: 3px;
+    background: var(--alambre);
+}
+
+.alambre > li {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    align-content: start;
+    gap: 0.625rem;
+}
+
+/* Argolla que une la placa con el alambre y pasa por su agujero */
+.alambre > li::before {
+    content: "";
+    position: absolute;
+    top: -1.25rem;
+    left: 50%;
+    z-index: 1;
+    width: 0.875rem;
+    height: 1.95rem;
+    transform: translateX(-50%);
+    border: 2px solid var(--alambre);
+    border-radius: 1rem;
+}
+
+.placa--colgante {
+    --tam: 3.5rem;
+    --fondo-placa: var(--suelo);
+    transform-origin: 50% 0;
+}
+
+/* Un solo balanceo al cargar, como algo que se acaba de colgar */
+@keyframes balanceo {
+    0% { transform: rotate(7deg); }
+    30% { transform: rotate(-4.5deg); }
+    55% { transform: rotate(2deg); }
+    78% { transform: rotate(-0.75deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* ---------- Landing pública ---------- */
 
 .pagina-inicio {
     background: var(--suelo);
 }
 
 .inicio {
-    display: grid;
-    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-    min-height: 100vh;
-    min-height: 100dvh;
+    display: block;
 }
 
 .inicio > .avisos {
-    grid-column: 1 / -1;
+    width: min(100% - 2rem, 75rem);
+    margin: 1.5rem auto 0;
 }
 
-.inicio__presentacion {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 1.5rem;
-    padding: 3rem clamp(1.5rem, 6vw, 6rem);
+/* Correa del collar: azul oscuro con dos costuras */
+.correa {
+    position: relative;
+    height: 1.5rem;
+    background: #0f2a50;
+}
+
+.correa::before,
+.correa::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 2px dashed rgba(213, 224, 240, 0.35);
+}
+
+.correa::before {
+    top: 4px;
+}
+
+.correa::after {
+    bottom: 4px;
+}
+
+.portada {
     background: var(--azul);
     color: #fff;
 }
 
-.marca--grande {
-    font-size: 1.375rem;
+.portada__interior {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: start;
+    width: min(100% - 2rem, 75rem);
+    margin: 0 auto;
+    padding: 3.5rem 0 5rem;
 }
 
-.marca--grande .placa--marca {
-    --tam: 2.5rem;
+.portada__texto {
+    display: grid;
+    gap: 1.5rem;
+    padding-top: 2rem;
 }
 
-.inicio__titulo {
-    max-width: 18ch;
-    font-size: clamp(2.25rem, 4vw, 3.25rem);
-    line-height: 1.08;
-    letter-spacing: -0.025em;
+.portada h1 {
+    max-width: 13ch;
+    font-size: clamp(2.5rem, 5.2vw, 4.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
 }
 
-.inicio__texto {
-    max-width: 52ch;
+.portada__texto p {
+    max-width: 46ch;
     color: #d5e0f0;
+    font-size: 1.1875rem;
+}
+
+.portada__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.portada__telefono {
+    color: #d5e0f0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.boton--claro {
+    background: #fff;
+    border-color: #fff;
+    color: var(--azul);
+}
+
+.boton--claro:hover {
+    background: var(--azul-tenue);
+    border-color: var(--azul-tenue);
+    color: var(--azul);
+}
+
+.boton--grande {
+    min-height: 3.25rem;
+    padding: 0.75rem 1.5rem;
     font-size: 1.125rem;
 }
 
-/* Llavero: las seis placas de especie colgando de un aro */
-.llavero {
-    margin: 1rem 0 0;
-}
-
-/* Alambre del que cuelgan las placas */
-.llavero__placas {
+/* Letrero de horas libres colgado de la correa */
+.letrero {
+    --hueco: 3.5rem;
     position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem 1.25rem;
-    width: fit-content;
-    margin: 0;
-    padding: 1rem 0 0;
-    list-style: none;
+    margin-top: 0;
+    padding: 3.25rem 2rem 2rem;
+    border-radius: 1.25rem;
+    background: var(--panel);
+    color: var(--tinta);
+    box-shadow: 0 18px 40px rgba(5, 20, 45, 0.35);
+    transform-origin: 50% calc(var(--hueco) * -1);
+    animation: balanceo 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.llavero__placas::before {
-    content: "";
+.letrero__agujero {
     position: absolute;
-    top: 0;
-    left: 1rem;
-    right: 1rem;
-    height: 3px;
-    border-radius: 3px;
-    background: #b8c4d2;
+    top: 1.125rem;
+    width: 0.875rem;
+    height: 0.875rem;
+    border-radius: 50%;
+    background: var(--azul);
 }
 
-/* Argolla corta que une cada placa al alambre */
-.llavero__placas li::before {
-    content: "";
+.letrero__agujero--izquierda { left: 1.75rem; }
+.letrero__agujero--derecha { right: 1.75rem; }
+
+/* Cada argolla baja desde la correa hasta el agujero del letrero */
+.letrero__argolla {
     position: absolute;
-    top: -1rem;
-    left: 50%;
+    top: calc((var(--hueco) + 0.75rem) * -1);
     z-index: 1;
-    width: 0.75rem;
-    /* Termina en el centro del agujero de la placa */
-    height: 1.55rem;
-    transform: translateX(-50%);
-    border: 2px solid #b8c4d2;
+    width: 1rem;
+    height: calc(var(--hueco) + 0.75rem + 1.6rem);
+    border: 3px solid #b8c4d2;
     border-radius: 1rem;
 }
 
-.llavero__placas li {
-    position: relative;
-    display: grid;
-    justify-items: center;
+.letrero__argolla--izquierda { left: 1.69rem; }
+.letrero__argolla--derecha { right: 1.69rem; }
+
+.letrero h2 {
+    font-size: 1.5rem;
+}
+
+.letrero__dia {
+    margin-top: 1.25rem;
+}
+
+.letrero__dia h3 {
+    margin: 0 0 0.625rem;
+    color: var(--tinta-suave);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.fichas {
+    display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
-    color: #d5e0f0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.ficha {
+    min-width: 4.25rem;
+    padding: 0.375rem 0.625rem;
+    border: 1px solid var(--borde-fuerte);
+    border-radius: var(--radio);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+}
+
+.letrero__mas {
+    margin-top: 0.5rem;
+    color: var(--tinta-suave);
     font-size: 0.9375rem;
 }
 
-.placa--llavero {
-    --tam: 2.5rem;
-    --fondo-placa: var(--azul);
-    transform-origin: 50% 0;
-    animation: balanceo 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+.letrero__nota {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--borde);
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
 }
 
-.llavero__placas li:nth-child(2) .placa { animation-delay: 60ms; }
-.llavero__placas li:nth-child(3) .placa { animation-delay: 120ms; }
-.llavero__placas li:nth-child(4) .placa { animation-delay: 180ms; }
-.llavero__placas li:nth-child(5) .placa { animation-delay: 240ms; }
-.llavero__placas li:nth-child(6) .placa { animation-delay: 300ms; }
-
-/* Un solo balanceo al cargar, como placas que se acaban de colgar */
-@keyframes balanceo {
-    0% { transform: rotate(9deg); }
-    30% { transform: rotate(-6deg); }
-    55% { transform: rotate(3deg); }
-    78% { transform: rotate(-1deg); }
-    100% { transform: rotate(0deg); }
+/* Secciones sobre el gris aluminio */
+.seccion {
+    padding: 5rem 0;
 }
 
-.llavero figcaption {
-    margin-top: 1rem;
+.seccion + .seccion {
+    padding-top: 0;
+}
+
+.seccion__interior {
+    width: min(100% - 2rem, 75rem);
+    margin: 0 auto;
+}
+
+.seccion h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+.seccion__texto {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+}
+
+.seccion__texto p {
+    max-width: 52ch;
+    color: var(--tinta-suave);
+    font-size: 1.125rem;
+}
+
+.seccion__interior--especies,
+.seccion__interior--ejemplo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 4rem;
+    align-items: center;
+}
+
+.alambre--especies {
+    justify-content: space-between;
+}
+
+.alambre--especies > li {
+    font-weight: 600;
+}
+
+.seccion--pasos h2 {
+    margin-bottom: 2.5rem;
+}
+
+.alambre--pasos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+}
+
+.alambre--pasos > li {
+    justify-items: start;
+}
+
+/* En los pasos la argolla y la placa quedan alineadas a la izquierda */
+.alambre--pasos > li::before {
+    left: 1.75rem;
+}
+
+.alambre--pasos h3 {
+    margin: 0.5rem 0 0;
+    font-size: 1.25rem;
+}
+
+.alambre--pasos p {
+    margin: 0;
+    max-width: 34ch;
+    color: var(--tinta-suave);
+}
+
+.placa--paso {
+    --color: var(--azul-medio);
+}
+
+.seccion__interior--ejemplo {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+}
+
+.ejemplo {
+    margin: 0;
+    overflow: hidden;
+}
+
+.ejemplo figcaption {
+    padding: 0.625rem 1rem;
+    border-top: 1px solid var(--borde);
+    background: var(--panel-suave);
+    color: var(--tinta-suave);
+    font-size: 0.875rem;
+}
+
+/* Cierre: la correa vuelve y abre la sección de contacto */
+.cierre {
+    background: var(--azul);
+    color: #fff;
+}
+
+.cierre__interior {
+    display: grid;
+    gap: 2rem;
+    justify-items: start;
+    width: min(100% - 2rem, 75rem);
+    margin: 0 auto;
+    padding: 4.5rem 0 4rem;
+}
+
+.cierre h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: -0.025em;
+}
+
+.datos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2rem;
+    width: 100%;
+    margin: 0;
+}
+
+.datos dt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #b9c8de;
+    font-weight: 600;
+}
+
+.datos dd {
+    margin: 0.375rem 0 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.cierre a:not(.boton) {
+    color: #fff;
+}
+
+.cierre :focus-visible {
+    outline-color: var(--dorado-foco);
+}
+
+.pie {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    width: min(100% - 2rem, 75rem);
+    margin: 0 auto;
+    padding: 1.5rem 0 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
     color: #b9c8de;
     font-size: 0.9375rem;
 }
 
-.inicio__ingreso {
-    display: grid;
-    place-items: center;
-    padding: 3rem 1.5rem;
+/* ---------- Ingreso del personal ---------- */
+
+.pagina-acceso {
     background: var(--suelo);
 }
 
+.acceso {
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1.5rem;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 2rem 1rem;
+}
+
+.marca--oscura,
+.marca--oscura:hover {
+    color: var(--tinta);
+    font-size: 1.25rem;
+}
+
+.marca--oscura .placa--marca {
+    --fondo-placa: var(--suelo);
+}
+
 .panel--ingreso {
-    width: min(100%, 26rem);
+    width: min(100vw - 2rem, 26rem);
     padding: 2rem;
 }
 
-.panel--ingreso h2 {
+.panel--ingreso h1 {
     font-size: 1.5rem;
 }
 
 .panel--ingreso .ayuda {
-    margin: 0.25rem 0 1.5rem;
+    margin: 0.375rem 0 1.5rem;
 }
 
 .panel--ingreso .boton--ancho {
@@ -996,6 +1306,12 @@ textarea:focus-visible {
     border-top: 1px solid var(--borde);
     color: var(--tinta-suave);
     font-size: 0.9375rem;
+}
+
+.acceso__volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 /* ---------- Pantallas medianas y chicas ---------- */
@@ -1043,16 +1359,58 @@ textarea:focus-visible {
 }
 
 @media (max-width: 860px) {
-    .inicio {
+    /* Landing en una columna: el letrero deja de colgar de la correa */
+    .portada__interior,
+    .seccion__interior--especies,
+    .seccion__interior--ejemplo {
         grid-template-columns: 1fr;
+        gap: 2.5rem;
     }
 
-    .inicio__presentacion {
-        padding: 2.5rem 1.25rem 2rem;
+    .portada__interior {
+        padding: 2.5rem 0 3rem;
     }
 
-    .inicio__ingreso {
-        padding: 2rem 1rem 3rem;
+    .portada__texto {
+        padding-top: 0;
+    }
+
+    .letrero {
+        padding: 2.75rem 1.25rem 1.5rem;
+        animation: none;
+    }
+
+    .letrero__argolla {
+        display: none;
+    }
+
+    .seccion {
+        padding: 3.5rem 0;
+    }
+
+    .alambre--pasos {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding-top: 0;
+    }
+
+    /* Los pasos se apilan: cada uno cuelga de su propio tramo de alambre */
+    .alambre--pasos::before {
+        display: none;
+    }
+
+    .alambre--pasos > li {
+        padding-top: 1.25rem;
+        border-top: 3px solid var(--alambre);
+    }
+
+    .alambre--pasos > li::before {
+        top: -0.2rem;
+    }
+
+    .datos {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
     }
 
     /* La tabla pasa a filas apiladas: hora a la izquierda, datos a la derecha */
@@ -1161,22 +1519,26 @@ textarea:focus-visible {
         width: 100%;
     }
 
-    .inicio__titulo {
-        max-width: none;
-    }
-
-    /* Las seis placas caben en una sola fila del llavero */
-    .llavero__placas {
-        flex-wrap: nowrap;
-        justify-content: space-between;
-        width: auto;
+    /* Las seis placas caben en una sola fila del alambre */
+    .alambre--especies {
         gap: 0.25rem;
     }
 
-    .llavero__placas li {
+    .alambre--especies > li {
         font-size: 0.8125rem;
     }
 
+    .alambre--especies .placa--colgante {
+        --tam: 2.75rem;
+    }
+
+    .alambre--especies > li::before {
+        height: 1.6rem;
+    }
+
+    .boton--grande {
+        width: 100%;
+    }
 
 }
 

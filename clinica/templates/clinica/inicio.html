@@ -1,62 +1,182 @@
 {% extends "clinica/base.html" %}
 
-{% block titulo %}Ingresar{% endblock %}
+{% block titulo %}Clínica veterinaria{% endblock %}
 {% block clase_body %}pagina-inicio{% endblock %}
-{% block encabezado %}{% endblock %}
 {% block clase_main %}inicio{% endblock %}
 
+{% block encabezado %}
+<header class="barra">
+    <div class="barra__interior">
+        <a class="marca" href="{% url 'inicio' %}">
+            <span class="placa placa--marca" aria-hidden="true"><span class="placa__letra">H</span></span>
+            Huellas Sanas
+        </a>
+        <nav class="menu" aria-label="Secciones">
+            <a href="#horas">Horas libres</a>
+            <a href="#pasos">Cómo pedir hora</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+        <div class="sesion">
+            {% if user.is_authenticated %}
+            <a href="{% url 'citas_dia' %}">Ir a la agenda</a>
+            {% else %}
+            <a href="{% url 'ingresar' %}">Ingreso del personal</a>
+            {% endif %}
+        </div>
+    </div>
+</header>
+{# La correa del collar: de ella cuelga el letrero de horas libres #}
+<div class="correa" aria-hidden="true"></div>
+{% endblock %}
+
 {% block contenido %}
-<section class="inicio__presentacion">
-    <p class="marca marca--grande">
-        <span class="placa placa--marca" aria-hidden="true"><span class="placa__letra">H</span></span>
-        Huellas Sanas
-    </p>
+<section class="portada">
+    <div class="portada__interior">
+        <div class="portada__texto">
+            <h1>Cuando llegas, tu hora ya está anotada.</h1>
+            <p>En Huellas Sanas cada cita queda registrada con el nombre de tu mascota, la hora y el motivo de la consulta. Sin agendas de papel ni horas que se pierden.</p>
+            <div class="portada__acciones">
+                <a class="boton boton--claro boton--grande" href="tel:+56223456789">
+                    {% include "clinica/icono.html" with nombre="telefono" %}Llamar para pedir hora
+                </a>
+                <span class="portada__telefono">+56 2 2345 6789</span>
+            </div>
+        </div>
 
-    <h1 class="inicio__titulo">La agenda y los pacientes de la clínica, en un solo lugar.</h1>
-    <p class="inicio__texto">
-        Desde recepción revisas las citas del día, registras pacientes nuevos y agendas horas sin cruces.
-        El director administra todo desde el panel de administración.
-    </p>
+        {# Letrero colgado de la correa con las horas libres reales de la agenda #}
+        <aside class="letrero" id="horas" aria-labelledby="titulo-horas">
+            <span class="letrero__argolla letrero__argolla--izquierda" aria-hidden="true"></span>
+            <span class="letrero__argolla letrero__argolla--derecha" aria-hidden="true"></span>
+            <span class="letrero__agujero letrero__agujero--izquierda" aria-hidden="true"></span>
+            <span class="letrero__agujero letrero__agujero--derecha" aria-hidden="true"></span>
 
-    {# Llavero con una placa por especie: es la misma clave de colores que se usa en la agenda #}
-    <figure class="llavero">
-        <ul class="llavero__placas">
-            <li><span class="placa placa--perro placa--llavero" aria-hidden="true"><span class="placa__letra">P</span></span>Perro</li>
-            <li><span class="placa placa--gato placa--llavero" aria-hidden="true"><span class="placa__letra">G</span></span>Gato</li>
-            <li><span class="placa placa--ave placa--llavero" aria-hidden="true"><span class="placa__letra">A</span></span>Ave</li>
-            <li><span class="placa placa--conejo placa--llavero" aria-hidden="true"><span class="placa__letra">C</span></span>Conejo</li>
-            <li><span class="placa placa--roedor placa--llavero" aria-hidden="true"><span class="placa__letra">R</span></span>Roedor</li>
-            <li><span class="placa placa--reptil placa--llavero" aria-hidden="true"><span class="placa__letra">R</span></span>Reptil</li>
-        </ul>
-        <figcaption>Cada especie tiene su color de placa en la agenda.</figcaption>
-    </figure>
+            <h2 id="titulo-horas">Horas libres</h2>
+            {% for dia in horas_libres %}
+            <div class="letrero__dia">
+                <h3>{% if dia.es_hoy %}Hoy{% elif dia.es_manana %}Mañana{% else %}{{ dia.fecha|date:"l"|capfirst }}{% endif %}, {{ dia.fecha|date:"j \d\e F" }}</h3>
+                <ul class="fichas">
+                    {% for hora in dia.horas %}<li class="ficha">{{ hora|time:"H:i" }}</li>{% endfor %}
+                </ul>
+                {% if dia.restantes %}<p class="letrero__mas">y {{ dia.restantes }} hora{{ dia.restantes|pluralize }} más ese día</p>{% endif %}
+            </div>
+            {% empty %}
+            <p>No quedan horas libres en los próximos días. Llámanos y te avisamos si se libera una.</p>
+            {% endfor %}
+            <p class="letrero__nota">Se actualiza con la agenda de la clínica. Llama y reserva la que te acomode.</p>
+        </aside>
+    </div>
 </section>
 
-<section class="inicio__ingreso" aria-labelledby="titulo-ingreso">
-    <form method="post" class="panel panel--ingreso" novalidate>
-        {% csrf_token %}
-        <h2 id="titulo-ingreso">Ingresar</h2>
-        <p class="ayuda">Usa tu usuario del personal de la clínica.</p>
+<section class="seccion" aria-labelledby="titulo-especies">
+    <div class="seccion__interior seccion__interior--especies">
+        <div class="seccion__texto">
+            <h2 id="titulo-especies">Atendemos perros, gatos, aves, conejos, roedores y reptiles.</h2>
+            <p>Cada paciente tiene su placa en nuestra agenda, del color de su especie, para reconocerlo de un vistazo en recepción.</p>
+        </div>
+        <ul class="alambre alambre--especies">
+            <li><span class="placa placa--perro placa--colgante" aria-hidden="true"><span class="placa__letra">P</span></span>Perro</li>
+            <li><span class="placa placa--gato placa--colgante" aria-hidden="true"><span class="placa__letra">G</span></span>Gato</li>
+            <li><span class="placa placa--ave placa--colgante" aria-hidden="true"><span class="placa__letra">A</span></span>Ave</li>
+            <li><span class="placa placa--conejo placa--colgante" aria-hidden="true"><span class="placa__letra">C</span></span>Conejo</li>
+            <li><span class="placa placa--roedor placa--colgante" aria-hidden="true"><span class="placa__letra">R</span></span>Roedor</li>
+            <li><span class="placa placa--reptil placa--colgante" aria-hidden="true"><span class="placa__letra">R</span></span>Reptil</li>
+        </ul>
+    </div>
+</section>
 
-        {% if form.errors %}
-        <p class="error-general" role="alert">
-            {% include "clinica/icono.html" with nombre="alerta" %}
-            Usuario o contraseña incorrectos. Revisa los datos e intenta otra vez.
-        </p>
+<section class="seccion seccion--pasos" id="pasos" aria-labelledby="titulo-pasos">
+    <div class="seccion__interior">
+        <h2 id="titulo-pasos">Cómo pedir hora</h2>
+        <ol class="alambre alambre--pasos">
+            <li>
+                <span class="placa placa--paso placa--colgante" aria-hidden="true"><span class="placa__letra">1</span></span>
+                <h3>Llámanos</h3>
+                <p>Al +56 2 2345 6789. Cuéntanos quién es tu mascota y qué le pasa.</p>
+            </li>
+            <li>
+                <span class="placa placa--paso placa--colgante" aria-hidden="true"><span class="placa__letra">2</span></span>
+                <h3>Registramos a tu mascota</h3>
+                <p>Anotamos su nombre, especie, raza, tu nombre y el motivo de la consulta.</p>
+            </li>
+            <li>
+                <span class="placa placa--paso placa--colgante" aria-hidden="true"><span class="placa__letra">3</span></span>
+                <h3>Te damos una hora libre</h3>
+                <p>Cada hora es para una sola cita, así que no hay cruces. Cuando llegas, ya estás en la agenda.</p>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<section class="seccion" aria-labelledby="titulo-ejemplo">
+    <div class="seccion__interior seccion__interior--ejemplo">
+        <div class="seccion__texto">
+            <h2 id="titulo-ejemplo">Así queda anotada tu hora</h2>
+            <p>Recepción ve la agenda del día ordenada por hora, con la próxima cita marcada. Tu mascota, el motivo y la hora quedan juntos y no dependen de un papel ni de un mensaje.</p>
+        </div>
+
+        <figure class="panel panel--tabla ejemplo">
+            <table class="agenda">
+                <thead>
+                    <tr>
+                        <th scope="col">Hora</th>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">Motivo de consulta</th>
+                        <th scope="col">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="fila fila--atendida">
+                        <td class="agenda__hora"><span class="hora">10:00</span></td>
+                        <td class="agenda__paciente"><div class="paciente"><span class="placa placa--gato" aria-hidden="true"><span class="placa__letra">M</span></span><div><strong class="paciente__nombre">Misha</strong><span class="paciente__detalle">Gato, Siamés</span></div></div></td>
+                        <td class="agenda__motivo">Control de rutina</td>
+                        <td class="agenda__estado"><span class="estado estado--atendida">{% include "clinica/icono.html" with nombre="check" %}Atendida</span></td>
+                    </tr>
+                    <tr class="fila fila--pendiente fila--siguiente">
+                        <td class="agenda__hora"><span class="hora">10:30</span><span class="marca-siguiente">{% include "clinica/icono.html" with nombre="siguiente" %}Siguiente</span></td>
+                        <td class="agenda__paciente"><div class="paciente"><span class="placa placa--perro" aria-hidden="true"><span class="placa__letra">R</span></span><div><strong class="paciente__nombre">Rocky</strong><span class="paciente__detalle">Perro, Quiltro</span></div></div></td>
+                        <td class="agenda__motivo">Vacuna antirrábica anual</td>
+                        <td class="agenda__estado"><span class="estado estado--pendiente">{% include "clinica/icono.html" with nombre="pendiente" %}Pendiente</span></td>
+                    </tr>
+                    <tr class="fila fila--pendiente">
+                        <td class="agenda__hora"><span class="hora">11:00</span></td>
+                        <td class="agenda__paciente"><div class="paciente"><span class="placa placa--ave" aria-hidden="true"><span class="placa__letra">K</span></span><div><strong class="paciente__nombre">Kiwi</strong><span class="paciente__detalle">Ave, Catita australiana</span></div></div></td>
+                        <td class="agenda__motivo">Revisión de un ala</td>
+                        <td class="agenda__estado"><span class="estado estado--pendiente">{% include "clinica/icono.html" with nombre="pendiente" %}Pendiente</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <figcaption>Ejemplo con datos ficticios.</figcaption>
+        </figure>
+    </div>
+</section>
+
+<section class="cierre" id="contacto" aria-labelledby="titulo-contacto">
+    <div class="correa" aria-hidden="true"></div>
+    <div class="cierre__interior">
+        <h2 id="titulo-contacto">Pide tu hora</h2>
+        <dl class="datos">
+            <div>
+                <dt>{% include "clinica/icono.html" with nombre="reloj" %}Horario</dt>
+                <dd>De 09:00 a 18:30, con horas cada 30 minutos.</dd>
+            </div>
+            <div>
+                <dt>{% include "clinica/icono.html" with nombre="telefono" %}Teléfono</dt>
+                <dd><a href="tel:+56223456789">+56 2 2345 6789</a></dd>
+            </div>
+            <div>
+                <dt>{% include "clinica/icono.html" with nombre="ubicacion" %}Dirección</dt>
+                <dd>Av. Los Aromos 1234, Santiago</dd>
+            </div>
+        </dl>
+        <a class="boton boton--claro boton--grande" href="tel:+56223456789">{% include "clinica/icono.html" with nombre="telefono" %}Llamar para pedir hora</a>
+    </div>
+    <footer class="pie">
+        <p>Huellas Sanas, clínica veterinaria.</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'citas_dia' %}">Ir a la agenda</a>
+        {% else %}
+        <a href="{% url 'ingresar' %}">Ingreso del personal</a>
         {% endif %}
-
-        <div class="campo">
-            <label for="{{ form.username.id_for_label }}">Usuario</label>
-            <input type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" autocomplete="username" autocapitalize="none" required autofocus>
-        </div>
-        <div class="campo">
-            <label for="{{ form.password.id_for_label }}">Contraseña</label>
-            <input type="password" name="password" id="{{ form.password.id_for_label }}" autocomplete="current-password" required>
-        </div>
-        <input type="hidden" name="next" value="{{ next }}">
-        <button type="submit" class="boton boton--principal boton--ancho">Ingresar</button>
-
-        <p class="panel__pie">¿Eres el director? <a href="{% url 'admin:index' %}">Entra al panel de administración</a></p>
-    </form>
+    </footer>
 </section>
 {% endblock %}

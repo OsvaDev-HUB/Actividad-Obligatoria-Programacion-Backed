@@ -123,6 +123,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Rutas del inicio de sesión del personal
-LOGIN_URL = 'inicio'
+LOGIN_URL = 'ingresar'
 LOGIN_REDIRECT_URL = 'citas_dia'
 LOGOUT_REDIRECT_URL = 'inicio'
