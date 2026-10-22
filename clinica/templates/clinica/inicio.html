@@ -14,7 +14,7 @@
         <nav class="menu" aria-label="Secciones">
             <a href="#horas">Horas libres</a>
             <a href="#pasos">Cómo pedir hora</a>
-            <a href="#contacto">Contacto</a>
+            <a href="#contacto">Pedir hora</a>
         </nav>
         <div class="sesion">
             {% if user.is_authenticated %}
@@ -36,12 +36,15 @@
             <h1>Cuando llegas, tu hora ya está anotada.</h1>
             <p>En Huellas Sanas cada cita queda registrada con el nombre de tu mascota, la hora y el motivo de la consulta. Sin agendas de papel ni horas que se pierden.</p>
             <div class="portada__acciones">
-                <a class="boton boton--claro boton--grande" href="tel:+56223456789">
+                <a class="boton boton--claro boton--grande" href="{{ contacto.telefono_enlace }}">
                     {% include "clinica/icono.html" with nombre="telefono" %}Llamar para pedir hora
                 </a>
-                <span class="portada__telefono">+56 2 2345 6789</span>
+                <span class="portada__telefono">{{ contacto.telefono }}</span>
             </div>
         </div>
+
+        {# En celular el letrero cuelga de este tramo de correa #}
+        <div class="correa correa--movil" aria-hidden="true"></div>
 
         {# Letrero colgado de la correa con las horas libres reales de la agenda #}
         <aside class="letrero" id="horas" aria-labelledby="titulo-horas">
@@ -91,7 +94,7 @@
             <li>
                 <span class="placa placa--paso placa--colgante" aria-hidden="true"><span class="placa__letra">1</span></span>
                 <h3>Llámanos</h3>
-                <p>Al +56 2 2345 6789. Cuéntanos quién es tu mascota y qué le pasa.</p>
+                <p>Al {{ contacto.telefono }}. Cuéntanos quién es tu mascota y qué le pasa.</p>
             </li>
             <li>
                 <span class="placa placa--paso placa--colgante" aria-hidden="true"><span class="placa__letra">2</span></span>
@@ -161,14 +164,15 @@
             </div>
             <div>
                 <dt>{% include "clinica/icono.html" with nombre="telefono" %}Teléfono</dt>
-                <dd><a href="tel:+56223456789">+56 2 2345 6789</a></dd>
+                <dd><a href="{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a></dd>
             </div>
             <div>
                 <dt>{% include "clinica/icono.html" with nombre="ubicacion" %}Dirección</dt>
-                <dd>Av. Los Aromos 1234, Santiago</dd>
+                <dd>{{ contacto.direccion }}</dd>
             </div>
         </dl>
-        <a class="boton boton--claro boton--grande" href="tel:+56223456789">{% include "clinica/icono.html" with nombre="telefono" %}Llamar para pedir hora</a>
+        <p class="cierre__nota">Teléfono y dirección de ejemplo.</p>
+        <a class="boton boton--claro boton--grande" href="{{ contacto.telefono_enlace }}">{% include "clinica/icono.html" with nombre="telefono" %}Llamar para pedir hora</a>
     </div>
     <footer class="pie">
         <p>Huellas Sanas, clínica veterinaria.</p>

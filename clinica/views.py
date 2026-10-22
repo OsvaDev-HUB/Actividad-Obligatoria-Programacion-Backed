@@ -21,6 +21,14 @@ def leer_fecha(texto):
     return fecha or timezone.localdate()
 
 
+# Datos de contacto de la clínica (son de ejemplo: reemplazar por los datos reales)
+CONTACTO = {
+    "telefono": "+56 2 2345 6789",
+    "telefono_enlace": "tel:+56223456789",
+    "direccion": "Av. Los Aromos 1234, Santiago",
+}
+
+
 def bloques_de_atencion():
     # Horas de 09:00 a 18:30 cada 30 minutos
     return [time(hora, minuto) for hora in range(9, 19) for minuto in (0, 30)]
@@ -49,7 +57,7 @@ def horas_libres(cantidad_dias=2, maximo_por_dia=8):
 
 def inicio(request):
     # Landing pública: solo muestra horarios libres, nunca datos de pacientes
-    return render(request, "clinica/inicio.html", {"horas_libres": horas_libres()})
+    return render(request, "clinica/inicio.html", {"horas_libres": horas_libres(), "contacto": CONTACTO})
 
 
 @login_required

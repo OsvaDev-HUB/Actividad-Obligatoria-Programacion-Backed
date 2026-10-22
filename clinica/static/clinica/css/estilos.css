@@ -887,7 +887,14 @@ textarea:focus-visible {
     --tam: 3.5rem;
     --fondo-placa: var(--suelo);
     transform-origin: 50% 0;
+    animation: balanceo 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+.alambre > li:nth-child(2) .placa { animation-delay: 60ms; }
+.alambre > li:nth-child(3) .placa { animation-delay: 120ms; }
+.alambre > li:nth-child(4) .placa { animation-delay: 180ms; }
+.alambre > li:nth-child(5) .placa { animation-delay: 240ms; }
+.alambre > li:nth-child(6) .placa { animation-delay: 300ms; }
 
 /* Un solo balanceo al cargar, como algo que se acaba de colgar */
 @keyframes balanceo {
@@ -931,6 +938,11 @@ textarea:focus-visible {
 
 .correa::before {
     top: 4px;
+}
+
+/* Tramo de correa que solo se ve en celular */
+.correa--movil {
+    display: none;
 }
 
 .correa::after {
@@ -1243,6 +1255,12 @@ textarea:focus-visible {
     outline-color: var(--dorado-foco);
 }
 
+.cierre__nota {
+    margin-top: -1rem;
+    color: #b9c8de;
+    font-size: 0.9375rem;
+}
+
 .pie {
     display: flex;
     flex-wrap: wrap;
@@ -1359,7 +1377,7 @@ textarea:focus-visible {
 }
 
 @media (max-width: 860px) {
-    /* Landing en una columna: el letrero deja de colgar de la correa */
+    /* Landing en una columna: el letrero cuelga de su propio tramo de correa */
     .portada__interior,
     .seccion__interior--especies,
     .seccion__interior--ejemplo {
@@ -1375,13 +1393,15 @@ textarea:focus-visible {
         padding-top: 0;
     }
 
-    .letrero {
-        padding: 2.75rem 1.25rem 1.5rem;
-        animation: none;
+    .correa--movil {
+        display: block;
+        margin: 0 -1rem;
     }
 
-    .letrero__argolla {
-        display: none;
+    /* El espacio entre la correa y el letrero es el mismo gap de la grilla */
+    .letrero {
+        --hueco: 2.5rem;
+        padding: 2.75rem 1.25rem 1.5rem;
     }
 
     .seccion {
