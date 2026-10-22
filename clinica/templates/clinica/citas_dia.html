@@ -5,10 +5,10 @@
 {% block contenido %}
 <section class="cabecera-dia">
     <div class="cabecera-dia__fecha">
-        <h1>{{ fecha|date:"l j \d\e F"|capfirst }}</h1>
+        {# El año solo se muestra si no es el año actual #}
+        <h1>{% if fecha.year == hoy.year %}{{ fecha|date:"l j \d\e F"|capfirst }}{% else %}{{ fecha|date:"l j \d\e F \d\e Y"|capfirst }}{% endif %}</h1>
         <p class="cabecera-dia__sub">
-            {% if es_hoy %}Hoy, {% endif %}{{ fecha|date:"Y" }}.
-            {% if citas %}{{ citas|length }} cita{{ citas|length|pluralize }} agendada{{ citas|length|pluralize }}.{% else %}Sin citas agendadas.{% endif %}
+            {% if es_hoy %}Hoy: {% endif %}{% if citas %}{{ citas|length }} cita{{ citas|length|pluralize }} agendada{{ citas|length|pluralize }}.{% else %}Sin citas agendadas.{% endif %}
         </p>
     </div>
 

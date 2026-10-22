@@ -51,6 +51,7 @@
 
 html {
     -webkit-text-size-adjust: 100%;
+    scrollbar-color: var(--borde-fuerte) var(--suelo);
 }
 
 body {
@@ -150,12 +151,6 @@ a:hover {
     border-radius: 50%;
     color: #fff;
     background-color: var(--color);
-    /* Brillo del aluminio anodizado */
-    background-image: linear-gradient(155deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 45%, rgba(0, 0, 0, 0.16));
-    box-shadow:
-        inset 0 0 0 2px rgba(255, 255, 255, 0.16),
-        inset 0 -2px 3px rgba(0, 0, 0, 0.18),
-        0 1px 2px rgba(22, 32, 44, 0.3);
     transition: background-color 200ms ease-out;
 }
 
@@ -170,15 +165,13 @@ a:hover {
     border-radius: 50%;
     background: var(--fondo-placa, var(--panel));
     transform: translateX(-50%);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.4);
 }
 
-/* Letra grabada */
+/* Inicial de la mascota */
 .placa__letra {
     font-size: calc(var(--tam) * 0.44);
     font-weight: 700;
     line-height: 1;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .placa--perro { --color: var(--perro); }
@@ -669,6 +662,7 @@ textarea {
     color: var(--tinta);
     font: inherit;
     accent-color: var(--azul-medio);
+    caret-color: var(--azul-medio);
 }
 
 .selector-dia__fecha input[type="date"] {
@@ -798,11 +792,7 @@ textarea:focus-visible {
     align-content: center;
     gap: 0.25rem;
     padding: 2.25rem 1.5rem 0;
-    box-shadow:
-        inset 0 0 0 4px rgba(255, 255, 255, 0.16),
-        inset 0 -6px 10px rgba(0, 0, 0, 0.2),
-        0 2px 4px rgba(22, 32, 44, 0.2),
-        0 12px 28px rgba(22, 32, 44, 0.18);
+    box-shadow: 0 12px 28px rgba(22, 32, 44, 0.18);
 }
 
 .placa--grande::before {
@@ -816,7 +806,10 @@ textarea:focus-visible {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.35), 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+.placa--grande .placa__letra {
+    font-size: 2.5rem;
 }
 
 .placa__nombre {
@@ -923,14 +916,18 @@ textarea:focus-visible {
 /* Argolla corta que une cada placa al alambre */
 .llavero__placas li::before {
     content: "";
-    width: 0.625rem;
-    height: 1.5rem;
-    margin: -1.125rem 0 -1.75rem;
+    position: absolute;
+    top: -1rem;
+    left: 50%;
+    width: 0.5rem;
+    height: 1.45rem;
+    transform: translateX(-50%);
     border: 2px solid #b8c4d2;
     border-radius: 1rem;
 }
 
 .llavero__placas li {
+    position: relative;
     display: grid;
     justify-items: center;
     gap: 0.5rem;
@@ -939,7 +936,7 @@ textarea:focus-visible {
 }
 
 .placa--llavero {
-    --tam: 4rem;
+    --tam: 2.5rem;
     --fondo-placa: var(--azul);
     transform-origin: 50% 0;
     animation: balanceo 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -1178,9 +1175,7 @@ textarea:focus-visible {
         font-size: 0.8125rem;
     }
 
-    .placa--llavero {
-        --tam: 2.75rem;
-    }
+
 }
 
 @media (prefers-reduced-motion: reduce) {

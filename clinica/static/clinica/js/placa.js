@@ -9,6 +9,7 @@ function actualizarPlaca() {
     const dueno = campoDueno.value.trim();
     const elegida = document.querySelector('input[name="especie"]:checked');
 
+    document.getElementById("placa-letra").textContent = nombre ? nombre.charAt(0).toUpperCase() : "?";
     document.getElementById("placa-nombre").textContent = nombre || "Nombre";
     document.getElementById("placa-dueno").textContent = dueno || "Dueño";
 
