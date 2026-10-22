@@ -10,7 +10,7 @@
 </div>
 
 <div class="ingreso">
-    <form method="post" class="panel formulario" novalidate>
+    <form method="post" class="tarjeta formulario" novalidate>
         {% csrf_token %}
         {% if form.non_field_errors %}<div class="error-general" role="alert">{{ form.non_field_errors }}</div>{% endif %}
 
@@ -24,11 +24,13 @@
             <legend>Especie</legend>
             <div class="especies">
                 {% for valor, texto in especies %}
+                {% with 'clinica/img/especie-'|add:valor|add:'.jpg' as ruta %}
                 <label class="especie">
-                    <input type="radio" name="especie" value="{{ valor }}" {% if form.especie.value == valor %}checked{% endif %} required>
-                    <span class="placa placa--{{ valor }} placa--chica" aria-hidden="true"></span>
+                    <input type="radio" name="especie" value="{{ valor }}" data-foto="{% static ruta %}" {% if form.especie.value == valor %}checked{% endif %} required>
+                    <img src="{% static ruta %}" alt="" width="40" height="40">
                     {{ texto }}
                 </label>
+                {% endwith %}
                 {% endfor %}
             </div>
             {{ form.especie.errors }}
@@ -53,19 +55,24 @@
         </div>
     </form>
 
-    {# Vista previa de la placa: se actualiza mientras se escribe (placa.js) #}
-    <aside class="vista-placa" aria-label="Vista previa de la placa">
-        <div class="placa placa--grande" id="placa-previa">
-            <span class="placa__letra" id="placa-letra">?</span>
-            <span class="placa__nombre" id="placa-nombre">Nombre</span>
-            <span class="placa__especie" id="placa-especie">Especie</span>
-            <span class="placa__dueno" id="placa-dueno">Dueño</span>
+    {# Ficha del paciente: se arma en vivo mientras se escribe (ficha.js) #}
+    <aside class="tarjeta ficha ficha--vacia" id="ficha" aria-label="Vista previa de la ficha del paciente">
+        <div class="ficha__foto ficha__foto--vacia" id="ficha-foto">
+            {% include "clinica/logo.html" %}
+            <img alt="" id="ficha-imagen" hidden>
         </div>
-        <p class="ayuda">Así se verá su placa en la agenda.</p>
+        <div class="ficha__cuerpo">
+            <div class="ficha__nombre">
+                <span class="avatar" id="ficha-inicial" aria-hidden="true">?</span>
+                <strong id="ficha-nombre">Nombre</strong>
+            </div>
+            <span class="ficha__especie" id="ficha-especie">Sin especie</span>
+            <p class="ficha__dueno">Dueño <span id="ficha-dueno">Sin nombre</span></p>
+        </div>
     </aside>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static 'clinica/js/placa.js' %}"></script>
+<script src="{% static 'clinica/js/ficha.js' %}"></script>
 {% endblock %}

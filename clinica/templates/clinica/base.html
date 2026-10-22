@@ -7,7 +7,7 @@
     <title>{% block titulo %}Recepción{% endblock %} | Huellas Sanas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'clinica/css/estilos.css' %}">
 </head>
 <body class="{% block clase_body %}{% endblock %}">
@@ -16,8 +16,8 @@
     {% block encabezado %}
     <header class="barra">
         <div class="barra__interior">
-            <a class="marca" href="{% url 'citas_dia' %}">
-                <span class="placa placa--marca" aria-hidden="true"><span class="placa__letra">H</span></span>
+            <a class="logo" href="{% url 'citas_dia' %}">
+                <span class="logo__marca">{% include "clinica/logo.html" %}</span>
                 Huellas Sanas
             </a>
             {% with ruta=request.resolver_match.url_name %}
@@ -29,7 +29,10 @@
             {% endwith %}
             <div class="sesion">
                 {% if user.is_staff %}<a href="{% url 'admin:index' %}">Administración</a>{% endif %}
-                <span class="sesion__usuario">{{ user.get_username }}</span>
+                <span class="sesion__usuario">
+                    <span class="avatar" aria-hidden="true">{{ user.get_username|first|upper }}</span>
+                    <span class="sesion__nombre">{{ user.get_username }}</span>
+                </span>
                 <form method="post" action="{% url 'salir' %}">
                     {% csrf_token %}
                     <button type="submit" class="boton-enlace">Salir</button>
@@ -50,6 +53,7 @@
         {% block contenido %}{% endblock %}
     </main>
 
+    {% block pie %}{% endblock %}
     {% block scripts %}{% endblock %}
 </body>
 </html>

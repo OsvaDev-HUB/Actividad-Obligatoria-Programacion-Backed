@@ -1,4 +1,5 @@
 {% extends "clinica/base.html" %}
+{% load static %}
 
 {% block titulo %}Ingreso del personal{% endblock %}
 {% block clase_body %}pagina-acceso{% endblock %}
@@ -6,36 +7,43 @@
 {% block clase_main %}acceso{% endblock %}
 
 {% block contenido %}
-<a class="marca marca--oscura" href="{% url 'inicio' %}">
-    <span class="placa placa--marca" aria-hidden="true"><span class="placa__letra">H</span></span>
-    Huellas Sanas
-</a>
+<div class="acceso__foto">
+    <img src="{% static 'clinica/img/perro-hojas.jpg' %}" alt="" width="1024" height="739">
+    <a class="logo logo--claro" href="{% url 'inicio' %}">
+        <span class="logo__marca">{% include "clinica/logo.html" %}</span>
+        Huellas Sanas
+    </a>
+    <p class="acceso__frase">La agenda de hoy te está esperando.</p>
+</div>
 
-<form method="post" class="panel panel--ingreso" novalidate>
-    {% csrf_token %}
-    <h1>Ingreso del personal</h1>
-    <p class="ayuda">Usa tu usuario de la clínica para ver la agenda y registrar pacientes.</p>
+<div class="acceso__formulario">
+    <form method="post" class="acceso__caja" novalidate>
+        {% csrf_token %}
+        <h1>Ingreso del personal</h1>
+        <p class="ayuda">Usa tu usuario de la clínica para ver la agenda y registrar pacientes.</p>
 
-    {% if form.errors %}
-    <p class="error-general" role="alert">
-        {% include "clinica/icono.html" with nombre="alerta" %}
-        Usuario o contraseña incorrectos. Revisa los datos e intenta otra vez.
-    </p>
-    {% endif %}
+        {% if form.errors %}
+        <p class="error-general" role="alert">
+            {% include "clinica/icono.html" with nombre="alerta" %}
+            Usuario o contraseña incorrectos. Revisa los datos e intenta otra vez.
+        </p>
+        {% endif %}
 
-    <div class="campo">
-        <label for="{{ form.username.id_for_label }}">Usuario</label>
-        <input type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" autocomplete="username" autocapitalize="none" required autofocus>
-    </div>
-    <div class="campo">
-        <label for="{{ form.password.id_for_label }}">Contraseña</label>
-        <input type="password" name="password" id="{{ form.password.id_for_label }}" autocomplete="current-password" required>
-    </div>
-    <input type="hidden" name="next" value="{{ next }}">
-    <button type="submit" class="boton boton--principal boton--ancho">Ingresar</button>
+        <div class="campo">
+            <label for="{{ form.username.id_for_label }}">Usuario</label>
+            <input type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" autocomplete="username" autocapitalize="none" required autofocus>
+        </div>
+        <div class="campo">
+            <label for="{{ form.password.id_for_label }}">Contraseña</label>
+            <input type="password" name="password" id="{{ form.password.id_for_label }}" autocomplete="current-password" required>
+        </div>
+        <input type="hidden" name="next" value="{{ next }}">
+        <button type="submit" class="boton boton--principal boton--ancho">Ingresar</button>
 
-    <p class="panel__pie">¿Eres el director? <a href="{% url 'admin:index' %}">Entra al panel de administración</a></p>
-</form>
-
-<a class="acceso__volver" href="{% url 'inicio' %}">{% include "clinica/icono.html" with nombre="izquierda" %}Volver al inicio</a>
+        <div class="acceso__pie">
+            <p>¿Eres el director? <a href="{% url 'admin:index' %}">Entra al panel de administración</a></p>
+            <a class="acceso__volver" href="{% url 'inicio' %}">{% include "clinica/icono.html" with nombre="izquierda" %}Volver al inicio</a>
+        </div>
+    </form>
+</div>
 {% endblock %}

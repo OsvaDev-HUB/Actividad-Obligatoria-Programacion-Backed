@@ -50,6 +50,7 @@ def horas_libres(cantidad_dias=2, maximo_por_dia=8):
                 "es_manana": fecha == hoy + timedelta(days=1),
                 "horas": libres[:maximo_por_dia],
                 "restantes": len(libres) - maximo_por_dia if len(libres) > maximo_por_dia else 0,
+                "total": len(libres),
             })
         fecha += timedelta(days=1)
     return dias
@@ -57,7 +58,11 @@ def horas_libres(cantidad_dias=2, maximo_por_dia=8):
 
 def inicio(request):
     # Landing pública: solo muestra horarios libres, nunca datos de pacientes
-    return render(request, "clinica/inicio.html", {"horas_libres": horas_libres(), "contacto": CONTACTO})
+    return render(request, "clinica/inicio.html", {
+        "horas_libres": horas_libres(),
+        "contacto": CONTACTO,
+        "especies": Mascota.ESPECIES,
+    })
 
 
 @login_required

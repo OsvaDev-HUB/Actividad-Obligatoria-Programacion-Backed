@@ -40,7 +40,7 @@
     <li class="estado estado--cancelada">{% include "clinica/icono.html" with nombre="cruz" %}{{ total_canceladas }} cancelada{{ total_canceladas|pluralize }}</li>
 </ul>
 
-<div class="panel panel--tabla">
+<div class="tarjeta panel-tabla">
     <table class="agenda">
         <caption class="solo-lector">Citas del {{ fecha|date:"j \d\e F \d\e Y" }}</caption>
         <thead>
@@ -62,7 +62,7 @@
                 </td>
                 <td class="agenda__paciente">
                     <div class="paciente">
-                        <span class="placa placa--{{ cita.mascota.especie }}" aria-hidden="true"><span class="placa__letra">{{ cita.mascota.nombre|first|upper }}</span></span>
+                        <span class="avatar especie-{{ cita.mascota.especie }}" aria-hidden="true">{{ cita.mascota.nombre|first|upper }}</span>
                         <div>
                             <strong class="paciente__nombre">{{ cita.mascota.nombre }}</strong>
                             <span class="paciente__detalle">{{ cita.mascota.get_especie_display }}, {{ cita.mascota.raza }}</span>
@@ -95,8 +95,8 @@
     </table>
 </div>
 {% else %}
-<div class="panel vacio">
-    {% include "clinica/icono.html" with nombre="calendario" %}
+<div class="tarjeta vacio">
+    <span class="vacio__icono">{% include "clinica/icono.html" with nombre="calendario" %}</span>
     <h2>No hay citas para este día</h2>
     <p>Las horas que agendes para el {{ fecha|date:"j \d\e F" }} van a aparecer aquí, ordenadas por hora.</p>
     <a class="boton boton--principal" href="{% url 'agendar_cita' %}?fecha={{ fecha|date:'Y-m-d' }}">Agendar una cita</a>

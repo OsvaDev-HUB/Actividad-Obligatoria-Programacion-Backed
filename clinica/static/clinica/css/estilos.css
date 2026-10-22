@@ -1,44 +1,58 @@
-/* Huellas Sanas: estilos de la recepción
-   Idea visual: las placas de identificación de aluminio anodizado de los collares. */
+/* Huellas Sanas: estilos de la landing y de la recepción
+   Estilo de clínica veterinaria: blanco, verde clínica, superficies menta y fotos reales. */
 
 :root {
-    /* Superficies: gris aluminio frío y paneles blancos */
-    --suelo: #e8ecf0;
-    --panel: #ffffff;
-    --panel-suave: #f4f6f8;
-    --borde: #c9d1da;
-    --borde-fuerte: #95a2b0;
+    /* Superficies */
+    --blanco: #ffffff;
+    --fondo: #f5f9f8;
+    --menta: #e4f2ee;
+    --menta-fuerte: #cfe7e0;
+    --borde: #dce6e3;
+    --borde-fuerte: #a9bab5;
 
     /* Texto */
-    --tinta: #16202c;
-    --tinta-suave: #4a5667;
+    --tinta: #16302b;
+    --tinta-suave: #4f625d;
 
-    /* Azul anodizado: barra superior y acciones principales */
-    --azul: #173a6a;
-    --azul-medio: #1f4f94;
-    --azul-hover: #183f78;
-    --azul-tenue: #e4ecf8;
-    --dorado-foco: #f0b429;
+    /* Marca */
+    --verde: #0b6e5f;
+    --verde-hover: #095a4e;
+    --verde-oscuro: #0b3b34;
+    --durazno-tenue: #ffe9e1;
+    --durazno-texto: #a63d17;
 
     /* Estados de la cita */
-    --atendida: #1d6f37;
-    --atendida-fondo: #e3f2e7;
-    --cancelada: #a8261f;
-    --cancelada-fondo: #fbe8e6;
+    --pendiente: #8a5a00;
+    --pendiente-fondo: #fff3d6;
+    --atendida: #1c7a43;
+    --atendida-fondo: #e2f4e8;
+    --cancelada: #b42318;
+    --cancelada-fondo: #fdecea;
 
-    /* Color de placa por especie */
-    --perro: #b3322a;
-    --gato: #6a3d9a;
-    --ave: #2b7a43;
-    --conejo: #8c650b;
-    --roedor: #a14d1d;
-    --reptil: #1a6a74;
-    --sin-especie: #5b6776;
+    /* Color de cada especie (texto y fondo suave) */
+    --perro: #c2410c;
+    --perro-fondo: #ffede3;
+    --gato: #6d28d9;
+    --gato-fondo: #f1e9ff;
+    --ave: #15803d;
+    --ave-fondo: #e3f6e9;
+    --conejo: #be185d;
+    --conejo-fondo: #fde7f1;
+    --roedor: #a16207;
+    --roedor-fondo: #fef3d7;
+    --reptil: #0f766e;
+    --reptil-fondo: #ddf4f1;
+
+    /* Tipografías */
+    --titulos: "Young Serif", Georgia, serif;
+    --texto: "Figtree", system-ui, sans-serif;
 
     /* Medidas */
-    --radio: 6px;
-    --sombra: 0 1px 2px rgba(22, 32, 44, 0.08), 0 4px 12px rgba(22, 32, 44, 0.06);
-    --fuente: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, sans-serif;
+    --radio: 12px;
+    --radio-grande: 24px;
+    --sombra: 0 1px 2px rgba(16, 48, 43, 0.06), 0 8px 24px rgba(16, 48, 43, 0.08);
+    --sombra-flotante: 0 2px 6px rgba(16, 48, 43, 0.08), 0 20px 48px rgba(16, 48, 43, 0.18);
+    --ancho: 76rem;
 }
 
 /* ---------- Base ---------- */
@@ -51,55 +65,78 @@
 
 html {
     -webkit-text-size-adjust: 100%;
-    scrollbar-color: var(--borde-fuerte) var(--suelo);
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    scrollbar-color: var(--borde-fuerte) var(--fondo);
 }
 
 body {
     margin: 0;
-    background: var(--suelo);
+    background: var(--fondo);
     color: var(--tinta);
-    font-family: var(--fuente);
+    font-family: var(--texto);
     font-size: 1rem;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 h1,
 h2,
+h3,
 p {
     margin: 0;
 }
 
-h1 {
-    font-size: 2rem;
-    line-height: 1.15;
-    font-weight: 700;
-    letter-spacing: -0.015em;
+h1,
+h2 {
+    font-family: var(--titulos);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.01em;
     text-wrap: balance;
 }
 
+h1 {
+    font-size: 2.25rem;
+}
+
 h2 {
-    font-size: 1.25rem;
-    line-height: 1.25;
+    font-size: 1.75rem;
+}
+
+h3 {
+    font-size: 1.125rem;
     font-weight: 700;
+    line-height: 1.3;
+}
+
+/* height: auto deja que aspect-ratio controle la forma de cada foto */
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
 }
 
 a {
-    color: var(--azul-medio);
+    color: var(--verde);
     text-underline-offset: 0.2em;
 }
 
 a:hover {
-    color: var(--azul);
+    color: var(--verde-hover);
 }
 
 ::selection {
-    background: var(--azul-medio);
-    color: #fff;
+    background: var(--menta-fuerte);
+    color: var(--verde-oscuro);
 }
 
 :focus-visible {
-    outline: 3px solid var(--azul-medio);
+    outline: 3px solid var(--verde);
     outline-offset: 2px;
+}
+
+[hidden] {
+    display: none !important;
 }
 
 .solo-lector {
@@ -115,10 +152,10 @@ a:hover {
     position: absolute;
     left: 1rem;
     top: -4rem;
-    z-index: 10;
+    z-index: 20;
     padding: 0.5rem 1rem;
-    background: var(--panel);
-    border-radius: var(--radio);
+    border-radius: 999px;
+    background: var(--blanco);
 }
 
 .saltar:focus {
@@ -132,157 +169,51 @@ a:hover {
 }
 
 .contenedor {
-    width: min(100% - 2rem, 75rem);
-    margin: 2rem auto 4rem;
+    width: min(100% - 2rem, var(--ancho));
+    margin: 2.5rem auto 4rem;
 }
 
-/* ---------- Placa de identificación ---------- */
+/* ---------- Logo ---------- */
 
-.placa {
-    --tam: 2.5rem;
-    --color: var(--sin-especie);
-    position: relative;
-    display: inline-grid;
-    place-items: center;
-    flex-shrink: 0;
-    width: var(--tam);
-    height: var(--tam);
-    padding-top: calc(var(--tam) * 0.14);
-    border-radius: 50%;
-    color: #fff;
-    background-color: var(--color);
-    transition: background-color 200ms ease-out;
-}
-
-/* Agujero de la argolla */
-.placa::before {
-    content: "";
-    position: absolute;
-    top: 9%;
-    left: 50%;
-    width: 17%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: var(--fondo-placa, var(--panel));
-    transform: translateX(-50%);
-}
-
-/* Inicial de la mascota */
-.placa__letra {
-    font-size: calc(var(--tam) * 0.44);
-    font-weight: 700;
-    line-height: 1;
-}
-
-.placa--perro { --color: var(--perro); }
-.placa--gato { --color: var(--gato); }
-.placa--ave { --color: var(--ave); }
-.placa--conejo { --color: var(--conejo); }
-.placa--roedor { --color: var(--roedor); }
-.placa--reptil { --color: var(--reptil); }
-
-.placa--chica {
-    --tam: 1.25rem;
-}
-
-.placa--marca {
-    --tam: 2rem;
-    --color: var(--azul-medio);
-    --fondo-placa: var(--azul);
-}
-
-/* ---------- Barra superior ---------- */
-
-.barra {
-    background: var(--azul);
-    color: #fff;
-}
-
-.barra__interior {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    width: min(100% - 2rem, 75rem);
-    min-height: 4rem;
-    margin: 0 auto;
-}
-
-.barra :focus-visible {
-    outline-color: var(--dorado-foco);
-}
-
-.marca {
+.logo {
     display: inline-flex;
     align-items: center;
     gap: 0.625rem;
-    color: #fff;
-    font-size: 1.125rem;
-    font-weight: 700;
+    color: var(--verde-oscuro);
+    font-family: var(--titulos);
+    font-size: 1.375rem;
+    line-height: 1;
     text-decoration: none;
+    white-space: nowrap;
 }
 
-.marca:hover {
-    color: #fff;
+.logo:hover {
+    color: var(--verde-oscuro);
 }
 
-.menu {
-    display: flex;
-    gap: 0.25rem;
-    align-self: stretch;
+.logo__marca {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 12px;
+    background: var(--verde);
+    color: var(--blanco);
 }
 
-.menu a {
-    display: flex;
-    align-items: center;
-    padding: 0 0.875rem;
-    color: #d5e0f0;
-    text-decoration: none;
-    border-bottom: 3px solid transparent;
-    border-top: 3px solid transparent;
+.logo__marca svg {
+    width: 1.5rem;
+    height: 1.5rem;
 }
 
-.menu a:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.06);
+.logo--claro,
+.logo--claro:hover {
+    color: var(--blanco);
 }
 
-.menu a[aria-current="page"] {
-    color: #fff;
-    font-weight: 600;
-    border-bottom-color: var(--dorado-foco);
-}
-
-.sesion {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-left: auto;
-    color: #d5e0f0;
-    font-size: 0.9375rem;
-}
-
-.sesion a {
-    color: #fff;
-}
-
-.sesion__usuario {
-    padding-left: 1rem;
-    border-left: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.sesion form {
-    margin: 0;
-}
-
-.boton-enlace {
-    padding: 0.25rem 0;
-    border: 0;
-    background: none;
-    color: #fff;
-    font: inherit;
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-    cursor: pointer;
+.logo--claro .logo__marca {
+    background: var(--blanco);
+    color: var(--verde);
 }
 
 /* ---------- Botones ---------- */
@@ -292,57 +223,69 @@ a:hover {
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    min-height: 2.5rem;
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--borde-fuerte);
-    border-radius: var(--radio);
-    background: var(--panel);
+    min-height: 2.75rem;
+    padding: 0.625rem 1.25rem;
+    border: 1.5px solid var(--borde-fuerte);
+    border-radius: 999px;
+    background: var(--blanco);
     color: var(--tinta);
     font: inherit;
     font-weight: 600;
     line-height: 1.2;
     text-decoration: none;
+    white-space: nowrap;
     cursor: pointer;
-    transition: background-color 150ms ease-out, border-color 150ms ease-out;
+    transition: background-color 160ms ease-out, border-color 160ms ease-out, color 160ms ease-out;
 }
 
 .boton:hover {
-    background: var(--panel-suave);
-    color: var(--tinta);
-    border-color: var(--tinta-suave);
+    border-color: var(--verde);
+    color: var(--verde);
 }
 
 .boton:active {
     transform: translateY(1px);
 }
 
-.boton[aria-current] {
-    background: var(--azul-tenue);
-    border-color: var(--azul-medio);
-    color: var(--azul);
-}
-
 .boton--principal {
-    background: var(--azul-medio);
-    border-color: var(--azul-medio);
-    color: #fff;
+    border-color: var(--verde);
+    background: var(--verde);
+    color: var(--blanco);
 }
 
 .boton--principal:hover {
-    background: var(--azul-hover);
-    border-color: var(--azul-hover);
-    color: #fff;
+    border-color: var(--verde-hover);
+    background: var(--verde-hover);
+    color: var(--blanco);
 }
 
-.boton--icono {
-    width: 2.5rem;
-    padding: 0;
+.boton--blanco {
+    border-color: var(--blanco);
+    background: var(--blanco);
+    color: var(--verde-oscuro);
+}
+
+.boton--blanco:hover {
+    border-color: var(--menta);
+    background: var(--menta);
+    color: var(--verde-oscuro);
+}
+
+.boton--grande {
+    min-height: 3.25rem;
+    padding: 0.875rem 1.75rem;
+    font-size: 1.0625rem;
 }
 
 .boton--chico {
-    min-height: 2rem;
-    padding: 0.25rem 0.625rem;
+    min-height: 2.125rem;
+    padding: 0.375rem 0.875rem;
     font-size: 0.875rem;
+}
+
+.boton--icono {
+    width: 2.75rem;
+    padding: 0;
 }
 
 .boton--peligro {
@@ -350,8 +293,8 @@ a:hover {
 }
 
 .boton--peligro:hover {
-    background: var(--cancelada-fondo);
     border-color: var(--cancelada);
+    background: var(--cancelada-fondo);
     color: var(--cancelada);
 }
 
@@ -359,14 +302,13 @@ a:hover {
     width: 100%;
 }
 
-/* ---------- Paneles y avisos ---------- */
-
-.panel {
-    background: var(--panel);
-    border: 1px solid var(--borde);
-    border-radius: var(--radio);
-    box-shadow: var(--sombra);
+.boton[aria-current] {
+    border-color: var(--verde);
+    background: var(--menta);
+    color: var(--verde-oscuro);
 }
+
+/* ---------- Avisos ---------- */
 
 .avisos {
     margin-bottom: 1.5rem;
@@ -376,8 +318,7 @@ a:hover {
     display: flex;
     align-items: center;
     gap: 0.625rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid #a9d3b4;
+    padding: 0.875rem 1.125rem;
     border-radius: var(--radio);
     background: var(--atendida-fondo);
     color: var(--atendida);
@@ -389,8 +330,7 @@ a:hover {
     align-items: flex-start;
     gap: 0.625rem;
     margin-bottom: 1.25rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid #e5aaa4;
+    padding: 0.875rem 1.125rem;
     border-radius: var(--radio);
     background: var(--cancelada-fondo);
     color: var(--cancelada);
@@ -412,6 +352,145 @@ a:hover {
     font-size: 0.9375rem;
 }
 
+/* ---------- Tarjetas ---------- */
+
+.tarjeta {
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-grande);
+    background: var(--blanco);
+    box-shadow: var(--sombra);
+}
+
+/* ---------- Insignias de estado y especie ---------- */
+
+/* Estado: ícono + texto sobre un fondo suave, nunca solo color */
+.estado {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem 0.25rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.estado--pendiente {
+    background: var(--pendiente-fondo);
+    color: var(--pendiente);
+}
+
+.estado--atendida {
+    background: var(--atendida-fondo);
+    color: var(--atendida);
+}
+
+.estado--cancelada {
+    background: var(--cancelada-fondo);
+    color: var(--cancelada);
+}
+
+/* Cada especie define su par de colores */
+.especie-perro { --especie: var(--perro); --especie-fondo: var(--perro-fondo); }
+.especie-gato { --especie: var(--gato); --especie-fondo: var(--gato-fondo); }
+.especie-ave { --especie: var(--ave); --especie-fondo: var(--ave-fondo); }
+.especie-conejo { --especie: var(--conejo); --especie-fondo: var(--conejo-fondo); }
+.especie-roedor { --especie: var(--roedor); --especie-fondo: var(--roedor-fondo); }
+.especie-reptil { --especie: var(--reptil); --especie-fondo: var(--reptil-fondo); }
+
+/* Avatar con la inicial de la mascota */
+.avatar {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: var(--especie-fondo, var(--menta));
+    color: var(--especie, var(--verde));
+    font-weight: 700;
+}
+
+/* ---------- Barra superior de recepción ---------- */
+
+.barra {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--borde);
+    background: rgba(255, 255, 255, 0.96);
+}
+
+.barra__interior {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    width: min(100% - 2rem, var(--ancho));
+    min-height: 4.5rem;
+    margin: 0 auto;
+}
+
+.menu {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.menu a {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    color: var(--tinta-suave);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.menu a:hover {
+    background: var(--fondo);
+    color: var(--tinta);
+}
+
+.menu a[aria-current="page"] {
+    background: var(--menta);
+    color: var(--verde-oscuro);
+}
+
+.sesion {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-left: auto;
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+.sesion form {
+    margin: 0;
+}
+
+.sesion__usuario {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.sesion__usuario .avatar {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.875rem;
+}
+
+.boton-enlace {
+    padding: 0.25rem 0;
+    border: 0;
+    background: none;
+    color: var(--verde);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+}
+
 /* ---------- Agenda del día ---------- */
 
 .cabecera-dia {
@@ -420,23 +499,25 @@ a:hover {
     align-items: flex-end;
     justify-content: space-between;
     gap: 1.5rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .cabecera-dia h1 {
-    font-size: 2.25rem;
+    color: var(--verde-oscuro);
+    font-size: 2.5rem;
 }
 
 .cabecera-dia__sub {
-    margin-top: 0.25rem;
+    margin-top: 0.375rem;
     color: var(--tinta-suave);
+    font-size: 1.0625rem;
 }
 
 .cabecera-dia__acciones {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 .selector-dia {
@@ -452,34 +533,17 @@ a:hover {
     margin: 0;
 }
 
-.selector-dia__fecha input {
-    min-height: 2.5rem;
-}
-
 .conteo {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    margin: 0 0 1rem;
+    gap: 0.5rem;
+    margin: 0 0 1.25rem;
     padding: 0;
     list-style: none;
 }
 
-/* Estado: ícono + texto, nunca solo color */
-.estado {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-weight: 600;
-    color: var(--tinta-suave);
-}
-
-.estado--atendida {
-    color: var(--atendida);
-}
-
-.estado--cancelada {
-    color: var(--cancelada);
+.panel-tabla {
+    overflow: hidden;
 }
 
 .agenda {
@@ -488,17 +552,17 @@ a:hover {
 }
 
 .agenda th {
-    padding: 0.75rem 1rem;
+    padding: 0.875rem 1.25rem;
     border-bottom: 1px solid var(--borde);
-    background: var(--panel-suave);
+    background: var(--fondo);
     color: var(--tinta-suave);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
     font-weight: 600;
     text-align: left;
 }
 
 .agenda td {
-    padding: 0.875rem 1rem;
+    padding: 1rem 1.25rem;
     border-bottom: 1px solid var(--borde);
     vertical-align: middle;
 }
@@ -508,7 +572,7 @@ a:hover {
 }
 
 .agenda__hora {
-    width: 7.5rem;
+    width: 8rem;
 }
 
 .hora {
@@ -519,12 +583,12 @@ a:hover {
 }
 
 .agenda__paciente {
-    min-width: 13rem;
+    min-width: 14rem;
 }
 
 .paciente {
     display: flex;
-    gap: 0.75rem;
+    gap: 0.875rem;
     align-items: center;
 }
 
@@ -543,10 +607,6 @@ a:hover {
     max-width: 22rem;
 }
 
-.agenda__estado {
-    white-space: nowrap;
-}
-
 .agenda__acciones {
     text-align: right;
     white-space: nowrap;
@@ -558,20 +618,27 @@ a:hover {
     margin: 0;
 }
 
-/* Próxima cita pendiente, como la fila destacada de un tablero */
+/* Próxima cita pendiente */
 .fila--siguiente td {
-    --fondo-placa: var(--azul-tenue);
-    background: var(--azul-tenue);
+    background: var(--menta);
 }
 
 .marca-siguiente {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    margin-top: 0.125rem;
-    color: var(--azul-medio);
-    font-size: 0.8125rem;
+    margin-top: 0.25rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    background: var(--durazno-tenue);
+    color: var(--durazno-texto);
+    font-size: 0.75rem;
     font-weight: 700;
+}
+
+.marca-siguiente .icono {
+    width: 1em;
+    height: 1em;
 }
 
 .fila--cancelada .paciente__nombre,
@@ -582,7 +649,7 @@ a:hover {
     text-decoration-thickness: 1px;
 }
 
-.fila--cancelada .placa {
+.fila--cancelada .avatar {
     opacity: 0.55;
 }
 
@@ -590,14 +657,23 @@ a:hover {
     display: grid;
     justify-items: center;
     gap: 0.75rem;
-    padding: 3.5rem 1.5rem;
+    padding: 4rem 1.5rem;
     text-align: center;
 }
 
-.vacio .icono {
-    width: 2.5rem;
-    height: 2.5rem;
-    color: var(--borde-fuerte);
+.vacio__icono {
+    display: grid;
+    place-items: center;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--menta);
+    color: var(--verde);
+}
+
+.vacio__icono .icono {
+    width: 1.75rem;
+    height: 1.75rem;
 }
 
 .vacio p {
@@ -612,30 +688,32 @@ a:hover {
 /* ---------- Formularios ---------- */
 
 .encabezado-pagina {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.75rem;
+}
+
+.encabezado-pagina h1 {
+    color: var(--verde-oscuro);
+    font-size: 2.5rem;
 }
 
 .encabezado-pagina p {
     max-width: 65ch;
-    margin-top: 0.375rem;
+    margin-top: 0.5rem;
     color: var(--tinta-suave);
+    font-size: 1.0625rem;
 }
 
 .formulario {
-    padding: 1.75rem;
-}
-
-.formulario--angosto {
-    max-width: 40rem;
+    padding: 2rem;
 }
 
 .campo {
     display: grid;
     gap: 0.375rem;
-    margin: 0 0 1.25rem;
+    min-width: 0;
+    margin: 0 0 1.375rem;
     padding: 0;
     border: 0;
-    min-width: 0;
 }
 
 .campo label,
@@ -645,7 +723,7 @@ a:hover {
 }
 
 .campo legend {
-    margin-bottom: 0.375rem;
+    margin-bottom: 0.5rem;
 }
 
 input[type="text"],
@@ -654,19 +732,16 @@ input[type="date"],
 select,
 textarea {
     width: 100%;
-    min-height: 2.75rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--borde-fuerte);
+    min-height: 3rem;
+    padding: 0.625rem 0.875rem;
+    border: 1.5px solid var(--borde);
     border-radius: var(--radio);
-    background: var(--panel);
+    background: var(--blanco);
     color: var(--tinta);
     font: inherit;
-    accent-color: var(--azul-medio);
-    caret-color: var(--azul-medio);
-}
-
-.selector-dia__fecha input[type="date"] {
-    width: auto;
+    accent-color: var(--verde);
+    caret-color: var(--verde);
+    transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
 }
 
 textarea {
@@ -675,20 +750,27 @@ textarea {
 
 input::placeholder,
 textarea::placeholder {
-    color: #6b7684;
+    color: #6d7f7a;
 }
 
 input:hover,
 select:hover,
 textarea:hover {
-    border-color: var(--tinta-suave);
+    border-color: var(--borde-fuerte);
 }
 
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible {
-    border-color: var(--azul-medio);
-    outline-offset: 0;
+    border-color: var(--verde);
+    outline: 0;
+    box-shadow: 0 0 0 4px var(--menta-fuerte);
+}
+
+.selector-dia__fecha input[type="date"] {
+    width: auto;
+    min-height: 2.75rem;
+    border-radius: 999px;
 }
 
 .campo--error input,
@@ -716,29 +798,30 @@ textarea:focus-visible {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
-    margin-top: 0.5rem;
-    padding-top: 1.25rem;
+    margin-top: 0.75rem;
+    padding-top: 1.5rem;
     border-top: 1px solid var(--borde);
 }
 
-/* Especies como opciones con su color de placa */
+/* Especies como opciones con su foto */
 .especies {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
+    gap: 0.625rem;
 }
 
 .especie {
     display: flex;
     align-items: center;
-    gap: 0.625rem;
-    min-height: 2.75rem;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--borde-fuerte);
+    gap: 0.75rem;
+    min-height: 3.5rem;
+    padding: 0.5rem 0.875rem 0.5rem 0.5rem;
+    border: 1.5px solid var(--borde);
     border-radius: var(--radio);
-    background: var(--panel);
-    font-weight: 400 !important;
+    background: var(--blanco);
+    font-weight: 600;
     cursor: pointer;
+    transition: border-color 160ms ease-out, background-color 160ms ease-out;
 }
 
 .especie input {
@@ -747,20 +830,25 @@ textarea:focus-visible {
     pointer-events: none;
 }
 
+.especie img {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .especie:hover {
-    border-color: var(--tinta-suave);
+    border-color: var(--borde-fuerte);
 }
 
 .especie:has(input:checked) {
-    border-color: var(--azul-medio);
-    background: var(--azul-tenue);
-    box-shadow: inset 0 0 0 1px var(--azul-medio);
-    font-weight: 600 !important;
-    --fondo-placa: var(--azul-tenue);
+    border-color: var(--verde);
+    background: var(--menta);
+    box-shadow: inset 0 0 0 1px var(--verde);
 }
 
 .especie:has(input:focus-visible) {
-    outline: 3px solid var(--azul-medio);
+    outline: 3px solid var(--verde);
     outline-offset: 2px;
 }
 
@@ -768,306 +856,466 @@ textarea:focus-visible {
     border-color: var(--cancelada);
 }
 
-/* Nuevo paciente: formulario + vista previa de la placa */
+/* Nuevo paciente: formulario + ficha en vivo */
 .ingreso {
     display: grid;
-    grid-template-columns: minmax(0, 40rem) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 42rem) minmax(0, 1fr);
     gap: 2rem;
     align-items: start;
 }
 
-.vista-placa {
+.ficha {
     position: sticky;
-    top: 2rem;
-    display: grid;
-    justify-items: center;
-    gap: 1rem;
-    padding: 2rem 1rem;
-    text-align: center;
-}
-
-.placa--grande {
-    --tam: 15rem;
-    --fondo-placa: var(--suelo);
-    align-content: center;
-    gap: 0.25rem;
-    padding: 2.25rem 1.5rem 0;
-    box-shadow: 0 12px 28px rgba(22, 32, 44, 0.18);
-}
-
-.placa--grande::before {
-    width: 12%;
-}
-
-.placa__nombre,
-.placa__especie,
-.placa__dueno {
-    max-width: 11rem;
+    top: 6.5rem;
     overflow: hidden;
+}
+
+.ficha__foto {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background: var(--menta);
+}
+
+.ficha__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 200ms ease-out;
+}
+
+.ficha__foto--vacia img {
+    opacity: 0;
+}
+
+/* Huella grande cuando todavía no hay especie elegida */
+.ficha__foto svg {
+    position: absolute;
+    inset: 0;
+    width: 4rem;
+    height: 4rem;
+    margin: auto;
+    color: var(--menta-fuerte);
+}
+
+/* Cuando ya hay foto de la especie, la huella se oculta */
+.ficha__foto:not(.ficha__foto--vacia) svg {
+    display: none;
+}
+
+.ficha__cuerpo {
+    display: grid;
+    gap: 0.75rem;
+    padding: 1.5rem;
+}
+
+.ficha__nombre {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.ficha__nombre strong {
+    overflow: hidden;
+    font-family: var(--titulos);
+    font-size: 1.75rem;
+    font-weight: 400;
+    line-height: 1.15;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.placa--grande .placa__letra {
-    font-size: 2.5rem;
-}
-
-.placa__nombre {
-    font-size: 2rem;
+.ficha__especie {
+    justify-self: start;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: var(--especie-fondo, var(--fondo));
+    color: var(--especie, var(--tinta-suave));
+    font-size: 0.875rem;
     font-weight: 700;
-    line-height: 1.1;
 }
 
-.placa__especie {
+.ficha__dueno {
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--borde);
+    color: var(--tinta-suave);
+    font-size: 0.875rem;
+}
+
+.ficha__dueno span {
+    display: block;
+    color: var(--tinta);
     font-size: 1rem;
     font-weight: 600;
-    opacity: 0.92;
 }
 
-.placa__dueno {
-    margin-top: 0.5rem;
-    padding-top: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.35);
-    font-size: 0.9375rem;
+.ficha--vacia .ficha__nombre strong {
+    color: var(--borde-fuerte);
 }
 
-.placa--vacia .placa__nombre,
-.placa--vacia .placa__especie,
-.placa--vacia .placa__dueno {
-    opacity: 0.7;
+/* Agendar cita: formulario + recuadro de ayuda */
+.agendar {
+    display: grid;
+    grid-template-columns: minmax(0, 42rem) minmax(0, 22rem);
+    gap: 2rem;
+    align-items: start;
 }
 
-/* ---------- Alambre con placas colgando (landing) ---------- */
+.recuadro {
+    padding: 1.75rem;
+    border-radius: var(--radio-grande);
+    background: var(--menta);
+}
 
-.alambre {
-    --alambre: var(--borde-fuerte);
-    position: relative;
-    display: flex;
-    gap: 1.5rem;
-    margin: 0;
-    padding: 1.25rem 0 0;
+.recuadro h2 {
+    color: var(--verde-oscuro);
+    font-size: 1.375rem;
+}
+
+.recuadro ul {
+    display: grid;
+    gap: 0.875rem;
+    margin: 1rem 0 0;
+    padding: 0;
     list-style: none;
 }
 
-/* El alambre del que cuelga cada placa */
-.alambre::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    border-radius: 3px;
-    background: var(--alambre);
-}
-
-.alambre > li {
-    position: relative;
-    display: grid;
-    justify-items: center;
-    align-content: start;
+.recuadro li {
+    display: flex;
     gap: 0.625rem;
+    color: var(--tinta-suave);
 }
 
-/* Argolla que une la placa con el alambre y pasa por su agujero */
-.alambre > li::before {
+.recuadro .icono {
+    margin-top: 0.125rem;
+    color: var(--verde);
+}
+
+/* ---------- Ingreso del personal ---------- */
+
+.pagina-acceso {
+    background: var(--blanco);
+}
+
+.acceso {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+.acceso > .avisos {
+    display: none;
+}
+
+.acceso__foto {
+    position: relative;
+    overflow: hidden;
+    background: var(--verde-oscuro);
+}
+
+.acceso__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Oscurece arriba y abajo para que el logo y la frase se lean sobre la foto */
+.acceso__foto::after {
     content: "";
     position: absolute;
-    top: -1.25rem;
-    left: 50%;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11, 59, 52, 0.55) 0%, rgba(11, 59, 52, 0) 30%, rgba(11, 59, 52, 0) 55%, rgba(11, 59, 52, 0.8) 100%);
+}
+
+.acceso__foto .logo {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
     z-index: 1;
-    width: 0.875rem;
-    height: 1.95rem;
-    transform: translateX(-50%);
-    border: 2px solid var(--alambre);
-    border-radius: 1rem;
 }
 
-.placa--colgante {
-    --tam: 3.5rem;
-    --fondo-placa: var(--suelo);
-    transform-origin: 50% 0;
-    animation: balanceo 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+.acceso__frase {
+    position: absolute;
+    right: 2rem;
+    bottom: 2.5rem;
+    left: 2rem;
+    z-index: 1;
+    max-width: 26ch;
+    color: var(--blanco);
+    font-family: var(--titulos);
+    font-size: 2rem;
+    line-height: 1.2;
 }
 
-.alambre > li:nth-child(2) .placa { animation-delay: 60ms; }
-.alambre > li:nth-child(3) .placa { animation-delay: 120ms; }
-.alambre > li:nth-child(4) .placa { animation-delay: 180ms; }
-.alambre > li:nth-child(5) .placa { animation-delay: 240ms; }
-.alambre > li:nth-child(6) .placa { animation-delay: 300ms; }
+.acceso__formulario {
+    display: grid;
+    place-content: center;
+    padding: 3rem 1.5rem;
+}
 
-/* Un solo balanceo al cargar, como algo que se acaba de colgar */
-@keyframes balanceo {
-    0% { transform: rotate(7deg); }
-    30% { transform: rotate(-4.5deg); }
-    55% { transform: rotate(2deg); }
-    78% { transform: rotate(-0.75deg); }
-    100% { transform: rotate(0deg); }
+.acceso__caja {
+    width: min(100vw - 3rem, 25rem);
+}
+
+.acceso__caja h1 {
+    color: var(--verde-oscuro);
+    font-size: 2.25rem;
+}
+
+.acceso__caja .ayuda {
+    margin: 0.5rem 0 2rem;
+    font-size: 1rem;
+}
+
+.acceso__caja .boton--ancho {
+    min-height: 3.125rem;
+    margin-top: 0.5rem;
+}
+
+.acceso__pie {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--borde);
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+.acceso__volver {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-weight: 600;
 }
 
 /* ---------- Landing pública ---------- */
 
 .pagina-inicio {
-    background: var(--suelo);
-}
-
-.inicio {
-    display: block;
+    background: var(--blanco);
 }
 
 .inicio > .avisos {
-    width: min(100% - 2rem, 75rem);
+    width: min(100% - 2rem, var(--ancho));
     margin: 1.5rem auto 0;
 }
 
-/* Correa del collar: azul oscuro con dos costuras */
-.correa {
-    position: relative;
-    height: 1.5rem;
-    background: #0f2a50;
-}
-
-.correa::before,
-.correa::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    border-top: 2px dashed rgba(213, 224, 240, 0.35);
-}
-
-.correa::before {
-    top: 4px;
-}
-
-/* Tramo de correa que solo se ve en celular */
-.correa--movil {
-    display: none;
-}
-
-.correa::after {
-    bottom: 4px;
-}
-
-.portada {
-    background: var(--azul);
-    color: #fff;
-}
-
-.portada__interior {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    gap: 4rem;
-    align-items: start;
-    width: min(100% - 2rem, 75rem);
+.envoltura {
+    width: min(100% - 2rem, var(--ancho));
     margin: 0 auto;
-    padding: 3.5rem 0 5rem;
+}
+
+/* Franja superior con el horario */
+.franja {
+    background: var(--verde-oscuro);
+    color: #d7ebe5;
+    font-size: 0.875rem;
+}
+
+.franja .envoltura {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.5rem;
+}
+
+.franja p {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.franja .icono {
+    width: 1.125rem;
+    height: 1.125rem;
+}
+
+.franja a {
+    color: var(--blanco);
+    font-weight: 600;
+}
+
+.franja :focus-visible {
+    outline-color: var(--blanco);
+}
+
+/* Cabecera de la landing */
+.cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--borde);
+    background: rgba(255, 255, 255, 0.97);
+}
+
+.cabecera .envoltura {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+    min-height: 5rem;
+}
+
+.cabecera__acciones {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-left: auto;
+}
+
+.cabecera__telefono {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--tinta);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.cabecera__telefono:hover {
+    color: var(--verde);
+}
+
+/* Portada */
+.portada {
+    padding: 4.5rem 0 5.5rem;
+    background: linear-gradient(180deg, var(--blanco) 0%, var(--fondo) 100%);
+}
+
+.portada .envoltura {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: center;
 }
 
 .portada__texto {
     display: grid;
     gap: 1.5rem;
-    padding-top: 2rem;
+    justify-items: start;
 }
 
 .portada h1 {
     max-width: 13ch;
-    font-size: clamp(2.5rem, 5.2vw, 4.5rem);
-    line-height: 1.02;
-    letter-spacing: -0.03em;
+    color: var(--verde-oscuro);
+    font-size: clamp(2.75rem, 5.4vw, 4.75rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
 }
 
-.portada__texto p {
-    max-width: 46ch;
-    color: #d5e0f0;
+.portada__bajada {
+    max-width: 44ch;
+    color: var(--tinta-suave);
     font-size: 1.1875rem;
 }
 
-.portada__acciones {
+.portada__botones {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+/* Fotos pequeñas superpuestas de las especies */
+.especies-mini {
+    display: flex;
     align-items: center;
-    gap: 1rem 1.5rem;
-    margin-top: 0.5rem;
-}
-
-.portada__telefono {
-    color: #d5e0f0;
-    font-size: 1.125rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-}
-
-.boton--claro {
-    background: #fff;
-    border-color: #fff;
-    color: var(--azul);
-}
-
-.boton--claro:hover {
-    background: var(--azul-tenue);
-    border-color: var(--azul-tenue);
-    color: var(--azul);
-}
-
-.boton--grande {
-    min-height: 3.25rem;
-    padding: 0.75rem 1.5rem;
-    font-size: 1.125rem;
-}
-
-/* Letrero de horas libres colgado de la correa */
-.letrero {
-    --hueco: 3.5rem;
-    position: relative;
-    margin-top: 0;
-    padding: 3.25rem 2rem 2rem;
-    border-radius: 1.25rem;
-    background: var(--panel);
-    color: var(--tinta);
-    box-shadow: 0 18px 40px rgba(5, 20, 45, 0.35);
-    transform-origin: 50% calc(var(--hueco) * -1);
-    animation: balanceo 1.8s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
-.letrero__agujero {
-    position: absolute;
-    top: 1.125rem;
-    width: 0.875rem;
-    height: 0.875rem;
-    border-radius: 50%;
-    background: var(--azul);
-}
-
-.letrero__agujero--izquierda { left: 1.75rem; }
-.letrero__agujero--derecha { right: 1.75rem; }
-
-/* Cada argolla baja desde la correa hasta el agujero del letrero */
-.letrero__argolla {
-    position: absolute;
-    top: calc((var(--hueco) + 0.75rem) * -1);
-    z-index: 1;
-    width: 1rem;
-    height: calc(var(--hueco) + 0.75rem + 1.6rem);
-    border: 3px solid #b8c4d2;
-    border-radius: 1rem;
-}
-
-.letrero__argolla--izquierda { left: 1.69rem; }
-.letrero__argolla--derecha { right: 1.69rem; }
-
-.letrero h2 {
-    font-size: 1.5rem;
-}
-
-.letrero__dia {
-    margin-top: 1.25rem;
-}
-
-.letrero__dia h3 {
-    margin: 0 0 0.625rem;
+    gap: 1rem;
+    margin-top: 0.75rem;
     color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+.especies-mini ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.especies-mini li + li {
+    margin-left: -0.75rem;
+}
+
+.especies-mini img {
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 3px solid var(--blanco);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.portada__visual {
+    position: relative;
+    padding: 0 0 2.5rem 2.5rem;
+}
+
+/* Forma menta detrás de la foto */
+.portada__visual::before {
+    content: "";
+    position: absolute;
+    top: 2.5rem;
+    right: -1.5rem;
+    bottom: 0;
+    left: 0;
+    border-radius: 40px;
+    background: var(--menta);
+}
+
+.portada__foto {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 32px;
+    object-fit: cover;
+    object-position: 30% center;
+}
+
+/* Tarjeta flotante con las horas libres de hoy */
+.disponible {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: min(23rem, 85%);
+    padding: 1.25rem 1.375rem;
+    border-radius: 20px;
+    background: var(--blanco);
+    box-shadow: var(--sombra-flotante);
+}
+
+.disponible__titulo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Punto que indica disponibilidad en vivo */
+.punto-vivo {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: var(--atendida);
+    box-shadow: 0 0 0 4px var(--atendida-fondo);
+}
+
+.disponible__dia {
+    margin-top: 0.125rem;
+    color: var(--tinta-suave);
+    font-size: 0.875rem;
+}
+
+.disponible .fichas {
+    margin-top: 0.875rem;
+}
+
+.disponible__mas {
+    display: inline-flex;
+    margin-top: 0.875rem;
+    font-size: 0.9375rem;
     font-weight: 600;
 }
 
@@ -1080,357 +1328,387 @@ textarea:focus-visible {
     list-style: none;
 }
 
-.ficha {
-    min-width: 4.25rem;
-    padding: 0.375rem 0.625rem;
-    border: 1px solid var(--borde-fuerte);
-    border-radius: var(--radio);
-    font-size: 1.0625rem;
+.ficha-hora {
+    min-width: 4.5rem;
+    padding: 0.4375rem 0.75rem;
+    border: 1.5px solid var(--menta-fuerte);
+    border-radius: 999px;
+    background: var(--menta);
+    color: var(--verde-oscuro);
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     text-align: center;
 }
 
-.letrero__mas {
-    margin-top: 0.5rem;
-    color: var(--tinta-suave);
-    font-size: 0.9375rem;
-}
-
-.letrero__nota {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--borde);
-    color: var(--tinta-suave);
-    font-size: 0.9375rem;
-}
-
-/* Secciones sobre el gris aluminio */
+/* Secciones */
 .seccion {
-    padding: 5rem 0;
+    padding: 6rem 0;
 }
 
-.seccion + .seccion {
-    padding-top: 0;
+.seccion--fondo {
+    background: var(--fondo);
 }
 
-.seccion__interior {
-    width: min(100% - 2rem, 75rem);
-    margin: 0 auto;
+.seccion__cabeza {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 40rem;
+    margin-bottom: 3rem;
 }
 
 .seccion h2 {
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
-    text-wrap: balance;
+    color: var(--verde-oscuro);
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    line-height: 1.1;
 }
 
-.seccion__texto {
-    display: grid;
-    gap: 1rem;
-    align-content: start;
-}
-
-.seccion__texto p {
-    max-width: 52ch;
+.seccion__cabeza p {
     color: var(--tinta-suave);
     font-size: 1.125rem;
 }
 
-.seccion__interior--especies,
-.seccion__interior--ejemplo {
+/* Horas libres */
+.horas {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: 4rem;
+    align-items: start;
+}
+
+.horas .seccion__cabeza {
+    margin-bottom: 0;
+}
+
+.horas__dias {
+    display: grid;
+    gap: 1rem;
+}
+
+.horas__dia {
+    padding: 1.5rem 1.75rem;
+}
+
+.horas__dia h3 {
+    margin-bottom: 1rem;
+}
+
+.horas__dia h3 span {
+    color: var(--tinta-suave);
+    font-weight: 500;
+}
+
+.horas__mas {
+    margin-top: 0.875rem;
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+.horas__vacio {
+    padding: 1.75rem;
+    color: var(--tinta-suave);
+}
+
+.horas__nota {
+    display: flex;
+    gap: 0.5rem;
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+/* Especies */
+.galeria {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.galeria li {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radio-grande);
+    background: var(--menta);
+}
+
+.galeria img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+}
+
+.galeria span {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.375rem 1rem;
+    border-radius: 999px;
+    background: var(--blanco);
+    color: var(--verde-oscuro);
+    font-weight: 700;
+}
+
+/* Pasos */
+.pasos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: paso;
+}
+
+.pasos li {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+    padding: 2rem;
+    counter-increment: paso;
+}
+
+/* El número de cada paso sale de un contador de CSS */
+.pasos li::before {
+    content: counter(paso);
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.5rem;
+    border-radius: 50%;
+    background: var(--verde);
+    color: var(--blanco);
+    font-family: var(--titulos);
+    font-size: 1.375rem;
+}
+
+.pasos h3 {
+    font-size: 1.25rem;
+}
+
+.pasos p {
+    color: var(--tinta-suave);
+}
+
+/* Bloque foto + agenda de ejemplo */
+.registro {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 4rem;
     align-items: center;
 }
 
-.alambre--especies {
-    justify-content: space-between;
+.registro__foto {
+    width: 100%;
+    aspect-ratio: 5 / 4;
+    border-radius: 32px;
+    object-fit: cover;
 }
 
-.alambre--especies > li {
-    font-weight: 600;
-}
-
-.seccion--pasos h2 {
-    margin-bottom: 2.5rem;
-}
-
-.alambre--pasos {
+.registro__texto {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2.5rem;
+    gap: 1.25rem;
 }
 
-.alambre--pasos > li {
-    justify-items: start;
-}
-
-/* En los pasos la argolla y la placa quedan alineadas a la izquierda */
-.alambre--pasos > li::before {
-    left: 1.75rem;
-}
-
-.alambre--pasos h3 {
-    margin: 0.5rem 0 0;
-    font-size: 1.25rem;
-}
-
-.alambre--pasos p {
-    margin: 0;
-    max-width: 34ch;
+.registro__texto > p {
     color: var(--tinta-suave);
-}
-
-.placa--paso {
-    --color: var(--azul-medio);
-}
-
-.seccion__interior--ejemplo {
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+    font-size: 1.125rem;
 }
 
 .ejemplo {
-    margin: 0;
+    margin: 0.5rem 0 0;
     overflow: hidden;
+}
+
+.ejemplo .agenda td,
+.ejemplo .agenda th {
+    padding: 0.75rem 1rem;
 }
 
 .ejemplo figcaption {
     padding: 0.625rem 1rem;
     border-top: 1px solid var(--borde);
-    background: var(--panel-suave);
+    background: var(--fondo);
     color: var(--tinta-suave);
-    font-size: 0.875rem;
+    font-size: 0.8125rem;
 }
 
-/* Cierre: la correa vuelve y abre la sección de contacto */
-.cierre {
-    background: var(--azul);
-    color: #fff;
+/* Llamado final */
+.llamado {
+    padding: 0 0 6rem;
 }
 
-.cierre__interior {
+.llamado__caja {
     display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 2rem;
-    justify-items: start;
-    width: min(100% - 2rem, 75rem);
-    margin: 0 auto;
-    padding: 4.5rem 0 4rem;
+    align-items: center;
+    padding: 3.5rem 4rem;
+    border-radius: 32px;
+    background: var(--verde);
+    color: var(--blanco);
 }
 
-.cierre h2 {
-    font-size: clamp(2rem, 4vw, 3rem);
-    letter-spacing: -0.025em;
+.llamado h2 {
+    color: var(--blanco);
+    font-size: clamp(2rem, 3.6vw, 2.75rem);
 }
 
-.datos {
+.llamado p {
+    margin-top: 0.75rem;
+    color: #d7ebe5;
+    font-size: 1.125rem;
+}
+
+.llamado :focus-visible {
+    outline-color: var(--blanco);
+}
+
+/* Pie de página */
+.pie {
+    padding: 4rem 0 2rem;
+    background: var(--verde-oscuro);
+    color: #c4ddd6;
+}
+
+.pie a {
+    color: var(--blanco);
+}
+
+.pie :focus-visible {
+    outline-color: var(--blanco);
+}
+
+.pie__columnas {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2rem;
-    width: 100%;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 2.5rem;
+}
+
+.pie__marca p {
+    max-width: 32ch;
+    margin-top: 1rem;
+}
+
+.pie h3 {
+    margin-bottom: 0.75rem;
+    color: var(--blanco);
+    font-size: 1rem;
+}
+
+.pie dl,
+.pie dd {
     margin: 0;
 }
 
-.datos dt {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #b9c8de;
-    font-weight: 600;
-}
-
-.datos dd {
-    margin: 0.375rem 0 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-}
-
-.cierre a:not(.boton) {
-    color: #fff;
-}
-
-.cierre :focus-visible {
-    outline-color: var(--dorado-foco);
-}
-
-.cierre__nota {
-    margin-top: -1rem;
-    color: #b9c8de;
-    font-size: 0.9375rem;
-}
-
-.pie {
+.pie__abajo {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     gap: 1rem;
-    width: min(100% - 2rem, 75rem);
-    margin: 0 auto;
-    padding: 1.5rem 0 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.18);
-    color: #b9c8de;
-    font-size: 0.9375rem;
-}
-
-/* ---------- Ingreso del personal ---------- */
-
-.pagina-acceso {
-    background: var(--suelo);
-}
-
-.acceso {
-    display: grid;
-    place-content: center;
-    justify-items: center;
-    gap: 1.5rem;
-    min-height: 100vh;
-    min-height: 100dvh;
-    padding: 2rem 1rem;
-}
-
-.marca--oscura,
-.marca--oscura:hover {
-    color: var(--tinta);
-    font-size: 1.25rem;
-}
-
-.marca--oscura .placa--marca {
-    --fondo-placa: var(--suelo);
-}
-
-.panel--ingreso {
-    width: min(100vw - 2rem, 26rem);
-    padding: 2rem;
-}
-
-.panel--ingreso h1 {
-    font-size: 1.5rem;
-}
-
-.panel--ingreso .ayuda {
-    margin: 0.375rem 0 1.5rem;
-}
-
-.panel--ingreso .boton--ancho {
-    min-height: 2.75rem;
-    margin-top: 0.5rem;
-}
-
-.panel__pie {
-    margin-top: 1.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--borde);
-    color: var(--tinta-suave);
-    font-size: 0.9375rem;
-}
-
-.acceso__volver {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.875rem;
 }
 
 /* ---------- Pantallas medianas y chicas ---------- */
 
-@media (max-width: 1000px) {
-    .ingreso {
+@media (max-width: 1100px) {
+    .cabecera .menu {
+        display: none;
+    }
+
+    .ingreso,
+    .agendar {
         grid-template-columns: 1fr;
     }
 
-    .vista-placa {
+    .ficha {
         position: static;
         order: -1;
-        padding: 0;
+        display: grid;
+        grid-template-columns: 12rem minmax(0, 1fr);
     }
 
-    .placa--grande {
-        --tam: 12rem;
-    }
-
-    .placa__nombre {
-        font-size: 1.5rem;
+    .ficha__foto {
+        aspect-ratio: auto;
+        min-height: 100%;
     }
 
     .barra__interior {
         flex-wrap: wrap;
         gap: 0 1.5rem;
-        padding-top: 0.5rem;
+        padding-top: 0.75rem;
     }
 
-    .menu {
+    .barra .menu {
         order: 3;
         width: 100%;
-        min-height: 3rem;
-        margin: 0 -0.875rem;
+        padding: 0.5rem 0 0.75rem;
         overflow-x: auto;
-    }
-
-    .menu a {
-        white-space: nowrap;
-    }
-
-    .sesion {
-        gap: 0.75rem;
     }
 }
 
 @media (max-width: 860px) {
-    /* Landing en una columna: el letrero cuelga de su propio tramo de correa */
-    .portada__interior,
-    .seccion__interior--especies,
-    .seccion__interior--ejemplo {
+    .portada {
+        padding: 2.5rem 0 3.5rem;
+    }
+
+    .portada .envoltura,
+    .horas,
+    .registro {
         grid-template-columns: 1fr;
         gap: 2.5rem;
     }
 
-    .portada__interior {
-        padding: 2.5rem 0 3rem;
+    .portada__visual {
+        padding: 0 0 2rem 1rem;
     }
 
-    .portada__texto {
-        padding-top: 0;
+    .portada__visual::before {
+        right: -1rem;
     }
 
-    .correa--movil {
-        display: block;
-        margin: 0 -1rem;
-    }
-
-    /* El espacio entre la correa y el letrero es el mismo gap de la grilla */
-    .letrero {
-        --hueco: 2.5rem;
-        padding: 2.75rem 1.25rem 1.5rem;
+    .galeria,
+    .pasos {
+        grid-template-columns: 1fr 1fr;
     }
 
     .seccion {
-        padding: 3.5rem 0;
+        padding: 4rem 0;
     }
 
-    .alambre--pasos {
+    .llamado {
+        padding-bottom: 4rem;
+    }
+
+    .llamado__caja {
         grid-template-columns: 1fr;
-        gap: 2rem;
-        padding-top: 0;
+        padding: 2.5rem 1.75rem;
     }
 
-    /* Los pasos se apilan: cada uno cuelga de su propio tramo de alambre */
-    .alambre--pasos::before {
-        display: none;
+    .pie__columnas {
+        grid-template-columns: 1fr 1fr;
     }
 
-    .alambre--pasos > li {
-        padding-top: 1.25rem;
-        border-top: 3px solid var(--alambre);
-    }
-
-    .alambre--pasos > li::before {
-        top: -0.2rem;
-    }
-
-    .datos {
+    .acceso {
         grid-template-columns: 1fr;
-        gap: 1.25rem;
+    }
+
+    .acceso__foto {
+        height: 15rem;
+    }
+
+    .acceso__frase {
+        bottom: 1.5rem;
+        font-size: 1.375rem;
+    }
+
+    .acceso__formulario {
+        place-content: start center;
+        padding-top: 2.5rem;
     }
 
     /* La tabla pasa a filas apiladas: hora a la izquierda, datos a la derecha */
@@ -1452,7 +1730,7 @@ textarea:focus-visible {
         display: grid;
         grid-template-columns: 5rem minmax(0, 1fr);
         column-gap: 0.75rem;
-        padding: 1rem;
+        padding: 1rem 1.25rem;
         border-bottom: 1px solid var(--borde);
     }
 
@@ -1461,15 +1739,15 @@ textarea:focus-visible {
     }
 
     .agenda td,
-    .agenda tbody tr:last-child td {
-        padding: 0.125rem 0;
+    .agenda tbody tr:last-child td,
+    .ejemplo .agenda td {
+        padding: 0.1875rem 0;
         border: 0;
         background: none;
     }
 
     .fila--siguiente {
-        --fondo-placa: var(--azul-tenue);
-        background: var(--azul-tenue);
+        background: var(--menta);
     }
 
     .agenda__hora {
@@ -1500,24 +1778,44 @@ textarea:focus-visible {
 
 @media (max-width: 560px) {
     h1,
-    .cabecera-dia h1 {
-        font-size: 1.75rem;
+    .cabecera-dia h1,
+    .encabezado-pagina h1 {
+        font-size: 2rem;
     }
 
     .contenedor {
         margin-top: 1.5rem;
     }
 
-    .sesion__usuario {
+    .franja__horario {
+        display: none !important;
+    }
+
+    .cabecera .envoltura {
+        gap: 1rem;
+        min-height: 4.25rem;
+    }
+
+    .cabecera__telefono {
         display: none;
     }
 
-    .menu {
-        margin: 0 -0.5rem;
+    .logo {
+        font-size: 1.1875rem;
     }
 
+    .logo__marca {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+    .sesion__nombre {
+        display: none;
+    }
+
+    /* Las tres opciones del menú caben en una fila */
     .menu a {
-        padding: 0 0.5rem;
+        padding: 0.5rem 0.625rem;
         font-size: 0.9375rem;
     }
 
@@ -1525,7 +1823,6 @@ textarea:focus-visible {
         padding: 1.25rem;
     }
 
-    .campos-fila,
     .especies {
         grid-template-columns: 1fr 1fr;
     }
@@ -1534,32 +1831,62 @@ textarea:focus-visible {
         grid-template-columns: 1fr;
     }
 
+    .ficha {
+        grid-template-columns: 7rem minmax(0, 1fr);
+    }
+
+    .ficha__cuerpo {
+        padding: 1rem;
+    }
+
+    .ficha__nombre strong {
+        font-size: 1.375rem;
+    }
+
     .cabecera-dia__acciones,
-    .cabecera-dia__acciones > .boton--principal {
+    .cabecera-dia__acciones > .boton--principal,
+    .portada__botones .boton {
         width: 100%;
     }
 
-    /* Las seis placas caben en una sola fila del alambre */
-    .alambre--especies {
-        gap: 0.25rem;
+    .pasos,
+    .pie__columnas {
+        grid-template-columns: 1fr;
     }
 
-    .alambre--especies > li {
-        font-size: 0.8125rem;
+    .galeria {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.75rem;
     }
 
-    .alambre--especies .placa--colgante {
-        --tam: 2.75rem;
+    .galeria span {
+        bottom: 0.625rem;
+        left: 0.625rem;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.875rem;
     }
 
-    .alambre--especies > li::before {
-        height: 1.6rem;
+    .portada__visual {
+        padding: 0;
     }
 
-    .boton--grande {
+    .portada__visual::before {
+        display: none;
+    }
+
+    .portada__foto {
+        aspect-ratio: 4 / 3.4;
+    }
+
+    .disponible {
+        position: relative;
+        width: auto;
+        margin: -3rem 0.75rem 0;
+    }
+
+    .llamado__caja .boton {
         width: 100%;
     }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1568,5 +1895,9 @@ textarea:focus-visible {
     *::after {
         animation: none !important;
         transition: none !important;
+    }
+
+    html {
+        scroll-behavior: auto;
     }
 }
