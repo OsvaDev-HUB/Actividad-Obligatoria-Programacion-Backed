@@ -1,10 +1,10 @@
 # Créditos de las fotos
 
-Todas las fotos son de dominio público (licencia CC0), obtenidas desde rawpixel a través del buscador Openverse.
+Las fotos de mascotas son de dominio público (licencia CC0), obtenidas desde rawpixel a través del buscador Openverse. La foto de la veterinaria es de Wikimedia Commons con licencia CC BY 2.0, que pide nombrar al autor.
 
 | Archivo | Foto original | Licencia |
 | --- | --- | --- |
-| `perro-sonriente.jpg` | [Happy dog front sunlit background](https://www.rawpixel.com/image/3285149/free-photo-image-dog-teeth) | CC0 |
+| `veterinaria-perro.jpg` | [Close-up of a veterinarian examining a maltese dog with a stethoscope](https://commons.wikimedia.org/wiki/File:Close-up_of_a_veterinarian_examining_a_maltese_dog_with_a_stethoscope._(51687314898).jpg), de Nenad Stojkovic | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) |
 | `perro-y-gato.jpg` | [long-haired cat snuggling dog](https://www.rawpixel.com/image/3299633/free-photo-image-cat-tiger-angora) | CC0 |
 | `perro-hojas.jpg` | [Free happy dog autumn image](https://www.rawpixel.com/image/5921251/photo-image-background-public-domain-dog) | CC0 |
 | `especie-perro.jpg` | [Free brown pomeranian dog smiling](https://www.rawpixel.com/image/5914846/image-background-public-domain-dog) | CC0 |

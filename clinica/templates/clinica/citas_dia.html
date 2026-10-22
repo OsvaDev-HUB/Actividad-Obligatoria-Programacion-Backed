@@ -40,6 +40,27 @@
     <li class="estado estado--cancelada">{% include "clinica/icono.html" with nombre="cruz" %}{{ total_canceladas }} cancelada{{ total_canceladas|pluralize }}</li>
 </ul>
 
+{# Próxima cita pendiente, arriba de todo para leerla primero #}
+{% if siguiente %}
+<section class="proxima" aria-labelledby="titulo-proxima">
+    <p class="proxima__etiqueta" id="titulo-proxima">Próxima cita{% if not es_hoy %} del día{% endif %}</p>
+    <span class="proxima__hora">{{ siguiente.hora|time:"H:i" }}</span>
+    <div class="paciente proxima__paciente">
+        <span class="avatar especie-{{ siguiente.mascota.especie }}" aria-hidden="true">{{ siguiente.mascota.nombre|first|upper }}</span>
+        <div>
+            <strong class="paciente__nombre">{{ siguiente.mascota.nombre }}</strong>
+            <span class="paciente__detalle"><span class="pastilla-especie especie-{{ siguiente.mascota.especie }}">{{ siguiente.mascota.get_especie_display }}</span>{{ siguiente.motivo }}. Dueño: {{ siguiente.mascota.nombre_dueno }}</span>
+        </div>
+    </div>
+    <form method="post" action="{% url 'cambiar_estado' siguiente.id %}">
+        {% csrf_token %}
+        <button type="submit" name="estado" value="atendida" class="boton boton--blanco">Marcar atendida</button>
+        <button type="submit" name="estado" value="cancelada" class="boton boton--contorno"
+                onclick="return confirm('¿Cancelar la cita de {{ siguiente.mascota.nombre|escapejs }} a las {{ siguiente.hora|time:"H:i" }}?')">Cancelar</button>
+    </form>
+</section>
+{% endif %}
+
 <div class="tarjeta panel-tabla">
     <table class="agenda">
         <caption class="solo-lector">Citas del {{ fecha|date:"j \d\e F \d\e Y" }}</caption>
@@ -65,7 +86,7 @@
                         <span class="avatar especie-{{ cita.mascota.especie }}" aria-hidden="true">{{ cita.mascota.nombre|first|upper }}</span>
                         <div>
                             <strong class="paciente__nombre">{{ cita.mascota.nombre }}</strong>
-                            <span class="paciente__detalle">{{ cita.mascota.get_especie_display }}, {{ cita.mascota.raza }}</span>
+                            <span class="paciente__detalle"><span class="pastilla-especie especie-{{ cita.mascota.especie }}">{{ cita.mascota.get_especie_display }}</span>{{ cita.mascota.raza }}</span>
                         </div>
                     </div>
                 </td>
