@@ -57,6 +57,8 @@ El comando `poblar_datos` los crea si no existen.
 
 El teléfono y la dirección de la landing son datos de ejemplo.
 
+Las fotos son de dominio público (CC0) y sus créditos están en `clinica/static/clinica/img/CREDITOS.md`.
+
 ## Tecnologías
 
 - Python 3 y Django 5.2
