@@ -1604,38 +1604,83 @@ a.bloque--libre:hover {
     color: var(--tinta-suave);
 }
 
-/* Especies */
+/* Especies: mosaico con perro y gato más grandes */
+.especies__cabeza {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1.5rem 4rem;
+    align-items: end;
+    margin-bottom: 2.5rem;
+}
+
+.especies__cabeza p {
+    max-width: 48ch;
+    color: var(--tinta-suave);
+    font-size: 1.125rem;
+}
+
 .galeria {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.25rem;
+    grid-template-columns: 1.35fr 1fr 1fr 1fr;
+    grid-template-rows: repeat(2, 17rem);
+    gap: 1rem;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
-.galeria li {
+.galeria__item {
     position: relative;
     overflow: hidden;
     border-radius: var(--radio-grande);
     background: var(--menta);
 }
 
-.galeria img {
+/* El perro ocupa dos filas y el gato dos columnas */
+.galeria__item--perro {
+    grid-row: span 2;
+}
+
+.galeria__item--gato {
+    grid-column: span 2;
+}
+
+/* Encuadre del gato para que no se corten sus orejas */
+.galeria__item--gato img {
+    object-position: center 25%;
+}
+
+.galeria__item img {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    aspect-ratio: 4 / 3;
+    height: 100%;
     object-fit: cover;
 }
 
-.galeria span {
+/* La misma pastilla de la agenda, en grande sobre la foto */
+.pastilla-especie--grande {
     position: absolute;
     bottom: 1rem;
     left: 1rem;
-    padding: 0.375rem 1rem;
-    border-radius: 999px;
-    background: var(--blanco);
-    color: var(--verde-oscuro);
-    font-weight: 700;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.375rem 1.125rem 0.375rem 0.875rem;
+    box-shadow: 0 6px 18px rgba(16, 48, 43, 0.2);
+    font-family: var(--titulos);
+    font-size: 1.375rem;
+    font-weight: 400;
+}
+
+.pastilla-especie--grande::before {
+    width: 0.625rem;
+    height: 0.625rem;
+}
+
+.galeria__item--perro .pastilla-especie--grande {
+    bottom: 1.25rem;
+    left: 1.25rem;
+    font-size: 1.875rem;
 }
 
 /* Pasos: números unidos por una línea, sin tarjetas */
@@ -1921,8 +1966,29 @@ a.bloque--libre:hover {
         font-size: 0.875rem;
     }
 
+    /* Mosaico en dos columnas: perro y reptil a lo ancho */
+    .especies__cabeza {
+        grid-template-columns: 1fr;
+    }
+
     .galeria {
         grid-template-columns: 1fr 1fr;
+        grid-template-rows: none;
+        grid-auto-rows: 13rem;
+    }
+
+    .galeria__item--perro,
+    .galeria__item--reptil {
+        grid-row: auto;
+        grid-column: span 2;
+    }
+
+    .galeria__item--perro {
+        grid-row: span 1;
+    }
+
+    .galeria__item--gato {
+        grid-column: auto;
     }
 
     /* Pasos en columna: la línea pasa a ser vertical */
@@ -2136,15 +2202,16 @@ a.bloque--libre:hover {
     }
 
     .galeria {
-        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 10rem;
         gap: 0.75rem;
     }
 
-    .galeria span {
-        bottom: 0.625rem;
-        left: 0.625rem;
-        padding: 0.25rem 0.75rem;
-        font-size: 0.875rem;
+    .pastilla-especie--grande,
+    .galeria__item--perro .pastilla-especie--grande {
+        bottom: 0.75rem;
+        left: 0.75rem;
+        padding: 0.25rem 0.875rem 0.25rem 0.625rem;
+        font-size: 1.125rem;
     }
 
     .proxima__hora {

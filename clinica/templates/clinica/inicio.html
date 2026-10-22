@@ -132,17 +132,18 @@
     </div>
 </section>
 
+{# Mosaico de especies: perro y gato más grandes, cada foto con la pastilla de color que usa la agenda #}
 <section class="seccion seccion--fondo" id="especies" aria-labelledby="titulo-especies">
     <div class="envoltura">
-        <div class="seccion__cabeza">
+        <div class="especies__cabeza">
             <h2 id="titulo-especies">Atendemos a toda la familia</h2>
-            <p>Perros y gatos, y también aves, conejos, roedores y reptiles.</p>
+            <p>Perros y gatos, y también aves, conejos, roedores y reptiles. Cada especie tiene su color en nuestra agenda, así recepción reconoce a tu mascota de un vistazo.</p>
         </div>
         <ul class="galeria">
             {% for valor, texto in especies %}
-            <li>
+            <li class="galeria__item galeria__item--{{ valor }}">
                 <img src="{% with 'clinica/img/especie-'|add:valor|add:'.jpg' as ruta %}{% static ruta %}{% endwith %}" alt="" width="1024" height="683" loading="lazy">
-                <span>{{ texto }}</span>
+                <span class="pastilla-especie pastilla-especie--grande especie-{{ valor }}">{{ texto }}</span>
             </li>
             {% endfor %}
         </ul>
