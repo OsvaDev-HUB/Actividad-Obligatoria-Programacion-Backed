@@ -251,25 +251,37 @@
     </div>
 </section>
 
-<section class="seccion llamado" aria-labelledby="titulo-llamado">
-    <div class="envoltura">
-        <div class="llamado__caja">
-            <div>
-                <h2 id="titulo-llamado">¿Tu mascota necesita una hora?</h2>
-                <p>Llámanos al {{ contacto.telefono }}.{% with hoy=horas_libres.0 %}{% if hoy and hoy.es_hoy %} Hoy quedan {{ hoy.total }} hora{{ hoy.total|pluralize }} libre{{ hoy.total|pluralize }}.{% endif %}{% endwith %}</p>
-            </div>
-            <a class="boton boton--blanco boton--grande" href="{{ contacto.telefono_enlace }}">
-                {% include "clinica/icono.html" with nombre="telefono" %}Llamar ahora
-            </a>
-        </div>
+{# Cierre: foto a sangre a la izquierda y el contacto con la próxima hora libre real #}
+<section class="cierre" id="contacto" aria-labelledby="titulo-cierre">
+    <div class="cierre__foto">
+        <img src="{% static 'clinica/img/perro-hojas.jpg' %}" alt="Perro de orejas grandes mirando a la cámara entre hojas de otoño" width="1024" height="739" loading="lazy">
+    </div>
+    <div class="cierre__texto">
+        <h2 id="titulo-cierre">¿Tu mascota necesita una hora?</h2>
+        {% with dia=horas_libres.0 %}
+        {% if dia %}
+        <p class="cierre__proxima">
+            <span class="punto-vivo" aria-hidden="true"></span>
+            <span>La próxima hora libre es {% if dia.es_hoy %}hoy{% elif dia.es_manana %}mañana{% else %}el {{ dia.fecha|date:"l j" }}{% endif %} a las <strong>{{ dia.horas.0|time:"H:i" }}</strong>.</span>
+        </p>
+        {% endif %}
+        {% endwith %}
+        <a class="cierre__telefono" href="{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
+        <dl class="cierre__datos">
+            <div><dt>Horario</dt><dd>De 09:00 a 18:30, con horas cada 30 minutos.</dd></div>
+            <div><dt>Dirección</dt><dd>{{ contacto.direccion }}</dd></div>
+        </dl>
+        <a class="boton boton--blanco boton--grande" href="{{ contacto.telefono_enlace }}">
+            {% include "clinica/icono.html" with nombre="telefono" %}Llamar ahora
+        </a>
     </div>
 </section>
 {% endblock %}
 
 {% block pie %}
-<footer class="pie" id="contacto">
+<footer class="pie">
     <div class="envoltura">
-        <div class="pie__columnas">
+        <div class="pie__fila">
             <div class="pie__marca">
                 <a class="logo logo--claro" href="{% url 'inicio' %}">
                     <span class="logo__marca">{% include "clinica/logo.html" %}</span>
@@ -277,27 +289,16 @@
                 </a>
                 <p>Clínica veterinaria para perros, gatos, aves, conejos, roedores y reptiles.</p>
             </div>
-            <div>
-                <h3>Horario</h3>
-                <p>De 09:00 a 18:30, con horas cada 30 minutos.</p>
-            </div>
-            <div>
-                <h3>Contacto</h3>
-                <dl>
-                    <dt class="solo-lector">Teléfono</dt>
-                    <dd><a href="{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a></dd>
-                    <dt class="solo-lector">Dirección</dt>
-                    <dd>{{ contacto.direccion }}</dd>
-                </dl>
-            </div>
-            <div>
-                <h3>Personal</h3>
+            <nav class="pie__enlaces" aria-label="Pie de página">
+                <a href="#horas">Horas libres</a>
+                <a href="#especies">Especies</a>
+                <a href="#pasos">Cómo agendar</a>
                 {% if user.is_authenticated %}
                 <a href="{% url 'citas_dia' %}">Ir a la agenda</a>
                 {% else %}
                 <a href="{% url 'ingresar' %}">Ingreso del personal</a>
                 {% endif %}
-            </div>
+            </nav>
         </div>
         <div class="pie__abajo">
             <p>Teléfono y dirección de ejemplo.</p>
