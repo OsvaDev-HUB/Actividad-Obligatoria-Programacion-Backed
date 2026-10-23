@@ -4,17 +4,20 @@
 .pagina-inicio {
     --verde-claro: #3a8a6c;
     --menta-suave: #eef6f3;
-    --mano: "Caveat", cursive;
+    /* La landing usa un contenedor más ancho que la recepción para aprovechar
+       las pantallas grandes, y un margen lateral que crece con la ventana */
+    --ancho: 100rem;
+    --margen: clamp(1rem, 5vw, 5rem);
     background: var(--blanco);
 }
 
 .envoltura {
-    width: min(100% - 2rem, var(--ancho));
+    width: min(100% - 2 * var(--margen), var(--ancho));
     margin: 0 auto;
 }
 
 .inicio > .avisos {
-    width: min(100% - 2rem, var(--ancho));
+    width: min(100% - 2 * var(--margen), var(--ancho));
     margin: 1.5rem auto 0;
 }
 
@@ -121,13 +124,6 @@
     height: 1.625rem;
 }
 
-.circulo-icono--blanco {
-    width: 3.5rem;
-    height: 3.5rem;
-    background: var(--blanco);
-    box-shadow: 0 6px 18px rgba(16, 48, 43, 0.1);
-}
-
 .cuadro-icono {
     display: inline-grid;
     place-items: center;
@@ -152,25 +148,6 @@
     height: 1.625rem;
 }
 
-/* Nota escrita a mano (letra Caveat) */
-.nota-mano {
-    display: inline-flex;
-    align-items: flex-end;
-    gap: 0.375rem;
-    color: var(--verde-oscuro);
-    font-family: var(--mano);
-    font-size: 1.75rem;
-    font-weight: 600;
-    line-height: 1.05;
-    transform: rotate(-6deg);
-}
-
-.nota-mano .icono {
-    width: 1.125rem;
-    height: 1.125rem;
-    margin-bottom: 0.25rem;
-}
-
 /* ---------- Cabecera ---------- */
 
 .cabecera {
@@ -181,16 +158,23 @@
     background: rgba(255, 255, 255, 0.97);
 }
 
+/* Tres columnas: logo a la izquierda, menú al centro y el ingreso a la derecha */
 .cabecera__fila {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
     gap: 2.5rem;
     min-height: 5rem;
 }
 
+.cabecera__fila .logo {
+    justify-self: start;
+}
+
 .cabecera__menu {
     display: flex;
     align-self: stretch;
+    justify-content: center;
     gap: 2rem;
 }
 
@@ -215,25 +199,11 @@
     color: var(--verde-oscuro);
 }
 
-.cabecera__acciones {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-left: auto;
-}
-
-.cabecera__telefono {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--tinta);
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.cabecera__telefono:hover {
-    color: var(--verde);
+/* Único botón de la barra: el ingreso del personal, a la derecha */
+/* Siempre en la última columna, aunque el menú se oculte */
+.cabecera__ingreso {
+    grid-column: 3;
+    justify-self: end;
 }
 
 /* ---------- 1. Portada ---------- */
@@ -255,7 +225,8 @@
     display: grid;
     align-content: center;
     gap: 1.375rem;
-    width: min(100%, 36rem);
+    /* El texto crece con la pantalla sin llegar a la foto */
+    width: min(100%, clamp(34rem, 38vw, 44rem));
     padding: 4rem 0 6rem;
 }
 
@@ -270,7 +241,7 @@
 
 .portada h1 {
     color: var(--verde-oscuro);
-    font-size: clamp(2.75rem, 4.6vw, 4.25rem);
+    font-size: clamp(2.75rem, 4.4vw, 5rem);
     line-height: 1.05;
     letter-spacing: -0.02em;
 }
@@ -328,7 +299,8 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 45% center;
+    /* Pegada a la derecha para que la frase escrita en la foto no se corte */
+    object-position: right center;
 }
 
 .portada__visual::before {
@@ -339,20 +311,10 @@
     background: linear-gradient(90deg, var(--menta-suave), rgba(238, 246, 243, 0));
 }
 
-.portada__nota {
-    position: absolute;
-    top: 2.5rem;
-    right: 2.5rem;
-    max-width: 15rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.82);
-}
-
 /* Tarjeta con la próxima hora libre */
 .proxima-hora {
     position: absolute;
-    right: max(1rem, calc((100vw - var(--ancho)) / 2));
+    right: max(var(--margen), calc((100vw - var(--ancho)) / 2));
     bottom: 3.5rem;
     display: flex;
     align-items: center;
@@ -370,6 +332,22 @@
     display: block;
     color: var(--tinta-suave);
     font-size: 0.875rem;
+}
+
+/* Aviso pequeño en durazno: solo aparece cuando quedan 4 horas o menos */
+.aviso-pocas {
+    display: inline-block;
+    margin-top: 0.375rem;
+    padding: 0.125rem 0.625rem;
+    border-radius: 999px;
+    background: var(--durazno-tenue);
+    color: var(--durazno-texto);
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.dia-card__conteo .aviso-pocas {
+    margin: 0 0.5rem 0 0;
 }
 
 .proxima-hora__valor {
@@ -413,12 +391,10 @@
 
 /* ---------- 2. Horas disponibles ---------- */
 
+/* Las horas empiezan después del hero, con aire en blanco para separarlas */
 #horas {
-    position: relative;
-    z-index: 2;
-    margin-top: -2.5rem;
-    padding-top: 0;
-    padding-bottom: 1rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
 }
 
 .horas-panel {
@@ -579,10 +555,39 @@ a.bloque--libre:hover {
     font-size: 0.9375rem;
 }
 
+/* Servicios sobre una franja verde clínica: textos claros e íconos en círculo blanco */
+.seccion-l--servicios {
+    padding: 5rem 0;
+    background: var(--verde);
+}
+
+.seccion-l--servicios h2,
+.seccion-l--servicios .servicio h3 {
+    color: var(--blanco);
+}
+
+.seccion-l--servicios .cabeza-l p,
+.seccion-l--servicios .servicio p {
+    color: #d7ebe5;
+}
+
+/* Tarjetas un poco más oscuras que la franja, sin sombra */
+.seccion-l--servicios .servicio {
+    border-color: rgba(255, 255, 255, 0.14);
+    background: rgba(11, 59, 52, 0.38);
+    box-shadow: none;
+}
+
+/* Mismo estilo que los íconos del hero: círculo blanco con el ícono verde */
+.seccion-l--servicios .circulo-icono {
+    background: var(--blanco);
+    color: var(--verde);
+}
+
 /* ---------- 4. Especies ---------- */
 
 .seccion-l--especies {
-    padding-top: 1rem;
+    padding-top: 5rem;
 }
 
 .especies-fila {
@@ -599,13 +604,18 @@ a.bloque--libre:hover {
     overflow: hidden;
     aspect-ratio: 1 / 1.05;
     border-radius: 18px;
-    background: var(--menta);
+    background: var(--especie-fondo, var(--menta));
 }
 
+/* Las fotos vienen recortadas sin fondo: se ven enteras sobre el color de la especie
+   y dejan espacio abajo para la pastilla */
 .especie-card img {
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    padding: 1.25rem 1rem 3.5rem;
+    object-fit: contain;
+    object-position: center bottom;
 }
 
 /* Pastilla con huella y nombre, del color de la especie */
@@ -639,8 +649,8 @@ a.bloque--libre:hover {
 
 .agendar-l__fila {
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    gap: 3rem;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 4rem;
     align-items: center;
 }
 
@@ -654,11 +664,13 @@ a.bloque--libre:hover {
     font-size: 1.0625rem;
 }
 
+/* Pasos en fila, unidos por una línea punteada que va de un ícono al siguiente */
 .pasos-l {
+    --hueco: 2.5rem;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 2.5rem;
-    margin: 2.5rem 0 0;
+    gap: var(--hueco);
+    margin: 2.75rem 0 0;
     padding: 0;
     list-style: none;
 }
@@ -666,49 +678,80 @@ a.bloque--libre:hover {
 .pasos-l li {
     position: relative;
     display: grid;
-    justify-items: start;
-    gap: 0.375rem;
-    padding-left: 2.25rem;
+    align-content: start;
+    gap: 1.25rem;
 }
 
-/* Flecha entre un paso y el siguiente */
-.pasos-l li + li::before {
+/* Línea entre este paso y el siguiente, a la altura del centro del ícono */
+.pasos-l li:not(:last-child)::after {
     content: "";
     position: absolute;
-    top: 1.375rem;
-    left: -1.875rem;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-top: 2px solid var(--borde-fuerte);
-    border-right: 2px solid var(--borde-fuerte);
-    transform: rotate(45deg);
+    top: 1.75rem;
+    left: 4.5rem;
+    right: calc(-1 * var(--hueco) + 1rem);
+    border-top: 2px dashed rgba(11, 110, 95, 0.35);
 }
 
-.pasos-l__numero {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* Círculo blanco con el ícono verde, igual que en la portada */
+.pasos-l__icono {
+    position: relative;
     display: grid;
     place-items: center;
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--blanco);
+    box-shadow: 0 6px 18px rgba(16, 48, 43, 0.1);
+    color: var(--verde);
+}
+
+.pasos-l__icono .icono {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+/* Número del paso pegado al círculo */
+.pasos-l__numero {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.375rem;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid var(--menta-suave);
     border-radius: 50%;
     background: var(--verde);
     color: var(--blanco);
-    font-size: 0.875rem;
+    font-size: 0.75rem;
     font-weight: 700;
-}
-
-.pasos-l .circulo-icono {
-    margin-bottom: 0.625rem;
 }
 
 .pasos-l h3 {
     color: var(--verde-oscuro);
-    font-size: 1.0625rem;
+    font-family: var(--titulos);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.2;
 }
 
 .pasos-l p {
+    max-width: 26ch;
+    margin-top: 0.375rem;
+    color: var(--tinta-suave);
+    font-size: 0.9375rem;
+}
+
+/* Botón para llamar al terminar los pasos */
+.agendar-l__llamar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    margin-top: 2.75rem;
+}
+
+.agendar-l__llamar p {
     color: var(--tinta-suave);
     font-size: 0.9375rem;
 }
@@ -719,34 +762,21 @@ a.bloque--libre:hover {
     min-height: 22rem;
 }
 
+/* Imagen recortada sin fondo: se ve entera sobre el menta de la sección */
 .agendar-l__visual img {
     position: absolute;
-    inset: 2rem 0 2rem 0;
+    inset: 1.5rem 0;
     width: 100%;
-    height: calc(100% - 4rem);
-    border-radius: 24px;
-    object-fit: cover;
-}
-
-.agendar-l__nota {
-    position: absolute;
-    top: 0.5rem;
-    right: 0;
-    max-width: 10rem;
-    padding: 0.5rem 0.75rem;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.9);
+    height: calc(100% - 3rem);
+    object-fit: contain;
 }
 
 /* ---------- 6. Por qué elegirnos ---------- */
 
+/* Misma colorimetría que los servicios: franja verde clínica */
 .elegir {
-    padding: 4.5rem 0;
-    /* Huellas grandes y tenues de fondo */
-    background-color: var(--verde-oscuro);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 24 24'%3E%3Cg fill='%23ffffff' fill-opacity='0.04' transform='rotate(-18 12 12)'%3E%3Cellipse cx='5.6' cy='10.2' rx='2' ry='2.5'/%3E%3Cellipse cx='9.7' cy='5.9' rx='2' ry='2.6'/%3E%3Cellipse cx='14.3' cy='5.9' rx='2' ry='2.6'/%3E%3Cellipse cx='18.4' cy='10.2' rx='2' ry='2.5'/%3E%3Cpath d='M12 11.3c-2.7 0-5.6 3.7-5.6 6.2 0 1.6 1.2 2.5 2.7 2.5 1.2 0 1.9-.6 2.9-.6s1.7.6 2.9.6c1.5 0 2.7-.9 2.7-2.5 0-2.5-2.9-6.2-5.6-6.2z'/%3E%3C/g%3E%3C/svg%3E");
-    background-position: -40px 30px;
-    background-size: 220px;
+    padding: 5rem 0;
+    background: var(--verde);
     color: var(--blanco);
 }
 
@@ -762,7 +792,7 @@ a.bloque--libre:hover {
 
 .elegir__cabeza p {
     margin-top: 0.5rem;
-    color: #c4ddd6;
+    color: #d7ebe5;
     font-size: 1.0625rem;
 }
 
@@ -779,34 +809,54 @@ a.bloque--libre:hover {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    padding: 1.5rem;
+    padding: 1.75rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 20px;
+    background: rgba(11, 59, 52, 0.38);
+    color: var(--blanco);
+}
+
+/* Círculo blanco con el ícono verde, igual que en servicios */
+.razon .circulo-icono {
     background: var(--blanco);
-    color: var(--tinta);
+    color: var(--verde);
 }
 
 .razon h3 {
-    color: var(--verde-oscuro);
-    font-size: 1.0625rem;
+    color: var(--blanco);
+    font-family: var(--titulos);
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1.2;
 }
 
 .razon p {
-    margin-top: 0.25rem;
-    color: var(--tinta-suave);
+    margin-top: 0.375rem;
+    color: #d7ebe5;
     font-size: 0.9375rem;
 }
 
 /* ---------- 7. Contacto ---------- */
 
+/* Foto redondeada a la izquierda y los datos en lista a la derecha */
 .contacto-l {
-    display: grid;
-    grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+    padding: 5.5rem 0;
     background: var(--blanco);
+}
+
+.contacto-l__fila {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 4.5rem;
+    align-items: center;
 }
 
 .contacto-l__foto {
     position: relative;
-    min-height: 20rem;
+    overflow: hidden;
+    align-self: stretch;
+    min-height: 28rem;
+    border-radius: 32px;
 }
 
 .contacto-l__foto img {
@@ -815,54 +865,44 @@ a.bloque--libre:hover {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: 30% center;
 }
 
+/* Ancho limitado para que las líneas entre datos no queden demasiado largas */
 .contacto-l__contenido {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 1.75rem 2rem;
-    align-content: center;
-    align-items: center;
-    padding: 3.5rem max(1rem, calc((100vw - var(--ancho)) / 2)) 3.5rem 3.5rem;
+    max-width: 40rem;
 }
 
-.contacto-l__cabeza {
-    grid-column: 1 / -1;
-}
-
-/* El botón conserva su ancho natural aunque la grilla quede en una columna */
-.contacto-l__contenido > .boton-l {
-    justify-self: start;
-}
-
-.contacto-l__cabeza p {
-    margin-top: 0.375rem;
+.contacto-l__bajada {
+    max-width: 44ch;
+    margin-top: 0.5rem;
     color: var(--tinta-suave);
     font-size: 1.0625rem;
 }
 
+/* Cada dato en su fila, separados por una línea fina */
 .contacto-l__datos {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    gap: 1.25rem 2rem;
-    margin: 0;
+    margin: 2rem 0 0;
     padding: 0;
     list-style: none;
 }
 
 .contacto-l__datos li {
     display: flex;
-    align-items: center;
-    gap: 0.875rem;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.125rem 0;
+    border-top: 1px solid var(--borde);
+}
+
+.contacto-l__datos li:last-child {
+    border-bottom: 1px solid var(--borde);
 }
 
 .contacto-l__datos strong {
     display: block;
     color: var(--tinta);
-}
-
-.contacto-l__datos a {
-    text-decoration: none;
+    font-size: 1.0625rem;
 }
 
 .contacto-l__datos small {
@@ -871,11 +911,34 @@ a.bloque--libre:hover {
     font-size: 0.875rem;
 }
 
+/* El teléfono es lo más importante: va más grande y con la letra de títulos */
+.contacto-l__telefono {
+    display: block;
+    color: var(--verde-oscuro);
+    font-family: var(--titulos);
+    font-size: 1.625rem;
+    line-height: 1.2;
+    text-decoration: none;
+}
+
+.contacto-l__telefono:hover {
+    color: var(--verde);
+}
+
+.contacto-l__botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
 /* ---------- Pie ---------- */
 
+/* Cuatro columnas: marca, secciones, contacto y horario */
+/* Mismo verde clínica que servicios y "Por qué elegir" */
 .pie-l {
-    background: var(--verde-oscuro);
-    color: #c4ddd6;
+    background: var(--verde);
+    color: #d7ebe5;
 }
 
 .pie-l a {
@@ -887,52 +950,102 @@ a.bloque--libre:hover {
     outline-color: var(--blanco);
 }
 
-.pie-l__fila {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 1.25rem 2.5rem;
-    padding: 2.25rem 0 1.75rem;
+.pie-l__grilla {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
+    gap: 2.5rem 3rem;
+    padding: 4.5rem 0 3.5rem;
 }
 
-.pie-l__texto {
-    max-width: 32ch;
+.pie-l__marca {
+    display: grid;
+    justify-items: start;
+    align-content: start;
+    gap: 1.25rem;
+}
+
+.pie-l__marca p {
+    max-width: 34ch;
     font-size: 0.9375rem;
 }
 
-.pie-l__menu {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1.75rem;
-    margin-left: auto;
+/* Botón blanco sobre el verde oscuro */
+.pie-l .boton-l--claro {
+    background: var(--blanco);
+    color: var(--verde-oscuro);
 }
 
-.pie-l__menu a {
-    font-weight: 600;
+.pie-l .boton-l--claro:hover {
+    background: var(--menta);
+    color: var(--verde-oscuro);
+}
+
+.pie-l__columna h2 {
+    margin-bottom: 1.125rem;
+    color: var(--blanco);
+    font-family: var(--titulos);
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+.pie-l__columna ul {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.pie-l__columna a {
     text-decoration: none;
 }
 
-.pie-l__menu a:hover {
-    color: #8fd6c2;
+.pie-l__columna a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.25em;
+}
+
+/* Dato con su ícono a la izquierda */
+.pie-l__datos li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.625rem;
+    color: var(--blanco);
+}
+
+.pie-l__datos .icono {
+    flex-shrink: 0;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.1875rem;
+    color: #d7ebe5;
+}
+
+.pie-l__nota {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
 }
 
 .pie-l__abajo {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
     justify-content: space-between;
-    gap: 0.75rem 2rem;
-    padding: 1.25rem 0 1.75rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    gap: 0.5rem 2rem;
+    padding: 1.5rem 0 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 0.875rem;
 }
 
 /* ---------- Pantallas medianas ---------- */
 
-@media (max-width: 1100px) {
+/* El menú de la barra se oculta antes que el resto para no desbordarse */
+@media (max-width: 1180px) {
     .cabecera__menu {
         display: none;
     }
+}
+
+@media (max-width: 1100px) {
 
     .servicios {
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -948,23 +1061,31 @@ a.bloque--libre:hover {
         margin: 0 auto;
     }
 
-    .contacto-l__contenido {
-        grid-template-columns: 1fr;
-        padding-left: 2.5rem;
+    .contacto-l__fila {
+        gap: 3rem;
     }
 
-    .contacto-l__datos {
-        grid-template-columns: 1fr;
-    }
-
-    /* Pasos en columna desde tableta: sin flechas entre ellos */
+    /* Pasos en columna desde tableta: ícono a la izquierda y la línea baja al siguiente */
     .pasos-l {
+        --hueco: 1.75rem;
         grid-template-columns: 1fr;
-        gap: 1.75rem;
     }
 
-    .pasos-l li + li::before {
-        display: none;
+    .pasos-l li {
+        grid-template-columns: 3.5rem minmax(0, 1fr);
+    }
+
+    .pasos-l li > div {
+        padding-top: 0.5rem;
+    }
+
+    .pasos-l li:not(:last-child)::after {
+        top: 4.25rem;
+        right: auto;
+        bottom: calc(-1 * var(--hueco) + 0.75rem);
+        left: calc(1.75rem - 1px);
+        border-top: 0;
+        border-left: 2px dashed rgba(11, 110, 95, 0.35);
     }
 }
 
@@ -981,27 +1102,31 @@ a.bloque--libre:hover {
     .portada__visual {
         position: relative;
         width: 100%;
-        height: 22rem;
+        height: 24rem;
     }
 
     .portada__visual::before {
         display: none;
     }
 
-    .portada__nota {
-        top: 1rem;
-        right: 1rem;
-        font-size: 1.375rem;
-    }
-
+    /* Más abajo para no tapar la cara del perro */
     .proxima-hora {
-        right: 1rem;
-        bottom: 3.5rem;
-        left: 1rem;
+        right: var(--margen);
+        bottom: 2.25rem;
+        left: var(--margen);
     }
 
     #horas {
-        margin-top: -1.5rem;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    .seccion-l--servicios {
+        padding: 3.5rem 0;
+    }
+
+    .seccion-l--especies {
+        padding-top: 3.5rem;
     }
 
     .horas-panel {
@@ -1033,39 +1158,29 @@ a.bloque--libre:hover {
         padding: 3.5rem 0 1rem;
     }
 
-    /* Pasos en columna: sin flechas entre ellos */
-    .pasos-l {
-        grid-template-columns: 1fr;
-        gap: 1.75rem;
-    }
-
-    .pasos-l li + li::before {
-        display: none;
-    }
-
     .agendar-l__visual {
         min-height: 18rem;
         margin-bottom: 3rem;
     }
 
+    /* Contacto en una columna: la foto arriba como banda */
     .contacto-l {
+        padding: 3.5rem 0;
+    }
+
+    .contacto-l__fila {
         grid-template-columns: 1fr;
+        gap: 2rem;
     }
 
     .contacto-l__foto {
         min-height: 16rem;
+        border-radius: 24px;
     }
 
-    .contacto-l__contenido {
-        padding: 2.5rem 1rem 3rem;
-    }
-
-    .contacto-l__datos {
-        grid-template-columns: 1fr;
-    }
-
-    .pie-l__menu {
-        margin-left: 0;
+    .pie-l__grilla {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 3.5rem 0 2.5rem;
     }
 }
 
@@ -1073,12 +1188,26 @@ a.bloque--libre:hover {
 
 @media (max-width: 560px) {
     .cabecera__fila {
-        gap: 1rem;
+        gap: 0.75rem;
         min-height: 4.25rem;
     }
 
-    .cabecera__telefono {
-        display: none;
+    /* En celular el botón dice solo "Ingreso"; el lector de pantalla sigue leyendo "del personal" */
+    .cabecera__ingreso {
+        padding: 0.5rem 1rem;
+    }
+
+    .cabecera__ingreso-extra {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+    }
+
+    .pie-l__grilla {
+        grid-template-columns: 1fr;
     }
 
     .portada__botones .boton-l {
@@ -1120,7 +1249,7 @@ a.bloque--libre:hover {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .contacto-l__contenido .boton-l {
+    .contacto-l__botones .boton-l {
         width: 100%;
     }
 }

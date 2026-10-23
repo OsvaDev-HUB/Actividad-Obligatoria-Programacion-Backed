@@ -1,6 +1,7 @@
 from datetime import time
 
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from django.utils import timezone
 
 from .models import Cita, Mascota
@@ -45,6 +46,10 @@ class CitaForm(forms.ModelForm):
             "mascota": "Paciente",
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["mascota"].empty_label = "Elige un paciente"
+
     def clean_fecha(self):
         fecha = self.cleaned_data["fecha"]
         if fecha < timezone.localdate():
@@ -61,9 +66,25 @@ class CitaForm(forms.ModelForm):
         datos = super().clean()
         fecha = datos.get("fecha")
         hora = datos.get("hora")
+        # Una hora de hoy que ya pasó no se puede agendar
+        if fecha == timezone.localdate() and hora and hora <= timezone.localtime().time():
+            raise forms.ValidationError("Esa hora ya pasó. Elige una hora más tarde.")
         # Revisa que no exista otra cita activa (no cancelada) en la misma fecha y hora
         if fecha and hora:
             ocupada = Cita.objects.filter(fecha=fecha, hora=hora).exclude(estado=Cita.CANCELADA).exists()
             if ocupada:
                 raise forms.ValidationError("Ya hay una cita agendada en esa fecha y hora. Elige otro horario.")
         return datos
+
+
+class IngresoForm(AuthenticationForm):
+    # Mensajes propios para que cada error diga exactamente qué pasó
+    error_messages = {
+        "invalid_login": "Usuario o contraseña incorrectos. Revisa los datos e intenta otra vez.",
+        "inactive": "Esta cuenta está desactivada. Pídele al director que la active.",
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["username"].error_messages["required"] = "Escribe tu usuario."
+        self.fields["password"].error_messages["required"] = "Escribe tu contraseña."

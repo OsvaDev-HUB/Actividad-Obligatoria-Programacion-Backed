@@ -8,13 +8,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'clinica/css/estilos.css' %}">
+    {# El ?v= obliga al navegador a bajar el CSS de nuevo cuando cambia; súbelo en cada cambio #}
+    <link rel="stylesheet" href="{% static 'clinica/css/estilos.css' %}?v=19">
     {% block estilos %}{% endblock %}
 </head>
 <body class="{% block clase_body %}{% endblock %}">
     <a class="saltar" href="#contenido">Ir al contenido</a>
 
     {% block encabezado %}
+    {# Tres columnas como la landing: logo, menú al centro y la sesión a la derecha #}
     <header class="barra">
         <div class="barra__interior">
             <a class="logo" href="{% url 'citas_dia' %}">

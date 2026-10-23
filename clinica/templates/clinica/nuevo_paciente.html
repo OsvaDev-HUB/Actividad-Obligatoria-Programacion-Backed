@@ -24,7 +24,7 @@
             <legend>Especie</legend>
             <div class="especies">
                 {% for valor, texto in especies %}
-                {% with 'clinica/img/especie-'|add:valor|add:'.jpg' as ruta %}
+                {% with 'clinica/img/especie-'|add:valor|add:'.webp' as ruta %}
                 <label class="especie">
                     <input type="radio" name="especie" value="{{ valor }}" data-foto="{% static ruta %}" {% if form.especie.value == valor %}checked{% endif %} required>
                     <img src="{% static ruta %}" alt="" width="40" height="40">

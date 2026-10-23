@@ -1,18 +1,24 @@
-# Créditos de las fotos
+# Créditos de las imágenes
 
-Las fotos de mascotas son de dominio público (licencia CC0), obtenidas desde rawpixel a través del buscador Openverse. La foto de la veterinaria es de Wikimedia Commons con licencia CC BY 2.0, que pide nombrar al autor.
+## Imágenes propias de Huellas Sanas
+
+Estas imágenes son propias de la clínica. Los originales en PNG se dejaron en la carpeta `public/` y aquí se guardan convertidos a JPG o WebP para que la página cargue más rápido.
+
+| Archivo | Original | Dónde se usa |
+| --- | --- | --- |
+| `portada-clinica.jpg` | `public/hero.png` | Foto de la portada |
+| `como-agendar.webp` | `public/comoagendar.png` | Sección "Cómo agendar" |
+| `especie-perro.webp` | `public/perro.png` | Tarjeta de especie, formulario de nuevo paciente e ingreso del personal |
+| `especie-gato.webp` | `public/gato.png` | Tarjeta de especie, formulario de nuevo paciente e ingreso del personal |
+| `especie-ave.webp` | `public/loro.png` | Tarjeta de especie y formulario de nuevo paciente |
+| `especie-conejo.webp` | `public/conejo.png` | Tarjeta de especie y formulario de nuevo paciente |
+| `especie-roedor.webp` | `public/hamster.png` | Tarjeta de especie y formulario de nuevo paciente |
+| `especie-reptil.webp` | `public/tortuga.png` | Tarjeta de especie y formulario de nuevo paciente |
+
+## Fotos de licencia libre
+
+Son de dominio público (licencia CC0), obtenidas desde rawpixel a través del buscador Openverse.
 
 | Archivo | Foto original | Licencia |
 | --- | --- | --- |
-| `portada.jpg` | [Close-up of a veterinarian examining a maltese dog with a stethoscope](https://commons.wikimedia.org/wiki/File:Close-up_of_a_veterinarian_examining_a_maltese_dog_with_a_stethoscope._(51687314898).jpg), de Nenad Stojkovic | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) |
-| `como-agendar.jpg` | [long-haired cat snuggling dog](https://www.rawpixel.com/image/3299633/free-photo-image-cat-tiger-angora) | CC0 |
-| `perro-hojas.jpg` | [Free happy dog autumn image](https://www.rawpixel.com/image/5921251/photo-image-background-public-domain-dog) | CC0 |
 | `contacto.jpg` | [Free happy dog autumn image](https://www.rawpixel.com/image/5921251/photo-image-background-public-domain-dog) | CC0 |
-| `especie-perro.jpg` | [Free brown pomeranian dog smiling](https://www.rawpixel.com/image/5914846/image-background-public-domain-dog) | CC0 |
-| `especie-gato.jpg` | [Close-up blue-eyed Siamese kitten](https://www.rawpixel.com/image/3285708/free-photo-image-animal-cat-cc0) | CC0 |
-| `especie-ave.jpg` | [Eclectus Parrot.The eclectus parrot is](https://www.rawpixel.com/image/4021187/photo-image-green-tropical-bird) | CC0 |
-| `especie-conejo.jpg` | [Sin título](https://www.rawpixel.com/image/6061231/free-public-domain-cc0-photo) | CC0 |
-| `especie-roedor.jpg` | [Close hamster face](https://www.rawpixel.com/image/6036576/photo-image-face-public-domain-dog) | CC0 |
-| `especie-reptil.jpg` | [Leopard tortoise walking close up](https://www.rawpixel.com/image/6016530/photo-image-public-domain-nature-free) | CC0 |
-
-Las fotos `portada.jpg`, `como-agendar.jpg`, `contacto.jpg` y `especie-*.jpg` son provisorias y se reemplazarán por imágenes propias de la clínica.

@@ -6,8 +6,7 @@
 {% block clase_main %}inicio{% endblock %}
 
 {% block estilos %}
-<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'clinica/css/landing.css' %}">
+<link rel="stylesheet" href="{% static 'clinica/css/landing.css' %}?v=19">
 {% endblock %}
 
 {% block encabezado %}
@@ -24,12 +23,16 @@
             <a href="#agendar">Cómo agendar</a>
             <a href="#contacto">Contacto</a>
         </nav>
-        <div class="cabecera__acciones">
-            <a class="cabecera__telefono" href="{{ contacto.telefono_enlace }}">
-                {% include "clinica/icono.html" with nombre="telefono" %}{{ contacto.telefono }}
-            </a>
-            <a class="boton-l boton-l--oscuro" href="{{ contacto.telefono_enlace }}">Pedir hora</a>
-        </div>
+        {# Acceso del personal: lleva a la agenda si ya inició sesión #}
+        {% if user.is_authenticated %}
+        <a class="boton-l boton-l--contorno cabecera__ingreso" href="{% url 'citas_dia' %}">
+            {% include "clinica/icono.html" with nombre="calendario" %}Ir a la agenda
+        </a>
+        {% else %}
+        <a class="boton-l boton-l--contorno cabecera__ingreso" href="{% url 'ingresar' %}">
+            {% include "clinica/icono.html" with nombre="usuario" %}<span>Ingreso<span class="cabecera__ingreso-extra"> del personal</span></span>
+        </a>
+        {% endif %}
     </div>
 </header>
 {% endblock %}
@@ -41,7 +44,7 @@
         <div class="portada__texto">
             <p class="etiqueta">Clínica veterinaria</p>
             <h1 id="titulo-portada">Cuidamos a quienes son parte de tu <span class="resalte">familia</span></h1>
-            <p class="portada__bajada">Atención veterinaria para perros, gatos, aves, conejos, roedores y reptiles. Consultas, vacunas, controles y más, con un trato cercano y profesional.</p>
+            <p class="portada__bajada">Consultas, vacunas y controles para perros, gatos, aves, conejos, roedores y reptiles. Mira las próximas horas libres y reserva con una sola llamada.</p>
             <div class="portada__botones">
                 <a class="boton-l boton-l--oscuro boton-l--grande" href="#horas">
                     {% include "clinica/icono.html" with nombre="calendario" %}Ver horas disponibles{% include "clinica/icono.html" with nombre="flecha" %}
@@ -52,16 +55,15 @@
                 </a>
             </div>
             <ul class="confianza">
-                <li><span class="circulo-icono">{% include "clinica/icono.html" with nombre="corazon" %}</span>Atención<br>cercana</li>
-                <li><span class="circulo-icono">{% include "clinica/icono.html" with nombre="escudo" %}</span>Mascotas<br>más sanas</li>
-                <li><span class="circulo-icono">{% include "clinica/icono.html" with nombre="equipo" %}</span>Un equipo<br>que te acompaña</li>
+                <li><span class="circulo-icono">{% include "clinica/icono.html" with nombre="corazon" %}</span>6 especies<br>atendidas</li>
+                <li><span class="circulo-icono">{% include "clinica/icono.html" with nombre="reloj" %}</span>Lunes a sábado<br>09:00 a 18:30</li>
+                <li><span class="circulo-icono">{% include "clinica/icono.html" with nombre="calendario-check" %}</span>Horas cada<br>30 minutos</li>
             </ul>
         </div>
     </div>
 
     <div class="portada__visual">
-        <img class="portada__foto" src="{% static 'clinica/img/portada.jpg' %}" alt="Veterinaria atendiendo con cariño a un perro" width="2000" height="1335">
-        <p class="nota-mano portada__nota" aria-hidden="true">Su bienestar también es nuestra felicidad {% include "clinica/icono.html" with nombre="corazon" %}</p>
+        <img class="portada__foto" src="{% static 'clinica/img/portada-clinica.jpg' %}" alt="Veterinaria abrazando a un golden retriever en la clínica" width="1672" height="941">
 
         {# Tarjeta con la próxima hora libre real de la agenda #}
         {% with dia=horas_libres.0 %}
@@ -72,6 +74,10 @@
                 <span class="proxima-hora__etiqueta">Próxima hora disponible</span>
                 <strong class="proxima-hora__valor">{% if dia.es_hoy %}Hoy{% elif dia.es_manana %}Mañana{% else %}{{ dia.fecha|date:"l"|capfirst }}{% endif %} a las {{ dia.horas.0|time:"H:i" }}</strong>
                 <span class="proxima-hora__fecha">{{ dia.fecha|date:"l j \d\e F"|capfirst }}</span>
+                {# Solo avisa cuando de verdad quedan pocas horas ese día #}
+                {% if dia.total <= 4 %}
+                <span class="aviso-pocas">{% if dia.total == 1 %}Queda 1 hora libre ese día{% else %}Quedan {{ dia.total }} horas libres ese día{% endif %}</span>
+                {% endif %}
             </span>
         </a>
         {% endif %}
@@ -87,7 +93,7 @@
                 <span class="cuadro-icono cuadro-icono--grande">{% include "clinica/icono.html" with nombre="calendario" %}</span>
                 <div>
                     <h2 id="titulo-horas">Horas disponibles</h2>
-                    <p>Selecciona un día y reserva la hora que más te acomode.</p>
+                    <p>Toca una hora libre para llamarnos y reservarla.</p>
                 </div>
                 <a class="enlace-flecha" href="{{ contacto.telefono_enlace }}">Llamar para reservar{% include "clinica/icono.html" with nombre="flecha" %}</a>
             </div>
@@ -101,7 +107,10 @@
                             <h3>{% if dia.es_hoy %}Hoy{% elif dia.es_manana %}Mañana{% else %}{{ dia.fecha|date:"l"|capfirst }}{% endif %}</h3>
                             <p>{{ dia.fecha|date:"l j \d\e F"|capfirst }}</p>
                         </div>
-                        <p class="dia-card__conteo"><strong>{{ dia.total }}</strong> de {{ dia.bloques|length }} horas disponibles</p>
+                        <p class="dia-card__conteo">
+                            {% if dia.total <= 4 %}<span class="aviso-pocas">Quedan pocas</span>{% endif %}
+                            <strong>{{ dia.total }}</strong> de {{ dia.bloques|length }} horas disponibles
+                        </p>
                     </header>
                     <ol class="bloques">
                         {% for bloque in dia.bloques %}
@@ -127,7 +136,7 @@
 </section>
 
 {# 3. Servicios #}
-<section class="seccion-l" id="servicios" aria-labelledby="titulo-servicios">
+<section class="seccion-l seccion-l--servicios" id="servicios" aria-labelledby="titulo-servicios">
     <div class="envoltura">
         <div class="cabeza-l">
             <div>
@@ -176,8 +185,8 @@
         </div>
         <ul class="especies-fila">
             {% for valor, texto in especies %}
-            <li class="especie-card">
-                <img src="{% with 'clinica/img/especie-'|add:valor|add:'.jpg' as ruta %}{% static ruta %}{% endwith %}" alt="" width="1024" height="683" loading="lazy">
+            <li class="especie-card especie-{{ valor }}">
+                <img src="{% with 'clinica/img/especie-'|add:valor|add:'.webp' as ruta %}{% static ruta %}{% endwith %}" alt="" width="600" height="600" loading="lazy">
                 <span class="especie-pastilla especie-{{ valor }}"><span class="especie-pastilla__huella">{% include "clinica/logo.html" %}</span>{{ texto }}</span>
             </li>
             {% endfor %}
@@ -193,28 +202,45 @@
             <p>Reservar una hora es muy fácil. En solo 3 pasos:</p>
             <ol class="pasos-l">
                 <li>
-                    <span class="pasos-l__numero" aria-hidden="true">1</span>
-                    <span class="circulo-icono circulo-icono--blanco">{% include "clinica/icono.html" with nombre="telefono" %}</span>
-                    <h3>Contáctanos</h3>
-                    <p>Llámanos al {{ contacto.telefono }}.</p>
+                    <span class="pasos-l__icono">
+                        {% include "clinica/icono.html" with nombre="telefono" %}
+                        <span class="pasos-l__numero" aria-hidden="true">1</span>
+                    </span>
+                    <div>
+                        <h3>Contáctanos</h3>
+                        <p>Llámanos al {{ contacto.telefono }}.</p>
+                    </div>
                 </li>
                 <li>
-                    <span class="pasos-l__numero" aria-hidden="true">2</span>
-                    <span class="circulo-icono circulo-icono--blanco">{% include "clinica/icono.html" with nombre="ficha" %}</span>
-                    <h3>Cuéntanos de tu mascota</h3>
-                    <p>Su nombre, especie y el motivo de la consulta.</p>
+                    <span class="pasos-l__icono">
+                        {% include "clinica/icono.html" with nombre="ficha" %}
+                        <span class="pasos-l__numero" aria-hidden="true">2</span>
+                    </span>
+                    <div>
+                        <h3>Cuéntanos de tu mascota</h3>
+                        <p>Su nombre, especie y el motivo de la consulta.</p>
+                    </div>
                 </li>
                 <li>
-                    <span class="pasos-l__numero" aria-hidden="true">3</span>
-                    <span class="circulo-icono circulo-icono--blanco">{% include "clinica/icono.html" with nombre="calendario-check" %}</span>
-                    <h3>¡Listo!</h3>
-                    <p>Te confirmamos la hora y te esperamos.</p>
+                    <span class="pasos-l__icono">
+                        {% include "clinica/icono.html" with nombre="calendario-check" %}
+                        <span class="pasos-l__numero" aria-hidden="true">3</span>
+                    </span>
+                    <div>
+                        <h3>¡Listo!</h3>
+                        <p>Te confirmamos la hora y te esperamos.</p>
+                    </div>
                 </li>
             </ol>
+            <div class="agendar-l__llamar">
+                <a class="boton-l boton-l--oscuro boton-l--grande" href="{{ contacto.telefono_enlace }}">
+                    {% include "clinica/icono.html" with nombre="telefono" %}Llamar para agendar
+                </a>
+                <p>Lun a Sáb, 09:00 a 18:30</p>
+            </div>
         </div>
         <div class="agendar-l__visual">
-            <img src="{% static 'clinica/img/como-agendar.jpg' %}" alt="Un perro y un gato descansando juntos" width="1024" height="603" loading="lazy">
-            <p class="nota-mano agendar-l__nota" aria-hidden="true">Simple, seguro y sin estrés {% include "clinica/icono.html" with nombre="corazon" %}</p>
+            <img src="{% static 'clinica/img/como-agendar.webp' %}" alt="Un cachorro y un gatito descansando juntos" width="1200" height="679" loading="lazy">
         </div>
     </div>
 </section>
@@ -224,7 +250,7 @@
     <div class="envoltura">
         <div class="elegir__cabeza">
             <h2 id="titulo-elegir">¿Por qué elegir Huellas Sanas?</h2>
-            <p>Más que una clínica, somos un equipo que realmente se preocupa.</p>
+            <p>Pensamos en lo que necesitas cuando tu mascota requiere atención.</p>
         </div>
         <ul class="elegir__lista">
             <li class="razon">
@@ -235,17 +261,17 @@
                 </div>
             </li>
             <li class="razon">
-                <span class="circulo-icono circulo-icono--grande">{% include "clinica/icono.html" with nombre="escudo" %}</span>
+                <span class="circulo-icono circulo-icono--grande">{% include "clinica/icono.html" with nombre="calendario-check" %}</span>
                 <div>
-                    <h3>Confianza y experiencia</h3>
-                    <p>Profesionales comprometidos con el bienestar de tu mascota.</p>
+                    <h3>Ves las horas antes de llamar</h3>
+                    <p>Las horas libres salen directo de nuestra agenda, así no pierdes tiempo preguntando.</p>
                 </div>
             </li>
             <li class="razon">
                 <span class="circulo-icono circulo-icono--grande">{% include "clinica/icono.html" with nombre="corazon" %}</span>
                 <div>
-                    <h3>Un lugar para toda la familia</h3>
-                    <p>Ambiente tranquilo y amigable para mascotas de todas las especies.</p>
+                    <h3>Toda la familia en un lugar</h3>
+                    <p>Perros, gatos, aves, conejos, roedores y reptiles se atienden aquí, en un ambiente tranquilo.</p>
                 </div>
             </li>
         </ul>
@@ -254,31 +280,47 @@
 
 {# 7. Contacto #}
 <section class="contacto-l" id="contacto" aria-labelledby="titulo-contacto">
-    <div class="contacto-l__foto">
-        <img src="{% static 'clinica/img/contacto.jpg' %}" alt="Perro mirando a la cámara entre hojas de otoño" width="1024" height="739" loading="lazy">
-    </div>
-    <div class="contacto-l__contenido">
-        <div class="contacto-l__cabeza">
-            <h2 id="titulo-contacto">Visítanos o llámanos</h2>
-            <p>Estamos aquí para cuidar de tu mascota.</p>
+    <div class="envoltura contacto-l__fila">
+        <div class="contacto-l__foto">
+            <img src="{% static 'clinica/img/contacto.jpg' %}" alt="Perro mirando a la cámara entre hojas de otoño" width="1024" height="739" loading="lazy">
         </div>
-        <ul class="contacto-l__datos">
-            <li>
-                <span class="circulo-icono">{% include "clinica/icono.html" with nombre="telefono" %}</span>
-                <span><a href="{{ contacto.telefono_enlace }}"><strong>{{ contacto.telefono }}</strong></a><small>Llámanos ahora</small></span>
-            </li>
-            <li>
-                <span class="circulo-icono">{% include "clinica/icono.html" with nombre="ubicacion" %}</span>
-                <span><strong>{{ contacto.direccion }}</strong><small>Teléfono y dirección de ejemplo</small></span>
-            </li>
-            <li>
-                <span class="circulo-icono">{% include "clinica/icono.html" with nombre="reloj" %}</span>
-                <span><strong>Lun a Sáb, 09:00 a 18:30</strong><small>Horas cada 30 minutos</small></span>
-            </li>
-        </ul>
-        <a class="boton-l boton-l--oscuro boton-l--grande" href="{{ contacto.telefono_enlace }}">
-            {% include "clinica/icono.html" with nombre="telefono" %}Llamar ahora
-        </a>
+        <div class="contacto-l__contenido">
+            <h2 id="titulo-contacto">Visítanos o llámanos</h2>
+            <p class="contacto-l__bajada">Estamos aquí para cuidar de tu mascota. Llámanos para pedir hora o resolver tus dudas.</p>
+            <ul class="contacto-l__datos">
+                <li>
+                    <span class="circulo-icono">{% include "clinica/icono.html" with nombre="telefono" %}</span>
+                    <span>
+                        <small>Teléfono</small>
+                        <a class="contacto-l__telefono" href="{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a>
+                    </span>
+                </li>
+                <li>
+                    <span class="circulo-icono">{% include "clinica/icono.html" with nombre="ubicacion" %}</span>
+                    <span>
+                        <small>Dirección</small>
+                        <strong>{{ contacto.direccion }}</strong>
+                        <small>Teléfono y dirección de ejemplo</small>
+                    </span>
+                </li>
+                <li>
+                    <span class="circulo-icono">{% include "clinica/icono.html" with nombre="reloj" %}</span>
+                    <span>
+                        <small>Horario</small>
+                        <strong>Lunes a sábado, 09:00 a 18:30</strong>
+                        <small>Horas cada 30 minutos</small>
+                    </span>
+                </li>
+            </ul>
+            <div class="contacto-l__botones">
+                <a class="boton-l boton-l--oscuro boton-l--grande" href="{{ contacto.telefono_enlace }}">
+                    {% include "clinica/icono.html" with nombre="telefono" %}Llamar ahora
+                </a>
+                <a class="boton-l boton-l--contorno boton-l--grande" href="#horas">
+                    {% include "clinica/icono.html" with nombre="calendario" %}Ver horas disponibles
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 {% endblock %}
@@ -286,28 +328,51 @@
 {% block pie %}
 <footer class="pie-l">
     <div class="envoltura">
-        <div class="pie-l__fila">
-            <a class="logo logo--claro" href="{% url 'inicio' %}">
-                <span class="logo__marca">{% include "clinica/logo.html" %}</span>
-                Huellas Sanas
-            </a>
-            <p class="pie-l__texto">Clínica veterinaria para perros, gatos, aves, conejos, roedores y reptiles.</p>
-            <nav class="pie-l__menu" aria-label="Pie de página">
-                <a href="#inicio">Inicio</a>
-                <a href="#servicios">Servicios</a>
-                <a href="#especies">Especies</a>
-                <a href="#agendar">Cómo agendar</a>
-                <a href="#contacto">Contacto</a>
+        <div class="pie-l__grilla">
+            <div class="pie-l__marca">
+                <a class="logo logo--claro" href="{% url 'inicio' %}">
+                    <span class="logo__marca">{% include "clinica/logo.html" %}</span>
+                    Huellas Sanas
+                </a>
+                <p>Clínica veterinaria para perros, gatos, aves, conejos, roedores y reptiles.</p>
+                <a class="boton-l boton-l--claro" href="{{ contacto.telefono_enlace }}">
+                    {% include "clinica/icono.html" with nombre="telefono" %}Pedir hora
+                </a>
+            </div>
+
+            <nav class="pie-l__columna" aria-labelledby="pie-secciones">
+                <h2 id="pie-secciones">Secciones</h2>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#horas">Horas disponibles</a></li>
+                    <li><a href="#servicios">Servicios</a></li>
+                    <li><a href="#especies">Especies</a></li>
+                    <li><a href="#agendar">Cómo agendar</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
             </nav>
+
+            <div class="pie-l__columna">
+                <h2>Contacto</h2>
+                <ul class="pie-l__datos">
+                    <li>{% include "clinica/icono.html" with nombre="telefono" %}<a href="{{ contacto.telefono_enlace }}">{{ contacto.telefono }}</a></li>
+                    <li>{% include "clinica/icono.html" with nombre="ubicacion" %}<span>{{ contacto.direccion }}</span></li>
+                </ul>
+                <p class="pie-l__nota">Teléfono y dirección de ejemplo.</p>
+            </div>
+
+            <div class="pie-l__columna">
+                <h2>Horario</h2>
+                <ul class="pie-l__datos">
+                    <li>{% include "clinica/icono.html" with nombre="reloj" %}<span>Lunes a sábado<br>09:00 a 18:30</span></li>
+                </ul>
+                <p class="pie-l__nota">Horas cada 30 minutos.</p>
+            </div>
         </div>
+
         <div class="pie-l__abajo">
             <p>© {% now "Y" %} Huellas Sanas. Todos los derechos reservados.</p>
-            {% if user.is_authenticated %}
-            <a href="{% url 'citas_dia' %}">Ir a la agenda</a>
-            {% else %}
-            <a href="{% url 'ingresar' %}">Ingreso del personal</a>
-            {% endif %}
-            <p>Fotos de mascotas: dominio público (CC0). Foto de portada: Nenad Stojkovic, <a href="https://creativecommons.org/licenses/by/2.0">CC BY 2.0</a>.</p>
+            <p>Foto de contacto: dominio público (CC0). Demás imágenes: propias de Huellas Sanas.</p>
         </div>
     </div>
 </footer>
