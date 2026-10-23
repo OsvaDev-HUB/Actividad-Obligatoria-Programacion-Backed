@@ -34,6 +34,23 @@ def bloques_de_atencion():
     return [time(hora, minuto) for hora in range(9, 19) for minuto in (0, 30)]
 
 
+def horas_libres_del_dia(fecha):
+    # Horas de atención sin cita activa; si es hoy, solo las que todavía no pasan
+    ocupadas = set(Cita.objects.filter(fecha=fecha).exclude(estado=Cita.CANCELADA).values_list("hora", flat=True))
+    hoy = timezone.localdate()
+    ahora = timezone.localtime().time()
+    return [hora for hora in bloques_de_atencion() if hora not in ocupadas and not (fecha == hoy and hora <= ahora)]
+
+
+def horas_ocupadas_por_dia():
+    # {"2026-10-23": ["09:00", "13:00"]} desde hoy en adelante, para marcar las horas tomadas al agendar
+    ocupadas = {}
+    citas = Cita.objects.filter(fecha__gte=timezone.localdate()).exclude(estado=Cita.CANCELADA)
+    for fecha, hora in citas.values_list("fecha", "hora"):
+        ocupadas.setdefault(fecha.isoformat(), []).append(hora.strftime("%H:%M"))
+    return ocupadas
+
+
 def horas_libres(cantidad_dias=2, maximo_por_dia=8):
     # Busca los próximos días que todavía tienen horas sin cita activa
     hoy = timezone.localdate()
@@ -102,6 +119,8 @@ def citas_dia(request):
         "total_pendientes": pendientes.count(),
         "total_atendidas": citas.filter(estado=Cita.ATENDIDA).count(),
         "total_canceladas": citas.filter(estado=Cita.CANCELADA).count(),
+        # Los días pasados no muestran horas libres porque ya no se pueden agendar
+        "horas_libres": horas_libres_del_dia(fecha) if fecha >= hoy else None,
     }
     return render(request, "clinica/citas_dia.html", contexto)
 
@@ -129,8 +148,16 @@ def agendar_cita(request):
         inicial = {"fecha": leer_fecha(request.GET.get("fecha"))}
         if request.GET.get("mascota", "").isdigit():
             inicial["mascota"] = request.GET["mascota"]
+        # La hora llega desde las horas libres de la agenda, por ejemplo ?hora=10:30
+        if request.GET.get("hora") in [hora.strftime("%H:%M") for hora in bloques_de_atencion()]:
+            inicial["hora"] = request.GET["hora"]
         form = CitaForm(initial=inicial)
-    return render(request, "clinica/agendar_cita.html", {"form": form})
+    return render(request, "clinica/agendar_cita.html", {
+        "form": form,
+        "horas_ocupadas": horas_ocupadas_por_dia(),
+        "hoy": timezone.localdate(),
+        "ahora": timezone.localtime(),
+    })
 
 
 @login_required

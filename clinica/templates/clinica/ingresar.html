@@ -7,43 +7,72 @@
 {% block clase_main %}acceso{% endblock %}
 
 {% block contenido %}
-<div class="acceso__foto">
-    <img src="{% static 'clinica/img/perro-hojas.jpg' %}" alt="" width="1024" height="739">
-    <a class="logo logo--claro" href="{% url 'inicio' %}">
+{# Lado izquierdo: mismo mundo que la landing, fondo menta con mascotas propias #}
+<div class="acceso__lado">
+    <a class="logo" href="{% url 'inicio' %}">
         <span class="logo__marca">{% include "clinica/logo.html" %}</span>
         Huellas Sanas
     </a>
-    <p class="acceso__frase">La agenda de hoy te está esperando.</p>
+    <div class="acceso__mensaje">
+        <p class="acceso__frase">La agenda de hoy te está esperando.</p>
+        <p class="acceso__fecha">{% now "l j \d\e F" as hoy %}{{ hoy|capfirst }}</p>
+    </div>
+    <div class="acceso__mascotas" aria-hidden="true">
+        <img src="{% static 'clinica/img/especie-perro.webp' %}" alt="" width="600" height="506">
+        <img src="{% static 'clinica/img/especie-gato.webp' %}" alt="" width="600" height="521">
+    </div>
 </div>
 
 <div class="acceso__formulario">
-    <form method="post" class="acceso__caja" novalidate>
+    <form method="post" class="acceso__caja" id="form-ingreso" novalidate>
         {% csrf_token %}
         <h1>Ingreso del personal</h1>
         <p class="ayuda">Usa tu usuario de la clínica para ver la agenda y registrar pacientes.</p>
 
-        {% if form.errors %}
+        {# Error de usuario o contraseña (o cuenta desactivada) #}
+        {% if form.non_field_errors %}
         <p class="error-general" role="alert">
             {% include "clinica/icono.html" with nombre="alerta" %}
-            Usuario o contraseña incorrectos. Revisa los datos e intenta otra vez.
+            {{ form.non_field_errors.0 }}
         </p>
         {% endif %}
 
-        <div class="campo">
+        <div class="campo{% if form.username.errors %} campo--error{% endif %}">
             <label for="{{ form.username.id_for_label }}">Usuario</label>
-            <input type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" autocomplete="username" autocapitalize="none" required autofocus>
+            <input type="text" name="username" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default:'' }}" autocomplete="username" autocapitalize="none" required
+                {% if form.username.errors %}aria-invalid="true" aria-describedby="error-usuario"{% endif %}
+                {% if not form.errors or not form.username.value %}autofocus{% endif %}>
+            {% if form.username.errors %}<p class="errorlist" id="error-usuario">{{ form.username.errors.0 }}</p>{% endif %}
         </div>
-        <div class="campo">
+
+        <div class="campo{% if form.password.errors %} campo--error{% endif %}">
             <label for="{{ form.password.id_for_label }}">Contraseña</label>
-            <input type="password" name="password" id="{{ form.password.id_for_label }}" autocomplete="current-password" required>
+            <div class="clave">
+                <input type="password" name="password" id="{{ form.password.id_for_label }}" autocomplete="current-password" required
+                    aria-describedby="aviso-mayus{% if form.password.errors %} error-clave{% endif %}"
+                    {% if form.password.errors %}aria-invalid="true"{% endif %}
+                    {% if form.errors and form.username.value %}autofocus{% endif %}>
+                {# Botón para ver lo que se escribió; lo activa ingreso.js #}
+                <button type="button" class="clave__mostrar" id="mostrar-clave" aria-controls="{{ form.password.id_for_label }}" hidden>Mostrar</button>
+            </div>
+            <p class="aviso-mayus" id="aviso-mayus" hidden>{% include "clinica/icono.html" with nombre="alerta" %}Bloq Mayús está activado</p>
+            {% if form.password.errors %}<p class="errorlist" id="error-clave">{{ form.password.errors.0 }}</p>{% endif %}
         </div>
+
         <input type="hidden" name="next" value="{{ next }}">
-        <button type="submit" class="boton boton--principal boton--ancho">Ingresar</button>
+        <button type="submit" class="boton boton--principal boton--grande boton--ancho" id="boton-ingresar">Ingresar</button>
 
         <div class="acceso__pie">
-            <p>¿Eres el director? <a href="{% url 'admin:index' %}">Entra al panel de administración</a></p>
-            <a class="acceso__volver" href="{% url 'inicio' %}">{% include "clinica/icono.html" with nombre="izquierda" %}Volver al inicio</a>
+            <p>¿No tienes usuario o lo olvidaste? Pídeselo al director de la clínica.</p>
+            <div class="acceso__enlaces">
+                <a href="{% url 'inicio' %}">{% include "clinica/icono.html" with nombre="izquierda" %}Volver al inicio</a>
+                <a href="{% url 'admin:index' %}">Panel de administración</a>
+            </div>
         </div>
     </form>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'clinica/js/ingreso.js' %}"></script>
 {% endblock %}

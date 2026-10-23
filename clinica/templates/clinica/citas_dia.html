@@ -1,4 +1,5 @@
 {% extends "clinica/base.html" %}
+{% load static %}
 
 {% block titulo %}Citas del {{ fecha|date:"d-m-Y" }}{% endblock %}
 
@@ -7,24 +8,35 @@
     <div class="cabecera-dia__fecha">
         {# El año solo se muestra si no es el año actual #}
         <h1>{% if fecha.year == hoy.year %}{{ fecha|date:"l j \d\e F"|capfirst }}{% else %}{{ fecha|date:"l j \d\e F \d\e Y"|capfirst }}{% endif %}</h1>
-        <p class="cabecera-dia__sub">
-            {% if es_hoy %}Hoy: {% endif %}{% if citas %}{{ citas|length }} cita{{ citas|length|pluralize }} agendada{{ citas|length|pluralize }}.{% else %}Sin citas agendadas.{% endif %}
-        </p>
+        {% if citas %}
+        <ul class="conteo" aria-label="Resumen del día">
+            <li class="conteo__total">{% if es_hoy %}Hoy, {% endif %}{{ citas|length }} cita{{ citas|length|pluralize }}</li>
+            <li class="estado estado--pendiente">{% include "clinica/icono.html" with nombre="pendiente" %}{{ total_pendientes }} pendiente{{ total_pendientes|pluralize }}</li>
+            <li class="estado estado--atendida">{% include "clinica/icono.html" with nombre="check" %}{{ total_atendidas }} atendida{{ total_atendidas|pluralize }}</li>
+            <li class="estado estado--cancelada">{% include "clinica/icono.html" with nombre="cruz" %}{{ total_canceladas }} cancelada{{ total_canceladas|pluralize }}</li>
+        </ul>
+        {% else %}
+        <p class="cabecera-dia__sub">{% if es_hoy %}Hoy no hay{% else %}No hay{% endif %} citas agendadas.</p>
+        {% endif %}
     </div>
 
     <div class="cabecera-dia__acciones">
         <nav class="selector-dia" aria-label="Cambiar de día">
-            <a class="boton boton--icono" href="?fecha={{ dia_anterior|date:'Y-m-d' }}" title="Día anterior">
-                {% include "clinica/icono.html" with nombre="izquierda" %}<span class="solo-lector">Día anterior</span>
-            </a>
-            <a class="boton" href="{% url 'citas_dia' %}" {% if es_hoy %}aria-current="date"{% endif %}>Hoy</a>
-            <a class="boton boton--icono" href="?fecha={{ dia_siguiente|date:'Y-m-d' }}" title="Día siguiente">
-                {% include "clinica/icono.html" with nombre="derecha" %}<span class="solo-lector">Día siguiente</span>
-            </a>
-            <form method="get" class="selector-dia__fecha">
+            {# Anterior, hoy y siguiente van juntos en un solo grupo #}
+            <div class="selector-dia__grupo">
+                <a class="boton boton--icono" href="?fecha={{ dia_anterior|date:'Y-m-d' }}" title="Día anterior">
+                    {% include "clinica/icono.html" with nombre="izquierda" %}<span class="solo-lector">Día anterior</span>
+                </a>
+                <a class="boton" href="{% url 'citas_dia' %}" {% if es_hoy %}aria-current="date"{% endif %}>Hoy</a>
+                <a class="boton boton--icono" href="?fecha={{ dia_siguiente|date:'Y-m-d' }}" title="Día siguiente">
+                    {% include "clinica/icono.html" with nombre="derecha" %}<span class="solo-lector">Día siguiente</span>
+                </a>
+            </div>
+            {# Al elegir una fecha la página cambia sola (agenda.js); "Ver" queda si no hay JavaScript #}
+            <form method="get" class="selector-dia__fecha" id="form-fecha">
                 <label for="ir-fecha" class="solo-lector">Ir a una fecha</label>
                 <input type="date" id="ir-fecha" name="fecha" value="{{ fecha|date:'Y-m-d' }}">
-                <button type="submit" class="boton">Ver</button>
+                <button type="submit" class="boton" id="boton-ver">Ver</button>
             </form>
         </nav>
         <a class="boton boton--principal" href="{% url 'agendar_cita' %}?fecha={{ fecha|date:'Y-m-d' }}">
@@ -32,13 +44,6 @@
         </a>
     </div>
 </section>
-
-{% if citas %}
-<ul class="conteo" aria-label="Resumen del día">
-    <li class="estado estado--pendiente">{% include "clinica/icono.html" with nombre="pendiente" %}{{ total_pendientes }} pendiente{{ total_pendientes|pluralize }}</li>
-    <li class="estado estado--atendida">{% include "clinica/icono.html" with nombre="check" %}{{ total_atendidas }} atendida{{ total_atendidas|pluralize }}</li>
-    <li class="estado estado--cancelada">{% include "clinica/icono.html" with nombre="cruz" %}{{ total_canceladas }} cancelada{{ total_canceladas|pluralize }}</li>
-</ul>
 
 {# Próxima cita pendiente, arriba de todo para leerla primero #}
 {% if siguiente %}
@@ -54,13 +59,30 @@
     </div>
     <form method="post" action="{% url 'cambiar_estado' siguiente.id %}">
         {% csrf_token %}
-        <button type="submit" name="estado" value="atendida" class="boton boton--blanco">Marcar atendida</button>
+        <button type="submit" name="estado" value="atendida" class="boton boton--blanco">{% include "clinica/icono.html" with nombre="check" %}Marcar atendida</button>
         <button type="submit" name="estado" value="cancelada" class="boton boton--contorno"
                 onclick="return confirm('¿Cancelar la cita de {{ siguiente.mascota.nombre|escapejs }} a las {{ siguiente.hora|time:"H:i" }}?')">Cancelar</button>
     </form>
 </section>
 {% endif %}
 
+{# Horas que todavía se pueden agendar este día; cada una lleva al formulario con la hora puesta #}
+{% if horas_libres is not None %}
+<section class="libres" aria-labelledby="titulo-libres">
+    <h2 id="titulo-libres">Horas libres{% if horas_libres %} <span>{{ horas_libres|length }} disponible{{ horas_libres|length|pluralize }}</span>{% endif %}</h2>
+    {% if horas_libres %}
+    <ul class="libres__lista">
+        {% for hora in horas_libres %}
+        <li><a class="ficha-hora" href="{% url 'agendar_cita' %}?fecha={{ fecha|date:'Y-m-d' }}&hora={{ hora|time:'H:i' }}" aria-label="Agendar a las {{ hora|time:'H:i' }}">{{ hora|time:"H:i" }}</a></li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="libres__vacio">{% if es_hoy %}Ya no quedan horas libres hoy.{% else %}No quedan horas libres este día.{% endif %}</p>
+    {% endif %}
+</section>
+{% endif %}
+
+{% if citas %}
 <div class="tarjeta panel-tabla">
     <table class="agenda">
         <caption class="solo-lector">Citas del {{ fecha|date:"j \d\e F \d\e Y" }}</caption>
@@ -104,7 +126,7 @@
                     {% if cita.estado == "pendiente" %}
                     <form method="post" action="{% url 'cambiar_estado' cita.id %}">
                         {% csrf_token %}
-                        <button type="submit" name="estado" value="atendida" class="boton boton--chico">Marcar atendida</button>
+                        <button type="submit" name="estado" value="atendida" class="boton boton--chico">{% include "clinica/icono.html" with nombre="check" %}Atendida</button>
                         <button type="submit" name="estado" value="cancelada" class="boton boton--chico boton--peligro"
                                 onclick="return confirm('¿Cancelar la cita de {{ cita.mascota.nombre|escapejs }} a las {{ cita.hora|time:"H:i" }}?')">Cancelar</button>
                     </form>
@@ -120,7 +142,13 @@
     <span class="vacio__icono">{% include "clinica/icono.html" with nombre="calendario" %}</span>
     <h2>No hay citas para este día</h2>
     <p>Las horas que agendes para el {{ fecha|date:"j \d\e F" }} van a aparecer aquí, ordenadas por hora.</p>
+    {% if horas_libres %}
     <a class="boton boton--principal" href="{% url 'agendar_cita' %}?fecha={{ fecha|date:'Y-m-d' }}">Agendar una cita</a>
+    {% endif %}
 </div>
 {% endif %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'clinica/js/agenda.js' %}"></script>
 {% endblock %}
